@@ -7,7 +7,7 @@ export default  {
   // base: process.env.NODE_ENV === 'production' ? '/tsdoc/' : '/',
   // lastUpdated: true,
   // base:'/',
-  base:'/tsdoc/',//配置打包获取静态资源路径
+  base:'/tsdoc-vitepress/',//配置打包获取静态资源路径
   outDir: '../dist',
   cleanUrls: true,  //去掉url中的.html后缀
   // srcDir:'./src', //相对于docs

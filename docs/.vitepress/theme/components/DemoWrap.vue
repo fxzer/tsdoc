@@ -9,7 +9,7 @@ onErrorCaptured((err) => {
   error.value = err
 })
 
-const GITHUB_BLOB_URL = 'https://github.com/fxzer/tsdoc/blob/main/docs'
+const GITHUB_BLOB_URL = 'https://github.com/fxzer/tsdoc-vitepress/blob/main/docs'
 const URL = `${GITHUB_BLOB_URL}${demoPath.value}`
 </script>
 

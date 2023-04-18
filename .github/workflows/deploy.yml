@@ -12,6 +12,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest #部署运行环境搭建
     steps:
+      - uses: pnpm/action-setup@v2 #安装pnpm包管理器
+        with:
+          version: 8.2.0
       - name: Checkout 🛎️
         uses: actions/checkout@main
         with:
@@ -21,39 +24,29 @@ jobs:
         uses: actions/setup-node@main
         with:
           node-version: "lts/*"
-      - name: Build 🔧 
+      - name: Build 🔧
         run: |
-          yarn
-          yarn run build
+          pnpm i
+          pnpm build
           ls -lrth
+
       - name: 📲 Push To GitHub Pages
         uses: ftnext/action-push-ghpages@v1.0.0
         with:
           build_dir: dist
           github_token: ${{ secrets.DEPLOY_TOKEN }}
-      - name: 🔁 Sync to Gitee #同步到Gitee
-        uses: wearerequired/git-mirror-action@master
-        env:
-          # 注意在此项目的 Settings->Actions-> Secrets 配置 GITEE_RSA_PRIVATE_KEY
-          SSH_PRIVATE_KEY: ${{ secrets.GITEE_RSA_PRIVATE_KEY }}
-        with:
-          # 注意替换为你的 GitHub 源仓库地址
-          source-repo: 'git@github.com:fxzer/tsdoc-vitepress.git'
-          # 注意替换为你的 Gitee 目标仓库地址
-          destination-repo: 'git@gitee.com:fxzer/tsdoc-vitepress.git'
+
       - name: ✅ Build Gitee Pages #触发Gitee自动部署
-        uses: yanglbme/gitee-pages-action@master
+        uses: okou19900722/gitee-pages@v1
         with:
-          # 注意替换为你的 Gitee 用户名
-          gitee-username: fxzer
-          # 注意在 Settings->Secrets 配置 GITEE_PASSWORD
-          gitee-password: ${{ secrets.GITEE_PASSWORD }}
-          # 注意替换为你的 Gitee 仓库 
-          # 坑点:https://gitee.com/fxzer/tsdoc -->则填:fxzer/tsdoc,注意仓库名和路径名不一致问题
-          gitee-repo: fxzer/tsdoc 
-          # 要部署的分支
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.GITEE_PASSWORD }}
+          repository: https://gitee.com/fxzer/tsdoc-vitepress.git
           branch: gh-pages
-          
+          directory: dist
+          #是否开启https
+          https: false
+
       - name: Deploy 🚀 #把打包后的dist文件部署到master分支
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:

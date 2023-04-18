@@ -4,7 +4,7 @@ import sidebar from './sidebar/index'
 //引入环境变量
 export default  {
   //根据环境变量决定打包路径
-  // base: process.env.NODE_ENV === 'production' ? '/tsdoc/' : '/',
+  // base: process.env.NODE_ENV === 'production' ? '/tsdoc-vitepress/' : '/',
   // lastUpdated: true,
   // base:'/',
   base:'/tsdoc-vitepress/',//配置打包获取静态资源路径
@@ -32,7 +32,7 @@ export default  {
     sidebarMenuLabel: '目录',
     darkModeSwitchLabel: '主题切换',
     footer: {
-      message: 'Released under the <a href="https://github.com/fxzer/tsdoc/blob/main/LICENSE">MIT License</a>.',
+      message: 'Released under the <a href="https://github.com/fxzer/tsdoc-vitepress/blob/main/LICENSE">MIT License</a>.',
       copyright: 'Copyright © 2023-present <a href="https://github.com/fxzer">fxzer</a>.',
     },
     docFooter: {
@@ -41,11 +41,11 @@ export default  {
     },
     nav: getNavs(),
     editLink: {
-      pattern: "https://github.com/fxzer/tsdoc/edit/main/docs/:path",
+      pattern: "https://github.com/fxzer/tsdoc-vitepress/edit/main/docs/:path",
     },
     sidebar,
     async buildEnd() {
-      await sitemap({ hostname: 'https://fxzer.github.io/tsdoc' });
+      await sitemap({ hostname: 'https://fxzer.github.io/tsdoc-vitepress' });
     }
   },
 } 

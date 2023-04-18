@@ -13,7 +13,7 @@ hero:
       link: /get-started/TS for Functional Programmers
     - theme: alt
       text: 项目源码
-      link: https://github.com/fxzer/tsdoc
+      link: https://github.com/fxzer/tsdoc-vitepress
 features:
   - icon: 🎨
     title: Tutorials

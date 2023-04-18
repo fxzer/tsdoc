@@ -20,22 +20,24 @@ const sidebarlist = deepGenerateSidebar(sidebars)
 //写入到docs/.vitepress/sidebar/index.ts
 
 //把数组里面的每个对象合并到一个对象里面
+const collapsedList = ['options' ,'handbook-v1']
 let sidebar = sidebarlist.reduce((pre, cur) => Object.assign(pre, cur), {})
 Object.entries(sidebar).forEach(([key, items]) => {
   let keyArr = splitPath(key)
   let text = keyArr[keyArr.length - 1]
+  const isCollapsed = collapsedList.includes(text)
   if(sidebarObj[`/${keyArr[0]}/`]){
     sidebarObj[`/${keyArr[0]}/`].push({
       text,
       collapsible: true,
-      collapsed: false,
+      collapsed: isCollapsed,
       items,
     })
   }else{
     sidebarObj[`/${keyArr[0]}/`] = [{
       text,
       collapsible: true,
-      collapsed: false,
+      collapsed: isCollapsed,
       items,
     }]
   }

@@ -4,7 +4,7 @@ name: Deploy GitHub Pages And Sync to Gitee
 on:
   push:
     branches:
-      - master
+      - main
     paths-ignore: # 下列文件的变更不触发部署
       - LICENSE
 # 任务
@@ -38,9 +38,9 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.GITEE_RSA_PRIVATE_KEY }}
         with:
           # 注意替换为你的 GitHub 源仓库地址
-          source-repo: 'git@github.com:fxzer/tsdoc.git'
+          source-repo: 'git@github.com:fxzer/tsdoc-vitepress.git'
           # 注意替换为你的 Gitee 目标仓库地址
-          destination-repo: 'git@gitee.com:fxzer/tsdoc.git'
+          destination-repo: 'git@gitee.com:fxzer/tsdoc-vitepress.git'
       - name: ✅ Build Gitee Pages #触发Gitee自动部署
         uses: yanglbme/gitee-pages-action@master
         with:
@@ -54,9 +54,9 @@ jobs:
           # 要部署的分支
           branch: gh-pages
           
-      # - name: Deploy 🚀 #把打包后的dist文件部署到master分支
-      #   uses: JamesIves/github-pages-deploy-action@4.1.5
-      #   with:
-      #     token: ${{ secrets.DEPLOY_TOKEN }} #在本项目-->设置-->secrets添加 TSDOC_DEPLOY_TOKEN 变量 值为生成的秘钥
-      #     branch: gh-pages
-      #     folder: dist
+      - name: Deploy 🚀 #把打包后的dist文件部署到master分支
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          token: ${{ secrets.DEPLOY_TOKEN }} #在本项目-->设置-->secrets添加 TSDOC_DEPLOY_TOKEN 变量 值为生成的秘钥
+          branch: gh-pages
+          folder: dist

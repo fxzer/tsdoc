@@ -32,7 +32,7 @@ export default  {
     sidebarMenuLabel: '目录',
     darkModeSwitchLabel: '主题切换',
     footer: {
-      message: 'Released under the <a href="https://github.com/fxzer/tsdoc/blob/master/LICENSE">MIT License</a>.',
+      message: 'Released under the <a href="https://github.com/fxzer/tsdoc/blob/main/LICENSE">MIT License</a>.',
       copyright: 'Copyright © 2023-present <a href="https://github.com/fxzer">fxzer</a>.',
     },
     docFooter: {
@@ -41,7 +41,7 @@ export default  {
     },
     nav: getNavs(),
     editLink: {
-      pattern: "https://github.com/fxzer/tsdoc/edit/master/docs/:path",
+      pattern: "https://github.com/fxzer/tsdoc/edit/main/docs/:path",
     },
     sidebar,
     async buildEnd() {

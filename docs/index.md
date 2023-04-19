@@ -10,7 +10,7 @@ hero:
   actions:
     - theme: brand
       text: 开始阅读
-      link: /get-started/TS for Functional Programmers
+      link: /zh/tutorials/TypeScript Tooling in 5 minutes
     - theme: alt
       text: 项目源码
       link: https://github.com/fxzer/tsdoc-vitepress

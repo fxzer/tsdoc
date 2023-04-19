@@ -1,11 +1,11 @@
-import { generateSitemap as sitemap } from 'sitemap-ts'//站点地图
-import getNavs from "./configs/nav"
-import sidebar from './sidebar/index'
+// import { generateSitemap as sitemap } from 'sitemap-ts'//站点地图
+import { enConfig } from './configs/en'
+import { zhConfig } from './configs/zh'
 //引入环境变量
 export default  {
   //根据环境变量决定打包路径
   // base: process.env.NODE_ENV === 'production' ? '/tsdoc-vitepress/' : '/',
-  // lastUpdated: true,
+  lastUpdated: true,
   // base:'/',
   base:'/tsdoc-vitepress/',//配置打包获取静态资源路径
   outDir: '../dist',
@@ -24,8 +24,6 @@ export default  {
   themeConfig: {
     outline: 'deep',//侧边栏深度:数字或者deep
     outlineTitle: '文章目录',
-    //TODO
-    // outlineBadges: true,  //侧边栏是否显示标签
     logo:'/logo.svg',
     lastUpdatedText: '上次更新',
     returnToTopLabel: '返回顶部',
@@ -39,13 +37,9 @@ export default  {
       prev: '上一页',
       next: '下一页'
     },
-    nav: getNavs(),
-    editLink: {
-      pattern: "https://github.com/fxzer/tsdoc-vitepress/edit/main/docs/:path",
-    },
-    sidebar,
-    async buildEnd() {
-      await sitemap({ hostname: 'https://fxzer.github.io/tsdoc-vitepress' });
-    }
+  },
+  locales: {
+    zh: { label: '简体中文', lang: 'zh-CN', link: '/zh/', ...zhConfig },
+    root: { label: 'English', lang: 'en-US', link: '/en/', ...enConfig },
   },
 } 

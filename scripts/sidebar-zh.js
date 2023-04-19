@@ -1,5 +1,6 @@
 /********   读取 tsdoc/docs/ 下的所有文件夹，自动生成侧边栏sidebar.ts文件   ***********/
 const { isArticleDir, splitPath, generateTopDir } = require('./utils')
+const enTozh = require('./enTozh')
 const fs = require('fs')
 const path = require('path')
 
@@ -19,8 +20,9 @@ const collapsedList = ['options', 'handbook-v1']
 let sidebar = sidebarlist.reduce((pre, cur) => Object.assign(pre, cur), {})
 Object.entries(sidebar).forEach(([key, items]) => {
   let keyArr = splitPath(key)
-  let text = keyArr[keyArr.length - 1]
-  const isCollapsed = collapsedList.includes(text)
+  let enText = keyArr[keyArr.length - 1]
+  const isCollapsed = collapsedList.includes(enText)
+  let text = enTozh[enText] || enText
   if (sidebarObj[`/zh/${keyArr[0]}/`]) {
     sidebarObj[`/zh/${keyArr[0]}/`].push({
       text,
@@ -87,7 +89,8 @@ function deepGenerateSidebar(arr) {
     //如果pathPice[pathPice.length-1]相同,则合并
     pathPice = pathPice.reduce((pre, cur) => {
       let dirStr = cur.slice(0, -1).join('/') // /problem/vueproject/
-      let text = cur[cur.length - 1].replace(/\.md$/, '')
+      let enText = cur[cur.length - 1].replace(/\.md$/, '')
+      let text = enTozh[enText] || enText
       let link = '/zh/' + cur.join('/').replace(/\.md$/, '')
       pre[dirStr] = pre[dirStr] ? [...pre[dirStr], { text, link }] : [{ text, link }]
       return pre

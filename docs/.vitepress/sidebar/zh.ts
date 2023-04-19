@@ -1,75 +1,75 @@
 export default {
   "/zh/declaration-files/": [
     {
-      "text": "declaration-files",
+      "text": "声明文件",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "By Example",
+          "text": "通过例子",
           "link": "/zh/declaration-files/By Example"
         },
         {
-          "text": "Consumption",
+          "text": "使用",
           "link": "/zh/declaration-files/Consumption"
         },
         {
-          "text": "Deep Dive",
+          "text": "深入探讨",
           "link": "/zh/declaration-files/Deep Dive"
         },
         {
-          "text": "Dos and Donts",
+          "text": "Do's 和 Don'ts",
           "link": "/zh/declaration-files/Dos and Donts"
         },
         {
-          "text": "Introduction",
+          "text": "介绍",
           "link": "/zh/declaration-files/Introduction"
         },
         {
-          "text": "Library Structures",
+          "text": "库结构",
           "link": "/zh/declaration-files/Library Structures"
         },
         {
-          "text": "Publishing",
+          "text": "发布",
           "link": "/zh/declaration-files/Publishing"
         },
         {
-          "text": "Templates",
+          "text": "模板",
           "link": "/zh/declaration-files/Templates"
         }
       ]
     },
     {
-      "text": "templates",
+      "text": "模板",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "global-modifying-module",
+          "text": "全局修改模块",
           "link": "/zh/declaration-files/templates/global-modifying-module"
         },
         {
-          "text": "global-plugin",
+          "text": "全局插件",
           "link": "/zh/declaration-files/templates/global-plugin"
         },
         {
-          "text": "global",
+          "text": "全局",
           "link": "/zh/declaration-files/templates/global"
         },
         {
-          "text": "module-class",
+          "text": "模块类",
           "link": "/zh/declaration-files/templates/module-class"
         },
         {
-          "text": "module-function",
+          "text": "模块函数",
           "link": "/zh/declaration-files/templates/module-function"
         },
         {
-          "text": "module-plugin",
+          "text": "模块插件",
           "link": "/zh/declaration-files/templates/module-plugin"
         },
         {
-          "text": "module",
+          "text": "模块",
           "link": "/zh/declaration-files/templates/module"
         }
       ]
@@ -77,118 +77,118 @@ export default {
   ],
   "/zh/handbooks/": [
     {
-      "text": "handbook-v1",
+      "text": "手册 v1",
       "collapsible": true,
       "collapsed": true,
       "items": [
         {
-          "text": "Classes",
+          "text": "类",
           "link": "/zh/handbooks/handbook-v1/Classes"
         },
         {
-          "text": "Functions",
+          "text": "函数",
           "link": "/zh/handbooks/handbook-v1/Functions"
         },
         {
-          "text": "Generics",
+          "text": "泛型",
           "link": "/zh/handbooks/handbook-v1/Generics"
         },
         {
-          "text": "Interfaces",
+          "text": "接口",
           "link": "/zh/handbooks/handbook-v1/Interfaces"
         },
         {
-          "text": "Literal Types",
+          "text": "字面量类型",
           "link": "/zh/handbooks/handbook-v1/Literal Types"
         },
         {
-          "text": "Unions and Intersections",
+          "text": "联合类型和交叉类型",
           "link": "/zh/handbooks/handbook-v1/Unions and Intersections"
         }
       ]
     },
     {
-      "text": "handbook-v2",
+      "text": "手册 v2",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "Basics",
+          "text": "基础",
           "link": "/zh/handbooks/handbook-v2/Basics"
         },
         {
-          "text": "Classes",
+          "text": "类",
           "link": "/zh/handbooks/handbook-v2/Classes"
         },
         {
-          "text": "Everyday Types",
+          "text": "常见类型",
           "link": "/zh/handbooks/handbook-v2/Everyday Types"
         },
         {
-          "text": "Modules",
+          "text": "模块",
           "link": "/zh/handbooks/handbook-v2/Modules"
         },
         {
-          "text": "More on Functions",
+          "text": "函数进阶",
           "link": "/zh/handbooks/handbook-v2/More on Functions"
         },
         {
-          "text": "Narrowing",
+          "text": "类型缩小",
           "link": "/zh/handbooks/handbook-v2/Narrowing"
         },
         {
-          "text": "Object Types",
+          "text": "对象类型",
           "link": "/zh/handbooks/handbook-v2/Object Types"
         },
         {
-          "text": "The Handbook",
+          "text": "手册",
           "link": "/zh/handbooks/handbook-v2/The Handbook"
         },
         {
-          "text": "Type Declarations",
+          "text": "类型声明",
           "link": "/zh/handbooks/handbook-v2/Type Declarations"
         },
         {
-          "text": "Understanding Errors",
+          "text": "了解错误",
           "link": "/zh/handbooks/handbook-v2/Understanding Errors"
         }
       ]
     },
     {
-      "text": "Type Manipulation",
+      "text": "类型操作",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "Conditional Types",
+          "text": "条件类型",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Conditional Types"
         },
         {
-          "text": "Generics",
+          "text": "泛型",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Generics"
         },
         {
-          "text": "Indexed Access Types",
+          "text": "索引访问类型",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Indexed Access Types"
         },
         {
-          "text": "Keyof Type Operator",
+          "text": "Keyof 类型运算符",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Keyof Type Operator"
         },
         {
-          "text": "Mapped Types",
+          "text": "映射类型",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Mapped Types"
         },
         {
-          "text": "Template Literal Types",
+          "text": "模板字面量类型",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Template Literal Types"
         },
         {
-          "text": "Typeof Type Operator",
+          "text": "Typeof 类型运算符",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Typeof Type Operator"
         },
         {
-          "text": "_Creating Types from Types",
+          "text": "从类型创建类型",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/_Creating Types from Types"
         }
       ]
@@ -196,32 +196,32 @@ export default {
   ],
   "/zh/reference/": [
     {
-      "text": "reference",
+      "text": "参考文献",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "Advanced Types",
+          "text": "高级类型",
           "link": "/zh/reference/Advanced Types"
         },
         {
-          "text": "Declaration Merging",
+          "text": "声明合并",
           "link": "/zh/reference/Declaration Merging"
         },
         {
-          "text": "Decorators",
+          "text": "装饰器",
           "link": "/zh/reference/Decorators"
         },
         {
-          "text": "ESM Support for Node",
+          "text": "Node 的 ESM 支持",
           "link": "/zh/reference/ESM Support for Node"
         },
         {
-          "text": "Enums",
+          "text": "枚举",
           "link": "/zh/reference/Enums"
         },
         {
-          "text": "Iterators and Generators",
+          "text": "迭代器和生成器",
           "link": "/zh/reference/Iterators and Generators"
         },
         {
@@ -229,47 +229,47 @@ export default {
           "link": "/zh/reference/JSX"
         },
         {
-          "text": "Mixins",
+          "text": "混合",
           "link": "/zh/reference/Mixins"
         },
         {
-          "text": "Module Resolution",
+          "text": "模块解析",
           "link": "/zh/reference/Module Resolution"
         },
         {
-          "text": "Modules",
+          "text": "模块",
           "link": "/zh/reference/Modules"
         },
         {
-          "text": "Namespaces and Modules",
+          "text": "命名空间和模块",
           "link": "/zh/reference/Namespaces and Modules"
         },
         {
-          "text": "Namespaces",
+          "text": "命名空间",
           "link": "/zh/reference/Namespaces"
         },
         {
-          "text": "Symbols",
+          "text": "符号",
           "link": "/zh/reference/Symbols"
         },
         {
-          "text": "Triple-Slash Directives",
+          "text": "三斜线指令",
           "link": "/zh/reference/Triple-Slash Directives"
         },
         {
-          "text": "Type Compatibility",
+          "text": "类型兼容性",
           "link": "/zh/reference/Type Compatibility"
         },
         {
-          "text": "Type Inference",
+          "text": "类型推断",
           "link": "/zh/reference/Type Inference"
         },
         {
-          "text": "Utility Types",
+          "text": "实用类型",
           "link": "/zh/reference/Utility Types"
         },
         {
-          "text": "Variable Declarations",
+          "text": "变量声明",
           "link": "/zh/reference/Variable Declarations"
         }
       ]
@@ -277,7 +277,7 @@ export default {
   ],
   "/zh/release-notes/": [
     {
-      "text": "release-notes",
+      "text": "发布版本",
       "collapsible": true,
       "collapsed": false,
       "items": [
@@ -438,7 +438,7 @@ export default {
   ],
   "/zh/tsconfig-reference/": [
     {
-      "text": "options",
+      "text": "选项",
       "collapsible": true,
       "collapsed": true,
       "items": [
@@ -567,7 +567,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/exactOptionalPropertyTypes"
         },
         {
-          "text": "exclude",
+          "text": "排除",
           "link": "/zh/tsconfig-reference/options/exclude"
         },
         {
@@ -623,7 +623,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/importsNotUsedAsValues"
         },
         {
-          "text": "include",
+          "text": "包含",
           "link": "/zh/tsconfig-reference/options/include"
         },
         {
@@ -687,7 +687,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/maxNodeModuleJsDepth"
         },
         {
-          "text": "module",
+          "text": "模块",
           "link": "/zh/tsconfig-reference/options/module"
         },
         {
@@ -911,7 +911,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/tsBuildInfoFile"
         },
         {
-          "text": "typeAcquisition",
+          "text": "类型获取",
           "link": "/zh/tsconfig-reference/options/typeAcquisition"
         },
         {
@@ -949,43 +949,43 @@ export default {
       ]
     },
     {
-      "text": "typeAcquisition",
+      "text": "类型获取",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "exclude",
+          "text": "排除",
           "link": "/zh/tsconfig-reference/options/typeAcquisition/exclude"
         },
         {
-          "text": "include",
+          "text": "包含",
           "link": "/zh/tsconfig-reference/options/typeAcquisition/include"
         }
       ]
     },
     {
-      "text": "project-config",
+      "text": "项目配置",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "Compiler Options in MSBuild",
+          "text": "MSBuild 中的编译器选项",
           "link": "/zh/tsconfig-reference/project-config/Compiler Options in MSBuild"
         },
         {
-          "text": "Compiler Options",
+          "text": "编译器选项",
           "link": "/zh/tsconfig-reference/project-config/Compiler Options"
         },
         {
-          "text": "Configuring Watch",
+          "text": "配置监视",
           "link": "/zh/tsconfig-reference/project-config/Configuring Watch"
         },
         {
-          "text": "Integrating with Build Tools",
+          "text": "与构建工具集成",
           "link": "/zh/tsconfig-reference/project-config/Integrating with Build Tools"
         },
         {
-          "text": "Project References",
+          "text": "项目引用",
           "link": "/zh/tsconfig-reference/project-config/Project References"
         },
         {
@@ -995,28 +995,28 @@ export default {
       ]
     },
     {
-      "text": "sections",
+      "text": "章节列表",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "Top Level",
+          "text": "顶层",
           "link": "/zh/tsconfig-reference/sections/Top Level"
         },
         {
-          "text": "buildOptions",
+          "text": "构建选项",
           "link": "/zh/tsconfig-reference/sections/buildOptions"
         },
         {
-          "text": "compilerOptions",
+          "text": "编译器选项",
           "link": "/zh/tsconfig-reference/sections/compilerOptions"
         },
         {
-          "text": "typeAcquisition",
+          "text": "类型获取",
           "link": "/zh/tsconfig-reference/sections/typeAcquisition"
         },
         {
-          "text": "watchOptions",
+          "text": "监视选项",
           "link": "/zh/tsconfig-reference/sections/watchOptions"
         }
       ]
@@ -1024,7 +1024,7 @@ export default {
   ],
   "/zh/tutorials/": [
     {
-      "text": "tutorials",
+      "text": "辅助教程",
       "collapsible": true,
       "collapsed": false,
       "items": [
@@ -1037,11 +1037,11 @@ export default {
           "link": "/zh/tutorials/Angular"
         },
         {
-          "text": "Babel with TypeScript",
+          "text": "Babel 和 TypeScript",
           "link": "/zh/tutorials/Babel with TypeScript"
         },
         {
-          "text": "DOM Manipulation",
+          "text": "DOM 操作",
           "link": "/zh/tutorials/DOM Manipulation"
         },
         {
@@ -1049,7 +1049,7 @@ export default {
           "link": "/zh/tutorials/Gulp"
         },
         {
-          "text": "Migrating from JavaScript",
+          "text": "从 JavaScript 迁移",
           "link": "/zh/tutorials/Migrating from JavaScript"
         },
         {
@@ -1057,53 +1057,53 @@ export default {
           "link": "/zh/tutorials/React"
         },
         {
-          "text": "TypeScript Tooling in 5 minutes",
+          "text": "5分钟快速入门 TypeScript 工具链",
           "link": "/zh/tutorials/TypeScript Tooling in 5 minutes"
         }
       ]
     },
     {
-      "text": "get-started",
+      "text": "快速入门",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "TS for Functional Programmers",
+          "text": "面向函数编程者的 TypeScript",
           "link": "/zh/tutorials/get-started/TS for Functional Programmers"
         },
         {
-          "text": "TS for JS Programmers",
+          "text": "面向 JavaScript 程序员的 TypeScript",
           "link": "/zh/tutorials/get-started/TS for JS Programmers"
         },
         {
-          "text": "TS for OOPers",
+          "text": "面向面向对象编程者的 TypeScript",
           "link": "/zh/tutorials/get-started/TS for OOPers"
         },
         {
-          "text": "TS for the New Programmer",
+          "text": "新手学 TypeScript",
           "link": "/zh/tutorials/get-started/TS for the New Programmer"
         }
       ]
     },
     {
-      "text": "javascript",
+      "text": "JavaScript",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "Creating DTS files From JS",
+          "text": "从 JS 文件创建 DTS 文件",
           "link": "/zh/tutorials/javascript/Creating DTS files From JS"
         },
         {
-          "text": "Intro to JS with TS",
+          "text": "使用 TypeScript 介绍 JavaScript",
           "link": "/zh/tutorials/javascript/Intro to JS with TS"
         },
         {
-          "text": "JSDoc Reference",
+          "text": "JSDoc 参考",
           "link": "/zh/tutorials/javascript/JSDoc Reference"
         },
         {
-          "text": "Type Checking JavaScript Files",
+          "text": "JavaScript 文件类型检查",
           "link": "/zh/tutorials/javascript/Type Checking JavaScript Files"
         }
       ]

@@ -2,14 +2,21 @@
 
 set -e
 
-node ./scripts/getSidebar.js
+rm -rf dist
+
+pnpm run build
+
+cd dist
+
+git init
 
 git add .
 
-git commit -m '📖 更新文章'
+git commit -m 'feat: update dist'
 
-git push 
+git push -f git@github.com:fxzer/tsdoc-vitepress.git master:gh-pages
+git push -f git@gitee.com:fxzer/tsdoc-vitepress.git master:gh-pages
 
-# vercel --prod
+vercel --prod
 
 cd -

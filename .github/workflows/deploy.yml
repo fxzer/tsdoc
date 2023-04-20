@@ -21,15 +21,11 @@ jobs:
         uses: actions/setup-node@main
         with:
           node-version: "lts/*"
-      - name: Setup Pnpm 🎬
-        uses: pnpm/action-setup@v2 #安装pnpm包管理器
-        with:
-          version: 8.2.0
-      - name: Run Build 🔧
+        
+      - name: Build 🔧
         run: |
-          pnpm i
-          pnpm build
-
+          yarn
+          yarn run build
       - name: 📲 Push To GitHub Pages
         uses: ftnext/action-push-ghpages@v1.0.0
         with:
@@ -39,8 +35,7 @@ jobs:
       - name: Deploy 🚀 #把打包后的dist文件部署到master分支
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          token: ${{ secrets.DEPLOY_TOKEN }}  
+          token: ${{ secrets.DEPLOY_TOKEN }} #在本项目-->设置-->secrets添加 TSDOC_DEPLOY_TOKEN 变量 值为生成的秘钥
           branch: gh-pages
           folder: dist
-
-
+          

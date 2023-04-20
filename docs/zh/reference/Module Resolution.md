@@ -244,7 +244,7 @@ Consider a project configuration where only some modules are available in one lo
 A build step would put them all together in one place.
 The project layout may look like:
 
-```tree
+```
 projectRoot
 ├── folder1
 │   ├── file1.ts (imports 'folder1/file2' and 'folder2/file3')
@@ -303,7 +303,7 @@ and thus the compiler can resolve relative modules imports within these "virtual
 
 For example consider this project structure:
 
-```tree
+```
  src
  └── views
      └── view1.ts (imports './template1')
@@ -365,7 +365,7 @@ Enabling the compiler module resolution tracing using [`traceResolution`](/tscon
 Let's say we have a sample application that uses the `typescript` module.
 `app.ts` has an import like `import * as ts from "typescript"`.
 
-```tree
+```
 │   tsconfig.json
 ├───node_modules
 │   └───typescript

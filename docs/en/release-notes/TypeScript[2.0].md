@@ -574,7 +574,7 @@ and thus the compiler can resolve relative modules imports within these "virtual
 
 Given this project structure:
 
-```tree
+```
  src
  └── views
      └── view1.ts (imports './template1')

@@ -4,17 +4,23 @@ import sidebar from '../sidebar/en'
 export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
   themeConfig: {
+      outlineTitle: 'Table of Contents',
+      logo:'/logo.svg',
+      lastUpdatedText: 'Last Updated',
+      returnToTopLabel: 'Back to top',
+      sidebarMenuLabel: 'Menu',
+      darkModeSwitchLabel: 'Theme Switch',
+  
     editLink: {
       pattern: 'https://github.com/fxzer/tsdoc-vitepress/edit/main/docs/:path',
-      text: '对本页提出修改建议',
+      text: 'Suggest changes to this page',
     },
     outline: {
-      label: '本页内容',
+      label: 'On this page',
     },
-
     docFooter: {
-      prev: '上一页',
-      next: '下一页',
+      prev: 'Prev Page',
+      next: 'Next Page',
     },
 
     nav: getNavs(),

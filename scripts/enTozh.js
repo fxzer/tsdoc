@@ -2,7 +2,7 @@ module.exports = {
   "By Example": "通过例子",
   "Consumption": "使用",
   "Deep Dive": "深入探讨",
-  "Dos and Donts": "Do's 和 Don'ts",
+  "Dos and Donts": "该做和不该做",
   "Introduction": "介绍",
   "Library Structures": "库结构",
   "Publishing": "发布",

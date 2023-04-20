@@ -18,7 +18,7 @@ export default {
           "link": "/zh/declaration-files/Deep Dive"
         },
         {
-          "text": "Do's 和 Don'ts",
+          "text": "该做和不该做",
           "link": "/zh/declaration-files/Dos and Donts"
         },
         {

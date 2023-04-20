@@ -12,9 +12,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest #部署运行环境搭建
     steps:
-      - uses: pnpm/action-setup@v2 #安装pnpm包管理器
-        with:
-          version: 8.2.0
       - name: Checkout 🛎️
         uses: actions/checkout@main
         with:
@@ -24,11 +21,14 @@ jobs:
         uses: actions/setup-node@main
         with:
           node-version: "lts/*"
-      - name: Build 🔧
+      - name: Setup Pnpm 🎬
+        uses: pnpm/action-setup@v2 #安装pnpm包管理器
+        with:
+          version: 8.2.0
+      - name: Run Build 🔧
         run: |
           pnpm i
           pnpm build
-          ls -lrth
 
       - name: 📲 Push To GitHub Pages
         uses: ftnext/action-push-ghpages@v1.0.0
@@ -39,19 +39,8 @@ jobs:
       - name: Deploy 🚀 #把打包后的dist文件部署到master分支
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          token: ${{ secrets.DEPLOY_TOKEN }} #在本项目-->设置-->secrets添加 TSDOC_DEPLOY_TOKEN 变量 值为生成的秘钥
+          token: ${{ secrets.DEPLOY_TOKEN }}  
           branch: gh-pages
           folder: dist
-          
-      - name: ✅ Build Gitee Pages #触发Gitee自动部署
-        uses: okou19900722/gitee-pages@v1
-        with:
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.GITEE_PASSWORD }}
-          repository: https://gitee.com/fxzer/tsdoc-vitepress.git
-          branch: gh-pages
-          directory: dist
-          #是否开启https
-          https: false
 
 

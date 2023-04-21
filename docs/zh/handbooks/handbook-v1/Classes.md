@@ -7,9 +7,7 @@ handbook: "true"
 deprecated_by: /docs/handbook/2/classes.html
 ---
 
-Traditional JavaScript uses functions and prototype-based inheritance to build up reusable components, but this may feel a bit awkward to programmers more comfortable with an object-oriented approach, where classes inherit functionality and objects are built from these classes.
-Starting with ECMAScript 2015, also known as ECMAScript 6, JavaScript programmers can build their applications using this object-oriented class-based approach.
-In TypeScript, we allow developers to use these techniques now, and compile them down to JavaScript that works across all major browsers and platforms, without having to wait for the next version of JavaScript.
+传统的JavaScript使用函数和基于原型的继承来构建可重用的组件，但对于更习惯于面向对象的方法的程序员来说，这可能会有点尴尬，在面向对象的方法中，类继承功能，对象是从这些类构建的。从 ECMAScript 2015（也称为 ECMAScript 6）开始，JavaScript 程序员可以使用这种面向对象的基于类的方法构建他们的应用程序。在 TypeScript 中，我们允许开发人员现在使用这些技术，并将它们编译成适用于所有主要浏览器和平台的 JavaScript，而无需等待下一个版本的 JavaScript。
 
 ## Classes
 

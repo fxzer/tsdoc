@@ -5,7 +5,7 @@ export const META_IMAGE = 'https://pinia.vuejs.org/social.png'
 
 export const sharedConfig = defineConfig({
   //根据环境变量决定打包路径
-  base:'/tsdoc-vitepress/',
+  base:'/',
   outDir: '../dist',
   cleanUrls: true,  //去掉url中的.html后缀
   title: "TSDoc",//网站标题

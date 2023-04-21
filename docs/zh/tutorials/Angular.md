@@ -6,9 +6,8 @@ oneline: Using Angular with TypeScript
 deprecated: true
 ---
 
-Angular is a modern framework built entirely in TypeScript, and as a result, using TypeScript with Angular provides a seamless experience.
+Angular 是一个完全用 TypeScript 构建的现代框架，因此，将 TypeScript 与 Angular 结合使用可提供无缝体验。
 
-The Angular documentation not only supports TypeScript as a first-class citizen, but uses it as its primary language.
-With this in mind, [Angular's site](https://angular.io) will always be the most up-to-date reference for using Angular with TypeScript.
+Angular 文档不仅支持 TypeScript 作为一等公民，而且将其用作主要语言。考虑到这一点，, [Angular 的站点](https://angular.io) 将始终是将 Angular 与 TypeScript 结合使用的最新参考。.
 
-Check out the [quick start guide here](https://angular.io/docs/ts/latest/quickstart.html) to start learning Angular now!
+查看 [此处的快速入门指南](https://angular.io/docs/ts/latest/quickstart.html)， 立即开始学习 Angular！

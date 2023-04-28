@@ -4,7 +4,7 @@ export default function getNavs() {
     { text: "HandBooks", link: "/en/handbooks/handbook-v2/Basics", },
     { text: "DeclarationFiles", link: "/en/declaration-files/By Example", },
     { text: "Reference", link: "/en/reference/Advanced Types" },
-    { text: "TSConfig", link: "/en/tsconfig-reference/" },
+    { text: "TSConfig", link: "/en/tsconfig-reference/options/typeAcquisition/include" },
     { text: "ReleaseNotes", link: "/en/release-notes/TypeScript[5.0]" },
     {
       text: "PlayGround",

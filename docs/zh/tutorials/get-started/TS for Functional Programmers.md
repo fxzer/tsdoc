@@ -513,7 +513,8 @@ function g() { }
 后一种风格更常见，但两者都是允许的，即使在同一个
 文件。
 
-## `readonly` and `const`
+## 只读与常量
+>`readonly` and `const`
 
 在 JavaScript 中，可变性是默认设置，尽管它允许变量
 使用 `const` 声明 _reference_ 是
@@ -554,7 +555,7 @@ a.push(102); // error
 b[0] = 101; // error
 ```
 
-您还可以使用 const 断言，它对数组进行操作，
+您还可以使用 `const` 断言，它对数组进行操作，
 对象文字：
 ```ts
 let a = [1, 2, 3] as const;
@@ -565,7 +566,7 @@ a[0] = 101; // error
 但是，这些选项都不是默认选项，因此它们不是
 在 TypeScript 代码中一致使用。
 
-## Next Steps
+## 下一步
 本文档是对您在日常代码中使用的语法和类型的高级概述。 从这里你应该：
 
 -  <a href="/handbooks/handbook-v2/Basics">阅读完整手册</a>

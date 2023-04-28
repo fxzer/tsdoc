@@ -225,13 +225,13 @@ TypeScript 2.1 允许这些辅助库作为单独的模块一次性添加到项�
 
 首先，安装`tslib`：
 
-```text
+```
 npm install tslib
 ```
 
 然后，使用`--importHelpers`编译你的文件：
 
-```text
+```
 tsc --module commonjs --importHelpers a.ts
 ```
 

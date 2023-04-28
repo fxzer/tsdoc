@@ -1,10 +1,3 @@
----
-title: Type Compatibility
-layout: docs
-permalink: /docs/handbook/type-compatibility.html
-oneline: How type-checking works in TypeScript
-translatable: true
----
 
 Type compatibility in TypeScript is based on structural subtyping.
 Structural typing is a way of relating types based solely on their members.

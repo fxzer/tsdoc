@@ -1,9 +1,3 @@
----
-title: Publishing
-layout: docs
-permalink: /docs/handbook/declaration-files/publishing.html
-oneline: How to get your d.ts files to users
----
 
 Now that you have authored a declaration file following the steps of this guide, it is time to publish it to npm.
 There are two main ways you can publish your declaration files to npm:

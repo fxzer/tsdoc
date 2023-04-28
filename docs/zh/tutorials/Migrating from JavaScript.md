@@ -10,14 +10,14 @@
 
 让我们新建一个目录。 将会命名为`proj`，但是你可以改成任何你喜欢的名字。
 
-```text
+```
 mkdir proj
 cd proj
 ```
 
 我们会像下面的结构组织我们的工程：
 
-```text
+```
 proj/
 ├─ dist/
 └─ src/
@@ -28,7 +28,7 @@ TypeScript文件会放在`src`文件夹里，通过TypeScript编译器编译，�
 
 下面来创建基本结构：
 
-```text
+```
 mkdir src
 cd src
 mkdir components
@@ -41,7 +41,7 @@ Webpack会帮助我们生成`dist`目录。
 
 现在把这个目录变成npm包。
 
-```text
+```
 npm init -y
 ```
 
@@ -51,7 +51,7 @@ npm init -y
 
 首先确保已经全局安装了Webpack。
 
-```text
+```
 npm install --save-dev webpack webpack-cli
 ```
 
@@ -59,7 +59,7 @@ Webpack这个工具可以将你的所有代码和可选择地将依赖捆绑成�
 
 现在我们添加React和React-DOM以及它们的声明文件到`package.json`文件里做为依赖：
 
-```text
+```
 npm install --save react react-dom
 npm install --save-dev @types/react @types/react-dom
 ```
@@ -68,7 +68,7 @@ npm install --save-dev @types/react @types/react-dom
 
 接下来，我们要添加开发时依赖[ts-loader](https://www.npmjs.com/package/ts-loader)和[source-map-loader](https://www.npmjs.com/package/source-map-loader)。
 
-```text
+```
 npm install --save-dev typescript ts-loader source-map-loader
 ```
 
@@ -147,7 +147,7 @@ ReactDOM.render(
 
 我们还需要一个页面来显示`Hello`组件。 在根目录`proj`创建一个名为`index.html`的文件，如下：
 
-```markup
+```
 <!DOCTYPE html>
 <html>
     <head>
@@ -226,7 +226,7 @@ module.exports = {
 
 执行：
 
-```text
+```
 npx webpack
 ```
 

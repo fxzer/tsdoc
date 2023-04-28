@@ -318,7 +318,7 @@ export let t = something + 1;
 
 为了编译，我们必需要在命令行上指定一个模块目标。对于Node.js来说，使用`--module commonjs`； 对于Require.js来说，使用`--module amd`。比如：
 
-```text
+```
 tsc --module commonjs Test.ts
 ```
 

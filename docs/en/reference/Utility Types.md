@@ -1,10 +1,3 @@
----
-title: Utility Types
-layout: docs
-permalink: /docs/handbook/utility-types.html
-oneline: Types which are globally included in TypeScript
-translatable: true
----
 
 TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
 

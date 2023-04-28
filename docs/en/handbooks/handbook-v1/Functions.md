@@ -1,11 +1,3 @@
----
-title: Functions
-layout: docs
-permalink: /docs/handbook/functions.html
-oneline: How to add types to a function
-handbook: "true"
-deprecated_by: /docs/handbook/2/functions.html
----
 
 Functions are the fundamental building block of any application in JavaScript.
 They're how you build up layers of abstraction, mimicking classes, information hiding, and modules.

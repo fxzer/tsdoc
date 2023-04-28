@@ -8,14 +8,14 @@
 
 我们首先创建一个新目录。 命名为`proj`，也可以使用任何你喜欢的名字。
 
-```text
+```
 mkdir proj
 cd proj
 ```
 
 我们将以下面的结构开始我们的工程：
 
-```text
+```
 proj/
    ├─ src/
    └─ dist/
@@ -25,7 +25,7 @@ TypeScript文件放在`src`文件夹下，经过TypeScript编译器编译生成�
 
 下面让我们来创建这些文件夹：
 
-```text
+```
 mkdir src
 mkdir dist
 ```
@@ -34,7 +34,7 @@ mkdir dist
 
 现在让我们把这个文件夹转换成npm包：
 
-```text
+```
 npm init
 ```
 
@@ -44,13 +44,13 @@ npm init
 
 现在我们可以使用`npm install`命令来安装包。 首先全局安装`gulp-cli`（如果你使用Unix系统，你可能需要在`npm install`命令上使用`sudo`）。
 
-```text
+```
 npm install -g gulp-cli
 ```
 
 然后安装`typescript`，`gulp`和`gulp-typescript`到开发依赖项。 [Gulp-typescript](https://www.npmjs.com/package/gulp-typescript)是TypeScript的一个Gulp插件。
 
-```text
+```
 npm install --save-dev typescript gulp@4.0.0 gulp-typescript
 ```
 
@@ -97,7 +97,7 @@ gulp.task('default', function () {
 
 ### 测试这个应用
 
-```text
+```
 gulp
 node dist/main.js
 ```
@@ -141,7 +141,7 @@ console.log(sayHello('TypeScript'));
 
 确保执行`gulp`后模块是能工作的，在Node.js下进行测试：
 
-```text
+```
 gulp
 node dist/main.js
 ```
@@ -154,7 +154,7 @@ node dist/main.js
 
 首先，安装Browserify，[tsify](https://www.npmjs.com/package/tsify)和vinyl-source-stream。 tsify是Browserify的一个插件，就像gulp-typescript一样，它能够访问TypeScript编译器。 vinyl-source-stream会将Browserify的输出文件适配成gulp能够解析的格式，它叫做[vinyl](https://github.com/gulpjs/vinyl)。
 
-```text
+```
 npm install --save-dev browserify tsify vinyl-source-stream
 ```
 
@@ -162,7 +162,7 @@ npm install --save-dev browserify tsify vinyl-source-stream
 
 在`src`目录下新建一个`index.html`文件：
 
-```markup
+```
 <!DOCTYPE html>
 <html>
     <head>
@@ -240,7 +240,7 @@ gulp.task('default', gulp.series(gulp.parallel('copy-html'), function () {
 
 我们启动Watchify，让它在后台帮我们编译：
 
-```text
+```
 npm install --save-dev watchify fancy-log
 ```
 
@@ -293,7 +293,7 @@ watchedBrowserify.on('log', fancy_log);
 
 现在当你执行`gulp`，它会启动并保持运行状态。 试着改变`main.ts`文件里`showHello`的代码并保存。 你会看到这样的输出：
 
-```text
+```
 proj$ gulp
 [10:34:20] Using gulpfile ~/src/proj/gulpfile.js
 [10:34:20] Starting 'copy-html'...
@@ -309,7 +309,7 @@ proj$ gulp
 
 首先安装Uglify。 因为Uglify是用于混淆你的代码，所以我们还要安装vinyl-buffer和gulp-sourcemaps来支持sourcemaps。
 
-```text
+```
 npm install --save-dev gulp-uglify vinyl-buffer gulp-sourcemaps
 ```
 
@@ -353,7 +353,7 @@ gulp.task('default', gulp.series(gulp.parallel('copy-html'), function () {
 
 注意`uglify`只是调用了自己—`buffer`和`sourcemaps`的调用是用于确保sourcemaps可以工作。 这些调用让我们可以使用单独的sourcemap文件，而不是之前的内嵌的sourcemaps。 你现在可以执行`gulp`来检查`bundle.js`是否被压缩了：
 
-```text
+```
 gulp
 cat dist/bundle.js
 ```
@@ -362,7 +362,7 @@ cat dist/bundle.js
 
 首先安装Babelify和ES2015的Babel预置程序。 和Uglify一样，Babelify也会混淆代码，因此我们也需要vinyl-buffer和gulp-sourcemaps。 默认情况下Babelify只会处理扩展名为`.js`，`.es`，`.es6`和`.jsx`的文件，因此我们需要添加`.ts`扩展名到Babelify选项。
 
-```text
+```
 npm install --save-dev babelify@8 babel-core babel-preset-es2015 vinyl-buffer gulp-sourcemaps
 ```
 

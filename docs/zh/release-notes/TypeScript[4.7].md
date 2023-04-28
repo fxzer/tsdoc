@@ -704,7 +704,7 @@ export interface MergedType extends TypeFromRequire, TypeFromImport {}
 `import type` 和 `import()` 语法仅在 [Nightly 版本](https://www.typescriptlang.org/docs/handbook/nightly-builds.html)里支持 `resolution-mode`。
 你可能会看到如下的错误：
 
-```txt
+```
 Resolution mode assertions are unstable.
 Use nightly TypeScript to silence this error.
 Try updating with 'npm install -D typescript@next'.

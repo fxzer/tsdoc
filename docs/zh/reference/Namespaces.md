@@ -168,13 +168,13 @@ for (let s of strings) {
 
 第一种方式，把所有的输入文件编译为一个输出文件，需要使用`--outFile`标记：
 
-```text
+```
 tsc --outFile sample.js Test.ts
 ```
 
 编译器会根据源码里的引用标签自动地对输出进行排序。你也可以单独地指定每个文件。
 
-```text
+```
 tsc --outFile sample.js Validation.ts LettersOnlyValidator.ts ZipCodeValidator.ts Test.ts
 ```
 
@@ -182,7 +182,7 @@ tsc --outFile sample.js Validation.ts LettersOnlyValidator.ts ZipCodeValidator.t
 
 #### MyTestPage.html \(excerpt\)
 
-```markup
+```
     <script src="Validation.js" type="text/javascript" />
     <script src="LettersOnlyValidator.js" type="text/javascript" />
     <script src="ZipCodeValidator.js" type="text/javascript" />

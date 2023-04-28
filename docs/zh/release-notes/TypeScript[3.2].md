@@ -165,7 +165,7 @@ function unwrap<T>(result: Result<T>) {
 
 TypeScript 3.2现在可以从`node_modules`里解析`tsconfig.json`。如果`tsconfig.json`文件里的`"extends"`设置为空，那么TypeScript会检测`node_modules`包。 When using a bare path for the `"extends"` field in `tsconfig.json`, TypeScript will dive into `node_modules` packages for us.
 
-```text
+```
 {
     "extends": "@my-team/tsconfig-base",
     "include": ["./**/*"]

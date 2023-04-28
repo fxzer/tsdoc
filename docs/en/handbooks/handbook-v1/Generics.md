@@ -1,11 +1,3 @@
----
-title: Generics
-layout: docs
-permalink: /docs/handbook/generics.html
-oneline: Introduction to TypeScript and Generics
-handbook: "true"
-deprecated_by: /docs/handbook/2/generics.html
----
 
 A major part of software engineering is building components that not only have well-defined and consistent APIs, but are also reusable.
 Components that are capable of working on the data of today as well as the data of tomorrow will give you the most flexible capabilities for building up large software systems.

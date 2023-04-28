@@ -6,7 +6,7 @@ TypeScript 3.4 引入了一个名为 `--incremental` 的新标志，它告诉 Ty
 
 下次使用 `--incremental` 调用 TypeScript 时，它将使用该信息来检测类型检查和生成对项目更改成本最低的方法。
 
-```text
+```
 // tsconfig.json
 {
   "compilerOptions": {
@@ -21,7 +21,7 @@ TypeScript 3.4 引入了一个名为 `--incremental` 的新标志，它告诉 Ty
 
 这些 `.tsbuildinfo` 文件可以安全地删除，并且在运行时对我们的代码没有任何影响——它们纯粹用于更快地编译。 我们也可以将它们命名为我们想要的任何名字，并使用 `--tsBuildInfoFile` 标志将它们放在我们想要的任何位置。
 
-```text
+```
 // front-end.tsconfig.json
 {
   "compilerOptions": {

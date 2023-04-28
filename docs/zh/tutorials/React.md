@@ -15,7 +15,7 @@
 
 让我们首先创建一个叫做`my-app`的新工程：
 
-```text
+```
 npx create-react-app my-app --template typescript
 ```
 
@@ -23,7 +23,7 @@ npx create-react-app my-app --template typescript
 
 此时的工程结构应如下所示：
 
-```text
+```
 my-app/
 ├─ .gitignore
 ├─ node_modules/

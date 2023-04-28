@@ -10,7 +10,7 @@
 
 **命令行**:
 
-```text
+```
 tsc --target ES5 --experimentalDecorators
 ```
 
@@ -106,7 +106,7 @@ class C {
 
 在控制台里会打印出如下结果：
 
-```text
+```
 f(): evaluated
 g(): evaluated
 g(): called
@@ -392,7 +392,7 @@ function validate(target: any, propertyName: string, descriptor: TypedPropertyDe
 
 你可以通过npm安装这个库：
 
-```text
+```
 npm i reflect-metadata --save
 ```
 
@@ -400,7 +400,7 @@ TypeScript支持为带有装饰器的声明生成元数据。 你需要在命令
 
 **Command Line**:
 
-```text
+```
 tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
 ```
 

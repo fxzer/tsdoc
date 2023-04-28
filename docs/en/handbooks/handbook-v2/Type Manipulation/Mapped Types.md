@@ -1,9 +1,3 @@
----
-title: Mapped Types
-layout: docs
-permalink: /docs/handbook/2/mapped-types.html
-oneline: "Generating types by re-using an existing type."
----
 
 When you don't want to repeat yourself, sometimes a type needs to be based on another type.
 

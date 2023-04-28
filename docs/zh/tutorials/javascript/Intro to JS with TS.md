@@ -1,10 +1,3 @@
----
-title: JS Projects Utilizing TypeScript
-layout: docs
-permalink: /docs/handbook/intro-to-js-ts.html
-oneline: How to add type checking to JavaScript files using TypeScript
-translatable: true
----
 
 The type system in TypeScript has different levels of strictness when working with a codebase:
 

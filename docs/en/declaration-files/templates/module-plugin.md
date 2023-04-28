@@ -1,8 +1,3 @@
----
-title: "Module: Plugin"
-layout: docs
-permalink: /docs/handbook/declaration-files/templates/module-plugin-d-ts.html
----
 # module-plugin.d.ts
 For example, when you want to work with JavaScript code which extends another library.
 

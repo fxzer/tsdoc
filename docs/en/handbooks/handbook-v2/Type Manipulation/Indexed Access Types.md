@@ -1,9 +1,3 @@
----
-title: Indexed Access Types
-layout: docs
-permalink: /docs/handbook/2/indexed-access-types.html
-oneline: "Using Type['a'] syntax to access a subset of a type."
----
 
 We can use an _indexed access type_ to look up a specific property on another type:
 

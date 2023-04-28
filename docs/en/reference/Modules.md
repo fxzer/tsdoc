@@ -1,10 +1,3 @@
----
-title: Modules
-layout: docs
-permalink: /docs/handbook/modules.html
-oneline: How modules work in TypeScript
-translatable: true
----
 
 Starting with ECMAScript 2015, JavaScript has a concept of modules. TypeScript shares this concept.
 

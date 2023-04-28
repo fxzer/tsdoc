@@ -1,8 +1,3 @@
----
-title: "Module: Class"
-layout: docs
-permalink: /docs/handbook/declaration-files/templates/module-class-d-ts.html
----
 # module-class.d.ts
 <!--
 TODO:

@@ -35,7 +35,7 @@ As you can probably guess, if we try to run `message.toLowerCase()`, we'll get t
 What about that second line of code?
 If you're familiar with JavaScript, you'll know this fails with an exception:
 
-```txt
+```
 TypeError: message is not a function
 ```
 
@@ -250,7 +250,7 @@ greet("Brendan");
 
 If we run `tsc hello.ts` again, notice that we get an error on the command line!
 
-```txt
+```
 Expected 2 arguments, but got 1.
 ```
 

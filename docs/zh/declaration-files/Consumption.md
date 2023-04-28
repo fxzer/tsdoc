@@ -6,7 +6,7 @@
 
 比如，想要获取 lodash 库的声明文件，只需使用下面的命令：
 
-```text
+```
 npm install --save @types/lodash
 ```
 

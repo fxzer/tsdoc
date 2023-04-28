@@ -361,7 +361,7 @@ list.forEach(function (f) { return console.log(f()); });
 
 然后结果是:
 
-```text
+```
 0
 1
 2
@@ -413,7 +413,7 @@ var div = <div>Hello JSX!</div>
 
 编译参数:
 
-```text
+```
 tsc --jsx react --reactNamespace jsxFactory --m commonJS
 ```
 

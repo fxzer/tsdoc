@@ -97,7 +97,7 @@ tom.move(34);
 
 这个例子演示了如何在子类里可以重写父类的方法。 `Snake`类和`Horse`类都创建了`move`方法，它们重写了从`Animal`继承来的`move`方法，使得`move`方法根据不同的类而具有不同的功能。 注意，即使`tom`被声明为`Animal`类型，但因为它的值是`Horse`，调用`tom.move(34)`时，它会调用`Horse`里重写的方法：
 
-```text
+```
 Slithering...
 Sammy the Python moved 5m.
 Galloping...

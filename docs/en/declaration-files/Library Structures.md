@@ -1,9 +1,3 @@
----
-title: Library Structures
-layout: docs
-permalink: /docs/handbook/declaration-files/library-structures.html
-oneline: How to structure your d.ts files
----
 
 Broadly speaking, the way you _structure_ your declaration file depends on how the library is consumed.
 There are many ways of offering a library for consumption in JavaScript, and you'll need to write your declaration file to match it.

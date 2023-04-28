@@ -282,7 +282,7 @@ TypeScript 3.0在`JSX`命名空间里支持一个新的类型别名`LibraryManag
 
 我们可以利用它来处理React的`defaultProps`以及`propTypes`。
 
-```text
+```
 export interface Props {
     name: string;
 }
@@ -309,7 +309,7 @@ let el = <Greet />
 
 对于函数组件（之前叫做SFC），使用ES2015默认的初始化器：
 
-```text
+```
 function Greet({ name = "world" }: Props) {
     return <div>Hello {name.toUpperCase()}!</div>;
 }

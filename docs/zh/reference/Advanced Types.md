@@ -475,7 +475,7 @@ button.animate(0, 0, "uneasy"); // error: "uneasy" is not allowed here
 
 你只能从三种允许的字符中选择其一来做为参数传递，传入其它值则会产生错误。
 
-```text
+```
 Argument of type '"uneasy"' is not assignable to parameter of type '"ease-in" | "ease-out" | "ease-in-out"'
 ```
 

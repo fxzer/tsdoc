@@ -1,9 +1,3 @@
----
-title: Deep Dive
-layout: docs
-permalink: /docs/handbook/declaration-files/deep-dive.html
-oneline: "How do d.ts files work, a deep dive"
----
 
 ## Declaration File Theory: A Deep Dive
 

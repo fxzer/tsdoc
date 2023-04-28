@@ -182,7 +182,7 @@ TypeScript编译器通过使用`tsconfig.json`文件里的`"paths"`来支持这�
 
 通过`"paths"`我们还可以指定复杂的映射，包括指定多个回退位置。 假设在一个工程配置里，有一些模块位于一处，而其它的则在另个的位置。 构建过程会将它们集中至一处。 工程结构可能如下：
 
-```text
+```
 projectRoot
 ├── folder1
 │   ├── file1.ts (imports 'folder1/file2' and 'folder2/file3')
@@ -239,7 +239,7 @@ projectRoot
 
 比如，有下面的工程结构：
 
-```text
+```
  src
  └── views
      └── view1.ts (imports './template1')
@@ -303,7 +303,7 @@ export default [
 
 假设我们有一个使用了`typescript`模块的简单应用。 `app.ts`里有一个这样的导入`import * as ts from "typescript"`。
 
-```text
+```
 │   tsconfig.json
 ├───node_modules
 │   └───typescript
@@ -315,13 +315,13 @@ export default [
 
 使用`--traceResolution`调用编译器。
 
-```text
+```
 tsc --traceResolution
 ```
 
 输出结果如下：
 
-```text
+```
 ======== Resolving module 'typescript' from 'src/app.ts'. ========
 Module resolution kind is not specified, using 'NodeJs'.
 Loading module 'typescript' from 'node_modules' folder.
@@ -371,7 +371,7 @@ import * as A from "moduleA" // OK, moduleA passed on the command-line
 import * as B from "moduleB" // Error TS2307: Cannot find module 'moduleB'.
 ```
 
-```text
+```
 tsc app.ts moduleA.ts --noResolve
 ```
 

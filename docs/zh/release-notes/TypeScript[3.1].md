@@ -90,7 +90,7 @@ TypeScript使用Node的[semver ranges](https://github.com/npm/node-semver#ranges
 
 因为范围可能会重叠，因此指定的顺序是有意义的。 在上例中，尽管`>=3.2`和`>=3.1`都匹配TypeScript 3.2及以上版本，反转它们的顺序将会有不同的结果，因此上例与下面的代码并不等同。
 
-```text
+```
 {
   "name": "package-name",
   "version": "1.0",

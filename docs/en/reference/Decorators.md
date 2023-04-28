@@ -1,10 +1,3 @@
----
-title: Decorators
-layout: docs
-permalink: /docs/handbook/decorators.html
-oneline: TypeScript Decorators overview
-translatable: true
----
 
 ## Introduction
 

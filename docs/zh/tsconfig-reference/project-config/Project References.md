@@ -10,7 +10,7 @@ TypeScript 3.0还引入了`tsc`的一种新模式，即`--build`标记，它与�
 
 让我们来看一个非常普通的工程，并瞧瞧工程引用特性是如何帮助我们更好地组织代码的。 假设这个工程具有两个模块：`converter`和`unites`，以及相应的测试代码：
 
-```text
+```
 /src/converter.ts
 /src/units.ts
 /test/converter-tests.ts
@@ -93,7 +93,7 @@ assert.areEqual(converter.celsiusToFahrenheit(0), 32);
 
 `tsc`永远只会使用磁盘上已经存在的文件来进行这个操作，因此你可能会创建出一个无法生成正确输出文件的工程，因为有些工程的输出可能会在结果文件中重覆了多次。 例如：
 
-```text
+```
    A
   ^ ^
  /   \
@@ -129,7 +129,7 @@ B     C
 
 你可以指令任意数量的配置文件：
 
-```text
+```
  > tsc -b                                # Run the tsconfig.json in the current directory
  > tsc -b src                            # Run src/tsconfig.json
  > tsc -b foo/prd.tsconfig.json bar  # Run foo/prd.tsconfig.json and bar/tsconfig.json
@@ -155,7 +155,7 @@ B     C
 
 如果你的工程使用msbuild，你可以用下面的方式开启构建模式。
 
-```markup
+```
     <TypeScriptBuildMode>true</TypeScriptBuildMode>
 ```
 

@@ -543,7 +543,7 @@ TypeScript编译器支持`tsconfig`文件中使用`"paths"`属性映射的声明
 
 给定的项目结构
 
-```text
+```
  src
  └── views
      └── view1.ts (imports './template1')
@@ -574,7 +574,7 @@ TypeScript编译器支持`tsconfig`文件中使用`"paths"`属性映射的声明
 
 `--traceResolution`提供了一种方便的方法，以了解模块如何被编译器解析的。
 
-```text
+```
 tsc --traceResolution
 ```
 
@@ -775,7 +775,7 @@ httpService("", headers);  // 现在可以，以前不可以。
 
 #### 示例
 
-```text
+```
 tsc --target es5 --lib es5,es2015.promise
 ```
 

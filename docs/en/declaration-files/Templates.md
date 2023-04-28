@@ -1,9 +1,3 @@
----
-title: Templates
-layout: docs
-permalink: /docs/handbook/declaration-files/templates.html
-oneline: "Different d.ts module template examples"
----
 
 [global-modifying-module.d.ts](./templates/global-modifying-module.d.ts.md)
 

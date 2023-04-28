@@ -13,7 +13,7 @@ Visual Studio 2017和Visual Studio 2015 Update 3默认包含了TypeScript。 如
 
 针对使用npm的用户：
 
-```text
+```
 > npm install -g typescript
 ```
 
@@ -37,7 +37,7 @@ document.body.textContent = greeter(user);
 
 在命令行上，运行TypeScript编译器：
 
-```text
+```
 tsc greeter.ts
 ```
 
@@ -71,7 +71,7 @@ document.body.textContent = greeter(user);
 
 重新编译，你会看到产生了一个错误。
 
-```text
+```
 error TS2345: Argument of type 'number[]' is not assignable to parameter of type 'string'.
 ```
 
@@ -134,7 +134,7 @@ document.body.textContent = greeter(user);
 
 在`greeter.html`里输入如下内容：
 
-```markup
+```
 <!DOCTYPE html>
 <html>
     <head><title>TypeScript Greeter</title></head>

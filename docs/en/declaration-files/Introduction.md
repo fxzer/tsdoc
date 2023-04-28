@@ -1,9 +1,3 @@
----
-title: Introduction
-layout: docs
-permalink: /docs/handbook/declaration-files/introduction.html
-oneline: "How to write a high-quality TypeScript Declaration (d.ts) file"
----
 
 The Declaration Files section is designed to teach you how to write a high-quality TypeScript Declaration File. We need to assume basic familiarity with the TypeScript language in order to get started.
 

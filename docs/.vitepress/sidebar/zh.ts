@@ -6,12 +6,28 @@ export default {
       "collapsed": false,
       "items": [
         {
+          "text": "通过例子",
+          "link": "/zh/declaration-files/By Example"
+        },
+        {
           "text": "使用",
           "link": "/zh/declaration-files/Consumption"
         },
         {
+          "text": "深入探讨",
+          "link": "/zh/declaration-files/Deep Dive"
+        },
+        {
+          "text": "该做和不该做",
+          "link": "/zh/declaration-files/Dos and Donts"
+        },
+        {
           "text": "介绍",
           "link": "/zh/declaration-files/Introduction"
+        },
+        {
+          "text": "库结构",
+          "link": "/zh/declaration-files/Library Structures"
         },
         {
           "text": "发布",
@@ -20,22 +36,6 @@ export default {
         {
           "text": "模板",
           "link": "/zh/declaration-files/Templates"
-        },
-        {
-          "text": "by-example",
-          "link": "/zh/declaration-files/by-example"
-        },
-        {
-          "text": "deep-dive",
-          "link": "/zh/declaration-files/deep-dive"
-        },
-        {
-          "text": "do-s-and-don-ts",
-          "link": "/zh/declaration-files/do-s-and-don-ts"
-        },
-        {
-          "text": "library-structures",
-          "link": "/zh/declaration-files/library-structures"
         }
       ]
     },

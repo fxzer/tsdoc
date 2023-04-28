@@ -6,36 +6,36 @@ export default {
       "collapsed": false,
       "items": [
         {
-          "text": "by-example",
-          "link": "/zh/declaration-files/by-example"
+          "text": "通过例子",
+          "link": "/zh/declaration-files/By Example"
         },
         {
-          "text": "consumption",
-          "link": "/zh/declaration-files/consumption"
+          "text": "使用",
+          "link": "/zh/declaration-files/Consumption"
         },
         {
-          "text": "deep-dive",
-          "link": "/zh/declaration-files/deep-dive"
+          "text": "深入探讨",
+          "link": "/zh/declaration-files/Deep Dive"
         },
         {
-          "text": "do-s-and-don-ts",
-          "link": "/zh/declaration-files/do-s-and-don-ts"
+          "text": "该做和不该做",
+          "link": "/zh/declaration-files/Dos and Donts"
         },
         {
-          "text": "introduction",
-          "link": "/zh/declaration-files/introduction"
+          "text": "介绍",
+          "link": "/zh/declaration-files/Introduction"
         },
         {
-          "text": "library-structures",
-          "link": "/zh/declaration-files/library-structures"
+          "text": "库结构",
+          "link": "/zh/declaration-files/Library Structures"
         },
         {
-          "text": "publishing",
-          "link": "/zh/declaration-files/publishing"
+          "text": "发布",
+          "link": "/zh/declaration-files/Publishing"
         },
         {
           "text": "模板",
-          "link": "/zh/declaration-files/templates"
+          "link": "/zh/declaration-files/Templates"
         }
       ]
     },

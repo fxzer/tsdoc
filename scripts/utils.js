@@ -68,6 +68,8 @@ function writeFile(target,targetPath) {
   }
 
   fs.writeFile(targetPath, `export default ${targetStr}`, (err) => {
+    if (err) console.log(err)
+    console.log(`===> 侧边栏文件 [ ${fileName} ] 生成成功!  <===\n`)
   })
 }
 

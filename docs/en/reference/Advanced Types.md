@@ -1,11 +1,3 @@
----
-title: Advanced Types
-layout: docs
-permalink: /docs/handbook/advanced-types.html
-oneline: Advanced concepts around types in TypeScript
-deprecated_by: /docs/handbook/2/types-from-types.html
-
----
 
 This page lists some of the more advanced ways in which you can model types, it works in tandem with the <a href="/reference/Utility Types">Utility Types</a>  doc which includes types which are included in TypeScript and available globally.
 

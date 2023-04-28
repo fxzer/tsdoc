@@ -1,82 +1,65 @@
----
-title: "Global .d.ts"
-layout: docs
-permalink: /docs/handbook/declaration-files/templates/global-d-ts.html
----
-# global.d.ts
-## Global Libraries
+## 全局代码库
 
-<!-- 
-TODO:
-
-1. mention that global nearly always means 'browser'
-2. if you have a global library that you suspect is UMD, look for instructions on
-   a. how to import it
-   b. -OR- how to make it work with webpack
-3. Make the page follow the structure of documentation,usage,source example.
-
--->
-
-A _global_ library is one that can be accessed from the global scope (i.e. without using any form of `import`).
-Many libraries simply expose one or more global variables for use.
-For example, if you were using [jQuery](https://jquery.com/), the `$` variable can be used by simply referring to it:
+全局代码库可以通过全局作用域来访问（例如，不使用任何形式的`import`语句）。
+许多代码库只是简单地导出一个或多个供使用的全局变量。
+比如，如果你使用[jQuery](https://jquery.com/)，那么可以使用`$`变量来引用它。
 
 ```ts
 $(() => {
-  console.log("hello!");
+    console.log('hello!');
 });
 ```
 
-You'll usually see guidance in the documentation of a global library of how to use the library in an HTML script tag:
+你通常能够在文档里看到如何在 HTML 的 script 标签里引用代码库：
 
 ```html
 <script src="http://a.great.cdn.for/someLib.js"></script>
 ```
 
-Today, most popular globally-accessible libraries are actually written as UMD libraries (see below).
-UMD library documentation is hard to distinguish from global library documentation.
-Before writing a global declaration file, make sure the library isn't actually UMD.
+目前，大多数流行的全局代码库都以 UMD 代码库发布。
+UMD 代码库与全局代码库很难通过文档来识别。
+在编写全局代码库的声明文件之前，确保代码库不是 UMD 代码库。
 
-## Identifying a Global Library from Code
+## 从代码来识别全局代码库
 
-Global library code is usually extremely simple.
-A global "Hello, world" library might look like this:
+通常，全局代码库的代码十分简单。
+一个全局的“Hello, world”代码库可以如下：
 
 ```js
 function createGreeting(s) {
-  return "Hello, " + s;
+    return 'Hello, ' + s;
 }
 ```
 
-or like this:
+或者这样：
 
 ```js
 window.createGreeting = function (s) {
-  return "Hello, " + s;
+    return 'Hello, ' + s;
 };
 ```
 
-When looking at the code of a global library, you'll usually see:
+在阅读全局代码库的代码时，你会看到：
 
-- Top-level `var` statements or `function` declarations
-- One or more assignments to `window.someName`
-- Assumptions that DOM primitives like `document` or `window` exist
+-   顶层的`var`语句或`function`声明
+-   一个或多个`window.someName`赋值语句
+-   假设 DOM 相关的原始值`document`或`window`存在
 
-You _won't_ see:
+你不会看到：
 
-- Checks for, or usage of, module loaders like `require` or `define`
-- CommonJS/Node.js-style imports of the form `var fs = require("fs");`
-- Calls to `define(...)`
-- Documentation describing how to `require` or import the library
+-   检查或使用了模块加载器，如`require`或`define`
+-   CommonJS/Node.js 风格的导入语句，如`var fs = require("fs");`
+-   `define(...)`调用
+-   描述`require`或导入代码库的文档
 
-## Examples of Global Libraries
+## 全局代码库的示例
 
-Because it's usually easy to turn a global library into a UMD library, very few popular libraries are still written in the global style.
-However, libraries that are small and require the DOM (or have _no_ dependencies) may still be global.
+由于将全局代码库转换为 UMD 代码库十分容易，因此很少有代码库仍然使用全局代码库风格。
+然而，小型的代码库以及需要使用 DOM 的代码库仍然可以是全局的。
 
-## Global Library Template
+## 全局代码库模版
 
-You can see an example DTS below:
+你可以看到如下声明文件的示例：
 
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
@@ -98,9 +81,9 @@ declare function myLib(a: number): number;
  *~ delete this declaration and add types inside the namespace below.
  */
 interface myLib {
-  name: string;
-  length: number;
-  extras?: string[];
+    name: string;
+    length: number;
+    extras?: string[];
 }
 
 /*~ If your library has properties exposed on a global variable,
@@ -108,37 +91,37 @@ interface myLib {
  *~ You should also place types (interfaces and type alias) here.
  */
 declare namespace myLib {
-  //~ We can write 'myLib.timeout = 50;'
-  let timeout: number;
+    //~ We can write 'myLib.timeout = 50;'
+    let timeout: number;
 
-  //~ We can access 'myLib.version', but not change it
-  const version: string;
+    //~ We can access 'myLib.version', but not change it
+    const version: string;
 
-  //~ There's some class we can create via 'let c = new myLib.Cat(42)'
-  //~ Or reference e.g. 'function f(c: myLib.Cat) { ... }
-  class Cat {
-    constructor(n: number);
+    //~ There's some class we can create via 'let c = new myLib.Cat(42)'
+    //~ Or reference e.g. 'function f(c: myLib.Cat) { ... }
+    class Cat {
+        constructor(n: number);
 
-    //~ We can read 'c.age' from a 'Cat' instance
-    readonly age: number;
+        //~ We can read 'c.age' from a 'Cat' instance
+        readonly age: number;
 
-    //~ We can invoke 'c.purr()' from a 'Cat' instance
-    purr(): void;
-  }
+        //~ We can invoke 'c.purr()' from a 'Cat' instance
+        purr(): void;
+    }
 
-  //~ We can declare a variable as
-  //~   'var s: myLib.CatSettings = { weight: 5, name: "Maru" };'
-  interface CatSettings {
-    weight: number;
-    name: string;
-    tailLength?: number;
-  }
+    //~ We can declare a variable as
+    //~   'var s: myLib.CatSettings = { weight: 5, name: "Maru" };'
+    interface CatSettings {
+        weight: number;
+        name: string;
+        tailLength?: number;
+    }
 
-  //~ We can write 'const v: myLib.VetID = 42;'
-  //~  or 'const v: myLib.VetID = "bob";'
-  type VetID = string | number;
+    //~ We can write 'const v: myLib.VetID = 42;'
+    //~  or 'const v: myLib.VetID = "bob";'
+    type VetID = string | number;
 
-  //~ We can invoke 'myLib.checkCat(c)' or 'myLib.checkCat(c, v);'
-  function checkCat(c: Cat, s?: VetID);
+    //~ We can invoke 'myLib.checkCat(c)' or 'myLib.checkCat(c, v);'
+    function checkCat(c: Cat, s?: VetID);
 }
 ```

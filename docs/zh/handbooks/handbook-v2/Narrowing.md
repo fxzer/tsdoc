@@ -1,9 +1,3 @@
----
-title: Narrowing
-layout: docs
-permalink: /docs/handbook/2/narrowing.html
-oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects."
----
 
 Imagine we have a function called `padLeft`.
 
@@ -159,7 +153,7 @@ function printAll(strs: string | string[] | null) {
 You'll notice that we've gotten rid of the error above by checking if `strs` is truthy.
 This at least prevents us from dreaded errors when we run our code like:
 
-```txt
+```
 TypeError: null is not iterable
 ```
 

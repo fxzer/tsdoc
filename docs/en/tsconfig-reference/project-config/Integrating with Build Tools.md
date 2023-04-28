@@ -1,9 +1,3 @@
----
-title: Integrating with Build Tools
-layout: docs
-permalink: /docs/handbook/integrating-with-build-tools.html
-oneline: How to use TypeScript with other build tools
----
 
 ## Babel
 

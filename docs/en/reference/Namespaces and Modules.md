@@ -1,10 +1,3 @@
----
-title: Namespaces and Modules
-layout: docs
-permalink: /docs/handbook/namespaces-and-modules.html
-oneline: How to organize code in TypeScript via modules or namespaces
-translatable: true
----
 
 This post outlines the various ways to organize your code using modules and namespaces in TypeScript.
 We'll also go over some advanced topics of how to use namespaces and modules, and address some common pitfalls when using them in TypeScript.

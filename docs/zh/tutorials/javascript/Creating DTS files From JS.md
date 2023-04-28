@@ -1,10 +1,3 @@
----
-title: Creating .d.ts Files from .js files
-layout: docs
-permalink: /docs/handbook/declaration-files/dts-from-js.html
-oneline: "How to add d.ts generation to JavaScript projects"
-translatable: true
----
 
 [With TypeScript 3.7](/release-notes/TypeScript[3.7]#--declaration-and---allowjs),
 TypeScript added support for generating .d.ts files from JavaScript using JSDoc syntax.

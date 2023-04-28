@@ -1,35 +1,42 @@
----
-title: Integrating with Build Tools
-layout: docs
-permalink: /docs/handbook/integrating-with-build-tools.html
-oneline: How to use TypeScript with other build tools
----
+# 与其它构建工具整合
+
+构建工具
+
+* [Babel](integrating-with-build-tools.md#babel)
+* [Browserify](integrating-with-build-tools.md#browserify)
+* [Duo](integrating-with-build-tools.md#duo)
+* [Grunt](integrating-with-build-tools.md#grunt)
+* [Gulp](integrating-with-build-tools.md#gulp)
+* [Jspm](integrating-with-build-tools.md#jspm)
+* [Webpack](integrating-with-build-tools.md#webpack)
+* [MSBuild](integrating-with-build-tools.md#msbuild)
+* [NuGet](integrating-with-build-tools.md#nuget)
 
 ## Babel
 
-### Install
+### 安装
 
-```sh
+```bash
 npm install @babel/cli @babel/core @babel/preset-typescript --save-dev
 ```
 
 ### .babelrc
 
-```js
+```javascript
 {
   "presets": ["@babel/preset-typescript"]
 }
 ```
 
-### Using Command Line Interface
+### 使用命令行工具
 
-```sh
+```bash
 ./node_modules/.bin/babel --out-file bundle.js src/index.ts
 ```
 
 ### package.json
 
-```js
+```javascript
 {
   "scripts": {
     "build": "babel --out-file bundle.js main.ts"
@@ -37,111 +44,202 @@ npm install @babel/cli @babel/core @babel/preset-typescript --save-dev
 }
 ```
 
-### Execute Babel from the command line
+### 在命令行上运行Babel
 
-```sh
+```bash
 npm run build
 ```
 
 ## Browserify
 
-### Install
+### 安装
 
-```sh
+```bash
 npm install tsify
 ```
 
-### Using Command Line Interface
+### 使用命令行交互
 
-```sh
+```bash
 browserify main.ts -p [ tsify --noImplicitAny ] > bundle.js
 ```
 
-### Using API
+### 使用API
 
-```js
+```javascript
 var browserify = require("browserify");
 var tsify = require("tsify");
 
 browserify()
-  .add("main.ts")
-  .plugin("tsify", { noImplicitAny: true })
-  .bundle()
-  .pipe(process.stdout);
+    .add('main.ts')
+    .plugin('tsify', { noImplicitAny: true })
+    .bundle()
+    .pipe(process.stdout);
 ```
 
-More details: [smrq/tsify](https://github.com/smrq/tsify)
+更多详细信息：[smrq/tsify](https://github.com/smrq/tsify)
+
+## Duo
+
+### 安装
+
+```bash
+npm install duo-typescript
+```
+
+### 使用命令行交互
+
+```bash
+duo --use duo-typescript entry.ts
+```
+
+### 使用API
+
+```javascript
+var Duo = require('duo');
+var fs = require('fs')
+var path = require('path')
+var typescript = require('duo-typescript');
+
+var out = path.join(__dirname, "output.js")
+
+Duo(__dirname)
+    .entry('entry.ts')
+    .use(typescript())
+    .run(function (err, results) {
+        if (err) throw err;
+        // Write compiled result to output file
+        fs.writeFileSync(out, results.code);
+    });
+```
+
+更多详细信息：[frankwallis/duo-typescript](https://github.com/frankwallis/duo-typescript)
 
 ## Grunt
 
-### Install
+### 安装
 
-```sh
+```bash
 npm install grunt-ts
 ```
 
-### Basic Gruntfile.js
+### 基本Gruntfile.js
 
-```js
-module.exports = function (grunt) {
-  grunt.initConfig({
-    ts: {
-      default: {
-        src: ["**/*.ts", "!node_modules/**/*.ts"],
-      },
-    },
-  });
-  grunt.loadNpmTasks("grunt-ts");
-  grunt.registerTask("default", ["ts"]);
+```javascript
+module.exports = function(grunt) {
+    grunt.initConfig({
+        ts: {
+            default : {
+                src: ["**/*.ts", "!node_modules/**/*.ts"]
+            }
+        }
+    });
+    grunt.loadNpmTasks("grunt-ts");
+    grunt.registerTask("default", ["ts"]);
 };
 ```
 
-More details: [TypeStrong/grunt-ts](https://github.com/TypeStrong/grunt-ts)
+更多详细信息：[TypeStrong/grunt-ts](https://github.com/TypeStrong/grunt-ts)
 
 ## Gulp
 
-### Install
+### 安装
 
-```sh
+```bash
 npm install gulp-typescript
 ```
 
-### Basic gulpfile.js
+### 基本gulpfile.js
 
-```js
+```javascript
 var gulp = require("gulp");
 var ts = require("gulp-typescript");
 
 gulp.task("default", function () {
-  var tsResult = gulp.src("src/*.ts").pipe(
-    ts({
-      noImplicitAny: true,
-      out: "output.js",
-    })
-  );
-  return tsResult.js.pipe(gulp.dest("built/local"));
+    var tsResult = gulp.src("src/*.ts")
+        .pipe(ts({
+              noImplicitAny: true,
+              out: "output.js"
+        }));
+    return tsResult.js.pipe(gulp.dest('built/local'));
 });
 ```
 
-More details: [ivogabe/gulp-typescript](https://github.com/ivogabe/gulp-typescript)
+更多详细信息：[ivogabe/gulp-typescript](https://github.com/ivogabe/gulp-typescript)
 
 ## Jspm
 
-### Install
+### 安装
 
-```sh
+```bash
 npm install -g jspm@beta
 ```
 
-_Note: Currently TypeScript support in jspm is in 0.16beta_
+_注意：目前jspm的0.16beta版本支持TypeScript_
 
-More details: [TypeScriptSamples/jspm](https://github.com/Microsoft/TypeScriptSamples/tree/master/jspm)
+更多详细信息：[TypeScriptSamples/jspm](https://github.com/Microsoft/TypeScriptSamples/tree/master/jspm)
+
+## Webpack
+
+### 安装
+
+```bash
+npm install ts-loader --save-dev
+```
+
+### Webpack 2 webpack.config.js 基础配置
+
+```javascript
+module.exports = {
+    entry: "./src/index.tsx",
+    output: {
+        path: '/',
+        filename: "bundle.js"
+    },
+    resolve: {
+        extensions: [".tsx", ".ts", ".js", ".json"]
+    },
+    module: {
+        rules: [
+            // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
+            { test: /\.tsx?$/, use: ["ts-loader"], exclude: /node_modules/ }
+        ]
+    }
+}
+```
+
+### Webpack 1 webpack.config.js 基础配置
+
+```javascript
+module.exports = {
+    entry: "./src/index.tsx",
+    output: {
+        filename: "bundle.js"
+    },
+    resolve: {
+        // Add '.ts' and '.tsx' as a resolvable extension.
+        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+    },
+    module: {
+        loaders: [
+            // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
+            { test: /\.tsx?$/, loader: "ts-loader" }
+        ]
+    }
+};
+```
+
+查看[更多关于ts-loader的详细信息](https://www.npmjs.com/package/ts-loader)
+
+或者
+
+* [awesome-typescript-loader](https://www.npmjs.com/package/awesome-typescript-loader)
 
 ## MSBuild
 
-Update project file to include locally installed `Microsoft.TypeScript.Default.props` (at the top) and `Microsoft.TypeScript.targets` (at the bottom) files:
+更新工程文件，包含本地安装的`Microsoft.TypeScript.Default.props`（在顶端）和`Microsoft.TypeScript.targets`（在底部）文件：
 
-```xml
+```
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Include default props at the top -->
@@ -166,120 +264,14 @@ Update project file to include locally installed `Microsoft.TypeScript.Default.p
 </Project>
 ```
 
-More details about defining MSBuild compiler options:  <a href="/project-config/Compiler Options in MSBuild">Setting Compiler Options in MSBuild projects</a> 
+关于配置MSBuild编译器选项的更多详细信息，请参考：[在MSBuild里使用编译选项](compiler-options-in-msbuild.md)
 
 ## NuGet
 
-- Right-Click -> Manage NuGet Packages
-- Search for `Microsoft.TypeScript.MSBuild`
-- Hit `Install`
-- When install is complete, rebuild!
+* 右键点击 -&gt; Manage NuGet Packages
+* 查找`Microsoft.TypeScript.MSBuild`
+* 点击`Install`
+* 安装完成后，Rebuild。
 
-More details can be found at [Package Manager Dialog](http://docs.nuget.org/Consume/Package-Manager-Dialog) and [using nightly builds with NuGet](https://github.com/Microsoft/TypeScript/wiki/Nightly-drops#using-nuget-with-msbuild)
+更多详细信息请参考[Package Manager Dialog](http://docs.nuget.org/Consume/Package-Manager-Dialog)和[using nightly builds with NuGet](https://github.com/Microsoft/TypeScript/wiki/Nightly-drops#using-nuget-with-msbuild)
 
-## Rollup
-
-### Install
-
-```
-npm install @rollup/plugin-typescript --save-dev
-```
-
-Note that both `typescript` and `tslib` are peer dependencies of this plugin that need to be installed separately.
-
-### Usage
-
-Create a `rollup.config.js` [configuration file](https://www.rollupjs.org/guide/en/#configuration-files) and import the plugin:
-
-```js
-// rollup.config.js
-import typescript from '@rollup/plugin-typescript';
-
-export default {
-  input: 'src/index.ts',
-  output: {
-    dir: 'output',
-    format: 'cjs'
-  },
-  plugins: [typescript()]
-};
-```
-
-## Svelte Compiler
-
-### Install
-
-```
-npm install --save-dev svelte-preprocess
-```
-
-Note that `typescript` is an optional peer dependencies of this plugin and needs to be installed separately. `tslib` is not provided either.
-
-You may also consider [`svelte-check`](https://www.npmjs.com/package/svelte-check) for CLI type checking.
-
-### Usage
-
-Create a `svelte.config.js` configuration file and import the plugin:
-
-```js
-// svelte.config.js
-import preprocess from 'svelte-preprocess';
-
-const config = {
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
-  preprocess: preprocess()
-};
-
-export default config;
-```
-
-You can now specify that script blocks are written in TypeScript:
-
-```
-<script lang="ts">
-```
-
-## Vite
-
-Vite supports importing `.ts` files out-of-the-box. It only performs transpilation and not type checking. It also requires that some `compilerOptions` have certain values. See the [Vite docs](https://vitejs.dev/guide/features.html#typescript) for more details.
-
-## Webpack
-
-### Install
-
-```sh
-npm install ts-loader --save-dev
-```
-
-### Basic webpack.config.js when using Webpack 5 or 4
-
-```js
-const path = require('path');
-
-module.exports = {
-  entry: './src/index.ts',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-};
-```
-
-See [more details on ts-loader here](https://www.npmjs.com/package/ts-loader).
-
-Alternatives:
-
-- [awesome-typescript-loader](https://www.npmjs.com/package/awesome-typescript-loader)

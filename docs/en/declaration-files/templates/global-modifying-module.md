@@ -1,8 +1,3 @@
----
-title: "Global: Modifying Module"
-layout: docs
-permalink: /docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html
----
 # global-modifying-module.d.ts
 ## _Global-modifying Modules_
 

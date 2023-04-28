@@ -1,37 +1,29 @@
----
-title: TypeScript Tooling in 5 minutes
-layout: docs
-permalink: /docs/handbook/typescript-tooling-in-5-minutes.html
-oneline: A tutorial to understand how to create a small website with TypeScript
-translatable: true
----
+# 5分钟了解TypeScript
 
-Let's get started by building a simple web application with TypeScript.
+让我们使用TypeScript来创建一个简单的Web应用。
 
-## Installing TypeScript
+## 安装TypeScript
 
-There are two main ways to get the TypeScript available for your project:
+有两种主要的方式来获取TypeScript工具：
 
-- Via npm (the Node.js package manager)
-- By installing TypeScript's Visual Studio plugins
+* 通过npm（Node.js包管理器）
+* 安装Visual Studio的TypeScript插件
 
-Visual Studio 2017 and Visual Studio 2015 Update 3 include TypeScript language support by default but does not include the TypeScript compiler, `tsc`.
-If you didn't install TypeScript with Visual Studio, you can still [download it](/download).
+Visual Studio 2017和Visual Studio 2015 Update 3默认包含了TypeScript。 如果你的Visual Studio还没有安装TypeScript，你可以下载它。
 
-For npm users:
+针对使用npm的用户：
 
-```shell
+```
 > npm install -g typescript
 ```
 
-## Building your first TypeScript file
+## 构建你的第一个TypeScript文件
 
-In your editor, type the following JavaScript code in `greeter.ts`:
+在编辑器，将下面的代码输入到`greeter.ts`文件里：
 
-```ts twoslash
-// @noImplicitAny: false
+```typescript
 function greeter(person) {
-  return "Hello, " + person;
+    return "Hello, " + person;
 }
 
 let user = "Jane User";
@@ -39,26 +31,23 @@ let user = "Jane User";
 document.body.textContent = greeter(user);
 ```
 
-## Compiling your code
+## 编译代码
 
-We used a `.ts` extension, but this code is just JavaScript.
-You could have copy/pasted this straight out of an existing JavaScript app.
+我们使用了`.ts`扩展名，但是这段代码仅仅是JavaScript而已。 你可以直接从现有的JavaScript应用里复制/粘贴这段代码。
 
-At the command line, run the TypeScript compiler:
+在命令行上，运行TypeScript编译器：
 
-```shell
+```
 tsc greeter.ts
 ```
 
-The result will be a file `greeter.js` which contains the same JavaScript that you fed in.
-We're up and running using TypeScript in our JavaScript app!
+输出结果为一个`greeter.js`文件，它包含了和输入文件中相同的JavsScript代码。 一切准备就绪，我们可以运行这个使用TypeScript写的JavaScript应用了！
 
-Now we can start taking advantage of some of the new tools TypeScript offers.
-Add a `: string` type annotation to the 'person' function argument as shown here:
+接下来让我们看看TypeScript工具带来的高级功能。 给`person`函数的参数添加`: string`类型注解，如下：
 
-```ts twoslash
+```typescript
 function greeter(person: string) {
-  return "Hello, " + person;
+    return "Hello, " + person;
 }
 
 let user = "Jane User";
@@ -66,16 +55,13 @@ let user = "Jane User";
 document.body.textContent = greeter(user);
 ```
 
-## Type annotations
+## 类型注解
 
-Type annotations in TypeScript are lightweight ways to record the intended contract of the function or variable.
-In this case, we intend the greeter function to be called with a single string parameter.
-We can try changing the call greeter to pass an array instead:
+TypeScript里的类型注解是一种轻量级的为函数或变量添加约束的方式。 在这个例子里，我们希望`greeter`函数接收一个字符串参数。 然后尝试把`greeter`的调用改成传入一个数组：
 
-```ts twoslash
-// @errors: 2345
+```typescript
 function greeter(person: string) {
-  return "Hello, " + person;
+    return "Hello, " + person;
 }
 
 let user = [0, 1, 2];
@@ -83,33 +69,28 @@ let user = [0, 1, 2];
 document.body.textContent = greeter(user);
 ```
 
-Re-compiling, you'll now see an error:
+重新编译，你会看到产生了一个错误。
 
-```shell
+```
 error TS2345: Argument of type 'number[]' is not assignable to parameter of type 'string'.
 ```
 
-Similarly, try removing all the arguments to the greeter call.
-TypeScript will let you know that you have called this function with an unexpected number of parameters.
-In both cases, TypeScript can offer static analysis based on both the structure of your code, and the type annotations you provide.
+类似地，尝试删除`greeter`调用的所有参数。 TypeScript会告诉你使用了非期望个数的参数调用了这个函数。 在这两种情况中，TypeScript提供了静态的代码分析，它可以分析代码结构和提供的类型注解。
 
-Notice that although there were errors, the `greeter.js` file is still created.
-You can use TypeScript even if there are errors in your code. But in this case, TypeScript is warning that your code will likely not run as expected.
+要注意的是尽管有错误，`greeter.js`文件还是被创建了。 就算你的代码里有错误，你仍然可以使用TypeScript。但在这种情况下，TypeScript会警告你代码可能不会按预期执行。
 
-## Interfaces
+## 接口
 
-Let's develop our sample further. Here we use an interface that describes objects that have a firstName and lastName field.
-In TypeScript, two types are compatible if their internal structure is compatible.
-This allows us to implement an interface just by having the shape the interface requires, without an explicit `implements` clause.
+让我们开发这个示例应用。这里我们使用接口来描述一个拥有`firstName`和`lastName`字段的对象。 在TypeScript里，只要两个类型内部的结构兼容那么这两个类型就是兼容的。 这就允许我们在实现接口时候只要保证包含了接口要求的结构就可以，而不必明确地使用`implements`语句。
 
-```ts twoslash
+```typescript
 interface Person {
-  firstName: string;
-  lastName: string;
+    firstName: string;
+    lastName: string;
 }
 
 function greeter(person: Person) {
-  return "Hello, " + person.firstName + " " + person.lastName;
+    return "Hello, " + person.firstName + " " + person.lastName;
 }
 
 let user = { firstName: "Jane", lastName: "User" };
@@ -117,35 +98,29 @@ let user = { firstName: "Jane", lastName: "User" };
 document.body.textContent = greeter(user);
 ```
 
-## Classes
+## 类
 
-Finally, let's extend the example one last time with classes.
-TypeScript supports new features in JavaScript, like support for class-based object-oriented programming.
+最后，让我们使用类来改写这个例子。 TypeScript支持JavaScript的新特性，比如支持基于类的面向对象编程。
 
-Here we're going to create a `Student` class with a constructor and a few public fields.
-Notice that classes and interfaces play well together, letting the programmer decide on the right level of abstraction.
+让我们创建一个`Student`类，它带有一个构造函数和一些公共字段。 注意类和接口可以一起工作，程序员可以自行决定抽象的级别。
 
-Also of note, the use of `public` on arguments to the constructor is a shorthand that allows us to automatically create properties with that name.
+还要注意的是，在构造函数的参数上使用`public`等同于创建了同名的成员变量。
 
-```ts twoslash
+```typescript
 class Student {
-  fullName: string;
-  constructor(
-    public firstName: string,
-    public middleInitial: string,
-    public lastName: string
-  ) {
-    this.fullName = firstName + " " + middleInitial + " " + lastName;
-  }
+    fullName: string;
+    constructor(public firstName: string, public middleInitial: string, public lastName: string) {
+        this.fullName = firstName + " " + middleInitial + " " + lastName;
+    }
 }
 
 interface Person {
-  firstName: string;
-  lastName: string;
+    firstName: string;
+    lastName: string;
 }
 
 function greeter(person: Person) {
-  return "Hello, " + person.firstName + " " + person.lastName;
+    return "Hello, " + person.firstName + " " + person.lastName;
 }
 
 let user = new Student("Jane", "M.", "User");
@@ -153,35 +128,25 @@ let user = new Student("Jane", "M.", "User");
 document.body.textContent = greeter(user);
 ```
 
-Re-run `tsc greeter.ts` and you'll see the generated JavaScript is the same as the earlier code.
-Classes in TypeScript are just a shorthand for the same prototype-based OO that is frequently used in JavaScript.
+重新运行`tsc greeter.ts`，你会看到生成的JavaScript代码和原先的一样。 TypeScript里的类只是JavaScript里常用的基于原型面向对象编程的简写。
 
-## Running your TypeScript web app
+## 运行TypeScript Web应用
 
-Now type the following in `greeter.html`:
+在`greeter.html`里输入如下内容：
 
-```html
+```
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>TypeScript Greeter</title>
-  </head>
-  <body>
-    <script src="greeter.js"></script>
-  </body>
+    <head><title>TypeScript Greeter</title></head>
+    <body>
+        <script src="greeter.js"></script>
+    </body>
 </html>
 ```
 
-Open `greeter.html` in the browser to run your first simple TypeScript web application!
+在浏览器里打开`greeter.html`运行这个应用！
 
-Optional: Open `greeter.ts` in Visual Studio, or copy the code into the TypeScript playground.
-You can hover over identifiers to see their types.
-Notice that in some cases these types are inferred automatically for you.
-Re-type the last line, and see completion lists and parameter help based on the types of the DOM elements.
-Put your cursor on the reference to the greeter function, and hit F12 to go to its definition.
-Notice, too, that you can right-click on a symbol and use refactoring to rename it.
+可选地：在Visual Studio里打开`greeter.ts`或者把代码复制到TypeScript playground。 将鼠标悬停在标识符上查看它们的类型。 注意在某些情况下它们的类型可以被自动地推断出来。 重新输入一下最后一行代码，看一下自动补全列表和参数列表，它们会根据DOM元素类型而变化。 将光标放在`greeter`函数上，点击F12可以跟踪到它的定义。 还有一点，你可以右键点击标识，使用重构功能来重命名。
 
-The type information provided works together with the tools to work with JavaScript at application scale.
-For more examples of what's possible in TypeScript, see the Samples section of the website.
+这些类型信息以及工具可以很好的和JavaScript一起工作。 更多的TypeScript功能演示，请查看本网站的示例部分。
 
-![Visual Studio picture](/images/docs/greet_person.png)

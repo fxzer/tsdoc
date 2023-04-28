@@ -1,74 +1,33 @@
----
-title: Configuring Watch
-layout: docs
-permalink: /docs/handbook/configuring-watch.html
-oneline: How to configure the watch mode of TypeScript
-translatable: true
----
+# 配置 Watch
 
-Compiler supports configuring how to watch files and directories using compiler flags in TypeScript 3.8+, and environment variables before that.
+编译器支持使用环境变量配置如何监视文件和目录的变化。
 
-## Background
+## 使用`TSC_WATCHFILE`环境变量来配置文件监视
 
-The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.watchFile` which are provided by node, both of these methods have pros and cons.
+| 选项 | 描述 |
+| :--- | :--- |
+| `PriorityPollingInterval` | 使用`fs.watchFile`但针对源码文件，配置文件和消失的文件使用不同的轮询间隔 |
+| `DynamicPriorityPolling` | 使用动态队列，对经常被修改的文件使用较短的轮询间隔，对未修改的文件使用较长的轮询间隔 |
+| `UseFsEvents` | 使用 `fs.watch`，它使用文件系统事件（但在不同的系统上可能不一定准确）来查询文件的修改/创建/删除。注意少数的系统如Linux，对监视者的数量有限制，如果使用`fs.watch`创建监视失败那么将通过`fs.watchFile`来创建监视 |
+| `UseFsEventsWithFallbackDynamicPolling` | 此选项与`UseFsEvents`类似，只不过当使用`fs.watch`创建监视失败后，回退到使用动态轮询队列进行监视（如`DynamicPriorityPolling`介绍的那样） |
+| `UseFsEventsOnParentDirectory` | 此选项通过`fs.watch`（使用系统文件事件）监视文件的父目录，因此CPU占用率低但也会降低精度 |
+| 默认 （无指定值） | 如果环境变量`TSC_NONPOLLING_WATCHER`设置为`true`，监视文件的父目录（如同`UseFsEventsOnParentDirectory`）。否则，使用`fs.watchFile`监视文件，超时时间为`250ms`。 |
 
-`fs.watch` uses file system events to notify the changes in the file/directory. But this is OS dependent and the notification is not completely reliable and does not work as expected on many OS. Also there could be limit on number of watches that can be created, e.g. linux and we could exhaust it pretty quickly with programs that include large number of files. But because this uses file system events, there is not much CPU cycle involved. Compiler typically uses `fs.watch` to watch directories (e.g. source directories included by config file, directories in which module resolution failed etc) These can handle the missing precision in notifying about the changes. But recursive watching is supported on only Windows and OSX. That means we need something to replace the recursive nature on other OS.
+## 使用`TSC_WATCHDIRECTORY`环境变量来配置目录监视
 
-`fs.watchFile` uses polling and thus involves CPU cycles. However, `fs.watchFile` is the most reliable mechanism to get the update on the status of file/directory. The compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references). This means the CPU usage when using `fs.watchFile` depends on number of files in the program.
+在那些Nodejs原生就不支持递归监视目录的平台上，我们会根据`TSC_WATCHDIRECTORY`的不同选项递归地创建对子目录的监视。 注意在那些原生就支持递归监视目录的平台上（如Windows），这个环境变量会被忽略。
 
-## Configuring file watching using a `tsconfig.json`
+| 选项 | 描述 |
+| :--- | :--- |
+| `RecursiveDirectoryUsingFsWatchFile` | 使用`fs.watchFile`监视目录和子目录，它是一个轮询监视（消耗CPU周期） |
+| `RecursiveDirectoryUsingDynamicPriorityPolling` | 使用动态轮询队列来获取目录与其子目录的改变 |
+| 默认 （无指定值） | 使用`fs.watch`来监视目录及其子目录 |
 
-```json tsconfig
-{
-  // Some typical compiler options
-  "compilerOptions": {
-    "target": "es2020",
-    "moduleResolution": "node"
-    // ...
-  },
+## 背景
 
-  // NEW: Options for file/directory watching
-  "watchOptions": {
-    // Use native file system events for files and directories
-    "watchFile": "useFsEvents",
-    "watchDirectory": "useFsEvents",
+在编译器中`--watch`的实现依赖于Nodejs提供的`fs.watch`和`fs.watchFile`，两者各有优缺点。
 
-    // Poll files for updates more frequently
-    // when they're updated a lot.
-    "fallbackPolling": "dynamicPriority",
+`fs.watch`使用文件系统事件通知文件及目录的变化。 但是它依赖于操作系统，且事件通知并不完全可靠，在很多操作系统上的行为难以预料。 还可能会有创建监视个数的限制，如Linux系统，在包含大量文件的程序中监视器个数很快被耗尽。 但也正是因为它使用文件系统事件，不需要占用过多的CPU周期。 典型地，编译器使用`fs.watch`来监视目录（比如配置文件里声明的源码目录，无法进行模块解析的目录）。 这样就可以处理改动通知不准确的问题。 但递归地监视仅在Windows和OSX系统上支持。 这就意味着在其它系统上要使用替代方案。
 
-    // Don't coalesce watch notification
-    "synchronousWatchDirectory": true,
+`fs.watchFile`使用轮询，因此涉及到CPU周期。 但是这是最可靠的获取文件/目录状态的机制。 典型地，编译器使用`fs.watchFile`监视源文件，配置文件和消失的文件（失去文件引用），这意味着对CPU的使用依赖于程序里文件的数量。
 
-    // Finally, two additional settings for reducing the amount of possible
-    // files to track  work from these directories
-    "excludeDirectories": ["**/node_modules", "_build"],
-    "excludeFiles": ["build/fileWhichChangesOften.ts"]
-  }
-}
-```
-
-You can read more about this in [the release notes](/release-notes/TypeScript[3.8]#better-directory-watching-on-linux-and-watchoptions).
-
-## Configuring file watching using environment variable `TSC_WATCHFILE`
-
-<!-- prettier-ignore -->
-Option                                         | Description
------------------------------------------------|----------------------------------------------------------------------
-`PriorityPollingInterval`                      | Use `fs.watchFile` but use different polling intervals for source files, config files and missing files
-`DynamicPriorityPolling`                       | Use a dynamic queue where in the frequently modified files will be polled at shorter interval and the files unchanged will be polled less frequently
-`UseFsEvents`                                  | Use `fs.watch` which uses file system events (but might not be accurate on different OS) to get the notifications for the file changes/creation/deletion. Note that few OS e.g. linux has limit on number of watches and failing to create watcher using `fs.watch` will result it in creating using `fs.watchFile`
-`UseFsEventsWithFallbackDynamicPolling`        | This option is similar to `UseFsEvents` except on failing to create watch using `fs.watch`, the fallback watching happens through dynamic polling queues (as explained in `DynamicPriorityPolling`)
-`UseFsEventsOnParentDirectory`                 | This option watches parent directory of the file with `fs.watch` (using file system events) thus being low on CPU but can compromise accuracy.
-default (no value specified)                   | If environment variable `TSC_NONPOLLING_WATCHER` is set to true, watches parent directory of files (just like `UseFsEventsOnParentDirectory`). Otherwise watch files using `fs.watchFile` with `250ms` as the timeout for any file
-
-## Configuring directory watching using environment variable `TSC_WATCHDIRECTORY`
-
-The watching of directory on platforms that don't support recursive directory watching natively in node, is supported through recursively creating directory watcher for the child directories using different options selected by `TSC_WATCHDIRECTORY`. Note that on platforms that support native recursive directory watching (e.g windows) the value of this environment variable is ignored.
-
-<!-- prettier-ignore -->
-Option                                         | Description
------------------------------------------------|----------------------------------------------------------------------
-`RecursiveDirectoryUsingFsWatchFile`           | Use `fs.watchFile` to watch the directories and child directories which is a polling watch (consuming CPU cycles)
-`RecursiveDirectoryUsingDynamicPriorityPolling`| Use dynamic polling queue to poll changes to the directory and child directories.
-default (no value specified)                   | Use `fs.watch` to watch directories and child directories

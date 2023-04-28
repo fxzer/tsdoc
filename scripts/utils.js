@@ -44,7 +44,9 @@ function deepGenerateSidebar(arr,locale) {
     pathPice = pathPice.reduce((pre, cur) => {
       let dirStr = cur.slice(0, -1).join('/')  // /problem/vueproject/
       let enText = cur[cur.length - 1].replace(/\.md$/, '')
-      let text =  locale === 'en' ? enText : ( enTozh[enText] || enText)
+      //配置项不翻译
+      let noTraslate =  dirStr === 'tsconfig-reference/options'
+      let text = noTraslate ? enText : ( locale === 'en' ? enText : ( enTozh[enText] || enText))
       let link = `/${locale}/` + cur.join('/').replace(/\.md$/, '')
       pre[dirStr] = pre[dirStr] ? [...pre[dirStr], { text, link }] : [{ text, link }]
       return pre
@@ -66,8 +68,6 @@ function writeFile(target,targetPath) {
   }
 
   fs.writeFile(targetPath, `export default ${targetStr}`, (err) => {
-    if (err) console.log(err)
-    console.log(`===> 侧边栏文件 [ ${fileName} ] 生成成功!  <===\n`)
   })
 }
 
@@ -76,7 +76,7 @@ function itemsHandler(sidebar, obj,locale) {
   Object.entries(sidebar).forEach(([key, items]) => {
     let keyArr = splitPath(key)
     let enText = keyArr[keyArr.length - 1]
-    let text = locale === 'en' ? enText : ( enTozh[enText] || enText)
+    let text =  locale === 'en' ? enText : ( enTozh[enText] || enText) 
     //默认折叠
     const collapsed = collapsedList.includes(enText)
     let kpath = `/${locale}/${keyArr[0]}/`

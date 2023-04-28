@@ -1,10 +1,3 @@
----
-title: Namespaces
-layout: docs
-permalink: /docs/handbook/namespaces.html
-oneline: How TypeScript namespaces work
-translatable: true
----
 
 > **A note about terminology:**
 > It's important to note that in TypeScript 1.5, the nomenclature has changed.

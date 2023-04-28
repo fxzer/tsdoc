@@ -1,61 +1,50 @@
----
-title: Classes
-layout: docs
-permalink: /docs/handbook/classes.html
-oneline: How classes work in TypeScript
-handbook: "true"
-deprecated_by: /docs/handbook/2/classes.html
----
+# 类
 
-传统的JavaScript使用函数和基于原型的继承来构建可重用的组件，但对于更习惯于面向对象的方法的程序员来说，这可能会有点尴尬，在面向对象的方法中，类继承功能，对象是从这些类构建的。从 ECMAScript 2015（也称为 ECMAScript 6）开始，JavaScript 程序员可以使用这种面向对象的基于类的方法构建他们的应用程序。在 TypeScript 中，我们允许开发人员现在使用这些技术，并将它们编译成适用于所有主要浏览器和平台的 JavaScript，而无需等待下一个版本的 JavaScript。
+## 介绍
 
-## Classes
+传统的JavaScript程序使用函数和基于原型的继承来创建可重用的组件，但对于熟悉使用面向对象方式的程序员来讲就有些棘手，因为他们用的是基于类的继承并且对象是由类构建出来的。 从ECMAScript 2015，也就是ECMAScript 6开始，JavaScript程序员将能够使用基于类的面向对象的方式。 使用TypeScript，我们允许开发者现在就使用这些特性，并且编译后的JavaScript可以在所有主流浏览器和平台上运行，而不需要等到下个JavaScript版本。
 
-Let's take a look at a simple class-based example:
+## 类
 
-```ts twoslash
+下面看一个使用类的例子：
+
+```typescript
 class Greeter {
-  greeting: string;
-
-  constructor(message: string) {
-    this.greeting = message;
-  }
-
-  greet() {
-    return "Hello, " + this.greeting;
-  }
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return "Hello, " + this.greeting;
+    }
 }
 
 let greeter = new Greeter("world");
 ```
 
-The syntax should look familiar if you've used C# or Java before.
-We declare a new class `Greeter`. This class has three members: a property called `greeting`, a constructor, and a method `greet`.
+如果你使用过C\#或Java，你会对这种语法非常熟悉。 我们声明一个`Greeter`类。这个类有3个成员：一个叫做`greeting`的属性，一个构造函数和一个`greet`方法。
 
-You'll notice that in the class when we refer to one of the members of the class we prepend `this.`.
-This denotes that it's a member access.
+你会注意到，我们在引用任何一个类成员的时候都用了`this`。 它表示我们访问的是类的成员。
 
-In the last line we construct an instance of the `Greeter` class using `new`.
-This calls into the constructor we defined earlier, creating a new object with the `Greeter` shape, and running the constructor to initialize it.
+最后一行，我们使用`new`构造了`Greeter`类的一个实例。 它会调用之前定义的构造函数，创建一个`Greeter`类型的新对象，并执行构造函数初始化它。
 
-## Inheritance
+## 继承
 
-In TypeScript, we can use common object-oriented patterns.
-One of the most fundamental patterns in class-based programming is being able to extend existing classes to create new ones using inheritance.
+在TypeScript里，我们可以使用常用的面向对象模式。 基于类的程序设计中一种最基本的模式是允许使用继承来扩展现有的类。
 
-Let's take a look at an example:
+看下面的例子：
 
-```ts twoslash
+```typescript
 class Animal {
-  move(distanceInMeters: number = 0) {
-    console.log(`Animal moved ${distanceInMeters}m.`);
-  }
+    move(distanceInMeters: number = 0) {
+        console.log(`Animal moved ${distanceInMeters}m.`);
+    }
 }
 
 class Dog extends Animal {
-  bark() {
-    console.log("Woof! Woof!");
-  }
+    bark() {
+        console.log('Woof! Woof!');
+    }
 }
 
 const dog = new Dog();
@@ -64,43 +53,35 @@ dog.move(10);
 dog.bark();
 ```
 
-This example shows the most basic inheritance feature: classes inherit properties and methods from base classes.
-Here, `Dog` is a _derived_ class that derives from the `Animal` _base_ class using the `extends` keyword.
-Derived classes are often called _subclasses_, and base classes are often called _superclasses_.
+这个例子展示了最基本的继承：类从基类中继承了属性和方法。 这里，`Dog`是一个_派生类_，它派生自`Animal`_基类_，通过`extends`关键字。 派生类通常被称作_子类_，基类通常被称作_超类_。
 
-Because `Dog` extends the functionality from `Animal`, we were able to create an instance of `Dog` that could both `bark()` and `move()`.
+因为`Dog`继承了`Animal`的功能，因此我们可以创建一个`Dog`的实例，它能够`bark()`和`move()`。
 
-Let's now look at a more complex example.
+下面我们来看个更加复杂的例子。
 
-```ts twoslash
+```typescript
 class Animal {
-  name: string;
-  constructor(theName: string) {
-    this.name = theName;
-  }
-  move(distanceInMeters: number = 0) {
-    console.log(`${this.name} moved ${distanceInMeters}m.`);
-  }
+    name: string;
+    constructor(theName: string) { this.name = theName; }
+    move(distanceInMeters: number = 0) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
 }
 
 class Snake extends Animal {
-  constructor(name: string) {
-    super(name);
-  }
-  move(distanceInMeters = 5) {
-    console.log("Slithering...");
-    super.move(distanceInMeters);
-  }
+    constructor(name: string) { super(name); }
+    move(distanceInMeters = 5) {
+        console.log("Slithering...");
+        super.move(distanceInMeters);
+    }
 }
 
 class Horse extends Animal {
-  constructor(name: string) {
-    super(name);
-  }
-  move(distanceInMeters = 45) {
-    console.log("Galloping...");
-    super.move(distanceInMeters);
-  }
+    constructor(name: string) { super(name); }
+    move(distanceInMeters = 45) {
+        console.log("Galloping...");
+        super.move(distanceInMeters);
+    }
 }
 
 let sam = new Snake("Sammy the Python");
@@ -110,16 +91,11 @@ sam.move();
 tom.move(34);
 ```
 
-This example covers a few other features we didn't previously mention.
-Again, we see the `extends` keywords used to create two new subclasses of `Animal`: `Horse` and `Snake`.
+这个例子展示了一些上面没有提到的特性。 这一次，我们使用`extends`关键字创建了`Animal`的两个子类：`Horse`和`Snake`。
 
-One difference from the prior example is that each derived class that contains a constructor function _must_ call `super()` which will execute the constructor of the base class.
-What's more, before we _ever_ access a property on `this` in a constructor body, we _have_ to call `super()`.
-This is an important rule that TypeScript will enforce.
+与前一个例子的不同点是，派生类包含了一个构造函数，它_必须_调用`super()`，它会执行基类的构造函数。 而且，在构造函数里访问`this`的属性之前，我们_一定_要调用`super()`。 这个是TypeScript强制执行的一条重要规则。
 
-The example also shows how to override methods in the base class with methods that are specialized for the subclass.
-Here both `Snake` and `Horse` create a `move` method that overrides the `move` from `Animal`, giving it functionality specific to each class.
-Note that even though `tom` is declared as an `Animal`, since its value is a `Horse`, calling `tom.move(34)` will call the overriding method in `Horse`:
+这个例子演示了如何在子类里可以重写父类的方法。 `Snake`类和`Horse`类都创建了`move`方法，它们重写了从`Animal`继承来的`move`方法，使得`move`方法根据不同的类而具有不同的功能。 注意，即使`tom`被声明为`Animal`类型，但因为它的值是`Horse`，调用`tom.move(34)`时，它会调用`Horse`里重写的方法：
 
 ```
 Slithering...
@@ -128,96 +104,56 @@ Galloping...
 Tommy the Palomino moved 34m.
 ```
 
-## Public, private, and protected modifiers
+## 公共，私有与受保护的修饰符
 
-## Public by default
+### 默认为`public`
 
-In our examples, we've been able to freely access the members that we declared throughout our programs.
-If you're familiar with classes in other languages, you may have noticed in the above examples we haven't had to use the word `public` to accomplish this; for instance, C# requires that each member be explicitly labeled `public` to be visible.
-In TypeScript, each member is `public` by default.
+在上面的例子里，我们可以自由的访问程序里定义的成员。 如果你对其它语言中的类比较了解，就会注意到我们在之前的代码里并没有使用`public`来做修饰；例如，C\#要求必须明确地使用`public`指定成员是可见的。 在TypeScript里，成员都默认为`public`。
 
-You may still mark a member `public` explicitly.
-We could have written the `Animal` class from the previous section in the following way:
+你也可以明确的将一个成员标记成`public`。 我们可以用下面的方式来重写上面的`Animal`类：
 
-```ts twoslash
+```typescript
 class Animal {
-  public name: string;
-
-  public constructor(theName: string) {
-    this.name = theName;
-  }
-
-  public move(distanceInMeters: number) {
-    console.log(`${this.name} moved ${distanceInMeters}m.`);
-  }
+    public name: string;
+    public constructor(theName: string) { this.name = theName; }
+    public move(distanceInMeters: number) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
 }
 ```
 
-## ECMAScript Private Fields
+### 理解`private`
 
-With TypeScript 3.8, TypeScript supports the new JavaScript syntax for private fields:
+当成员被标记成`private`时，它就不能在声明它的类的外部访问。比如：
 
-```ts twoslash
-// @errors: 18013
+```typescript
 class Animal {
-  #name: string;
-  constructor(theName: string) {
-    this.#name = theName;
-  }
+    private name: string;
+    constructor(theName: string) { this.name = theName; }
 }
 
-new Animal("Cat").#name;
+new Animal("Cat").name; // 错误: 'name' 是私有的.
 ```
 
-This syntax is built into the JavaScript runtime and can have better guarantees about the isolation of each private field.
-Right now, the best documentation for these private fields is in the TypeScript 3.8 [release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#ecmascript-private-fields).
+TypeScript使用的是结构性类型系统。 当我们比较两种不同的类型时，并不在乎它们从何处而来，如果所有成员的类型都是兼容的，我们就认为它们的类型是兼容的。
 
-## Understanding TypeScript's `private`
+然而，当我们比较带有`private`或`protected`成员的类型的时候，情况就不同了。 如果其中一个类型里包含一个`private`成员，那么只有当另外一个类型中也存在这样一个`private`成员， 并且它们都是来自同一处声明时，我们才认为这两个类型是兼容的。 对于`protected`成员也使用这个规则。
 
-TypeScript also has its own way to declare a member as being marked `private`, it cannot be accessed from outside of its containing class. For example:
+下面来看一个例子，更好地说明了这一点：
 
-```ts twoslash
-// @errors: 2341
+```typescript
 class Animal {
-  private name: string;
-
-  constructor(theName: string) {
-    this.name = theName;
-  }
-}
-
-new Animal("Cat").name;
-```
-
-TypeScript is a structural type system.
-When we compare two different types, regardless of where they came from, if the types of all members are compatible, then we say the types themselves are compatible.
-
-However, when comparing types that have `private` and `protected` members, we treat these types differently.
-For two types to be considered compatible, if one of them has a `private` member, then the other must have a `private` member that originated in the same declaration.
-The same applies to `protected` members.
-
-Let's look at an example to better see how this plays out in practice:
-
-```ts twoslash
-// @errors: 2322
-class Animal {
-  private name: string;
-  constructor(theName: string) {
-    this.name = theName;
-  }
+    private name: string;
+    constructor(theName: string) { this.name = theName; }
 }
 
 class Rhino extends Animal {
-  constructor() {
-    super("Rhino");
-  }
+    constructor() { super("Rhino"); }
 }
 
 class Employee {
-  private name: string;
-  constructor(theName: string) {
-    this.name = theName;
-  }
+    private name: string;
+    constructor(theName: string) { this.name = theName; }
 }
 
 let animal = new Animal("Goat");
@@ -225,385 +161,318 @@ let rhino = new Rhino();
 let employee = new Employee("Bob");
 
 animal = rhino;
-animal = employee;
+animal = employee; // 错误: Animal 与 Employee 不兼容.
 ```
 
-In this example, we have an `Animal` and a `Rhino`, with `Rhino` being a subclass of `Animal`.
-We also have a new class `Employee` that looks identical to `Animal` in terms of shape.
-We create some instances of these classes and then try to assign them to each other to see what will happen.
-Because `Animal` and `Rhino` share the `private` side of their shape from the same declaration of `private name: string` in `Animal`, they are compatible. However, this is not the case for `Employee`.
-When we try to assign from an `Employee` to `Animal` we get an error that these types are not compatible.
-Even though `Employee` also has a `private` member called `name`, it's not the one we declared in `Animal`.
+这个例子中有`Animal`和`Rhino`两个类，`Rhino`是`Animal`类的子类。 还有一个`Employee`类，其类型看上去与`Animal`是相同的。 我们创建了几个这些类的实例，并相互赋值来看看会发生什么。 因为`Animal`和`Rhino`共享了来自`Animal`里的私有成员定义`private name: string`，因此它们是兼容的。 然而`Employee`却不是这样。当把`Employee`赋值给`Animal`的时候，得到一个错误，说它们的类型不兼容。 尽管`Employee`里也有一个私有成员`name`，但它明显不是`Animal`里面定义的那个。
 
-## Understanding `protected`
+### 理解`protected`
 
-The `protected` modifier acts much like the `private` modifier with the exception that members declared `protected` can also be accessed within deriving classes. For example,
+`protected`修饰符与`private`修饰符的行为很相似，但有一点不同，`protected`成员在派生类中仍然可以访问。例如：
 
-```ts twoslash
-// @errors: 2445
+```typescript
 class Person {
-  protected name: string;
-  constructor(name: string) {
-    this.name = name;
-  }
+    protected name: string;
+    constructor(name: string) { this.name = name; }
 }
 
 class Employee extends Person {
-  private department: string;
+    private department: string;
 
-  constructor(name: string, department: string) {
-    super(name);
-    this.department = department;
-  }
+    constructor(name: string, department: string) {
+        super(name)
+        this.department = department;
+    }
 
-  public getElevatorPitch() {
-    return `Hello, my name is ${this.name} and I work in ${this.department}.`;
-  }
+    public getElevatorPitch() {
+        return `Hello, my name is ${this.name} and I work in ${this.department}.`;
+    }
 }
 
 let howard = new Employee("Howard", "Sales");
 console.log(howard.getElevatorPitch());
-console.log(howard.name);
+console.log(howard.name); // 错误
 ```
 
-Notice that while we can't use `name` from outside of `Person`, we can still use it from within an instance method of `Employee` because `Employee` derives from `Person`.
+注意，我们不能在`Person`类外使用`name`，但是我们仍然可以通过`Employee`类的实例方法访问，因为`Employee`是由`Person`派生而来的。
 
-A constructor may also be marked `protected`.
-This means that the class cannot be instantiated outside of its containing class, but can be extended. For example,
+构造函数也可以被标记成`protected`。 这意味着这个类不能在包含它的类外被实例化，但是能被继承。比如，
 
-```ts twoslash
-// @errors: 2674
+```typescript
 class Person {
-  protected name: string;
-  protected constructor(theName: string) {
-    this.name = theName;
-  }
+    protected name: string;
+    protected constructor(theName: string) { this.name = theName; }
 }
 
-// Employee can extend Person
+// Employee 能够继承 Person
 class Employee extends Person {
-  private department: string;
+    private department: string;
 
-  constructor(name: string, department: string) {
-    super(name);
-    this.department = department;
-  }
+    constructor(name: string, department: string) {
+        super(name);
+        this.department = department;
+    }
 
-  public getElevatorPitch() {
-    return `Hello, my name is ${this.name} and I work in ${this.department}.`;
-  }
+    public getElevatorPitch() {
+        return `Hello, my name is ${this.name} and I work in ${this.department}.`;
+    }
 }
 
 let howard = new Employee("Howard", "Sales");
-let john = new Person("John");
+let john = new Person("John"); // 错误: 'Person' 的构造函数是被保护的.
 ```
 
-## Readonly modifier
+## readonly修饰符
 
-You can make properties readonly by using the `readonly` keyword.
-Readonly properties must be initialized at their declaration or in the constructor.
+你可以使用`readonly`关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化。
 
-```ts twoslash
-// @errors: 2540
+```typescript
 class Octopus {
-  readonly name: string;
-  readonly numberOfLegs: number = 8;
-
-  constructor(theName: string) {
-    this.name = theName;
-  }
+    readonly name: string;
+    readonly numberOfLegs: number = 8;
+    constructor (theName: string) {
+        this.name = theName;
+    }
 }
-
 let dad = new Octopus("Man with the 8 strong legs");
-dad.name = "Man with the 3-piece suit";
+dad.name = "Man with the 3-piece suit"; // 错误! name 是只读的.
 ```
 
-## Parameter properties
+### 参数属性
 
-In our last example, we had to declare a readonly member `name` and a constructor parameter `theName` in the `Octopus` class. This is needed in order to have the value of `theName` accessible after the `Octopus` constructor is executed.
-_Parameter properties_ let you create and initialize a member in one place.
-Here's a further revision of the previous `Octopus` class using a parameter property:
+在上面的例子中，我们不得不在在`Person`类里定义一个只读成员`name`和一个构造函数参数`theName`。这样做是为了在`Octopus`构造函数被执行后，就可以访问`theName`的值。 这种情况经常会遇到。_参数属性_可以方便地让我们在一个地方定义并初始化一个成员。 下面的例子是对之前`Animal`类的修改版，使用了参数属性：
 
-```ts twoslash
-class Octopus {
-  readonly numberOfLegs: number = 8;
-  constructor(readonly name: string) {}
+```typescript
+class Animal {
+    constructor(private name: string) { }
+    move(distanceInMeters: number) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
 }
-
-let dad = new Octopus("Man with the 8 strong legs");
-dad.name;
 ```
 
-Notice how we dropped `theName` altogether and just use the shortened `readonly name: string` parameter on the constructor to create and initialize the `name` member.
-We've consolidated the declarations and assignment into one location.
+注意看我们是如何舍弃了`theName`，仅在构造函数里使用`private name: string`参数来创建和初始化`name`成员。 我们把声明和赋值合并至一处。
 
-Parameter properties are declared by prefixing a constructor parameter with an accessibility modifier or `readonly`, or both.
-Using `private` for a parameter property declares and initializes a private member; likewise, the same is done for `public`, `protected`, and `readonly`.
+参数属性通过给构造函数参数添加一个访问限定符来声明。 使用`private`限定一个参数属性会声明并初始化一个私有成员；对于`public`和`protected`来说也是一样。
 
-## Accessors
+## 存取器
 
-TypeScript supports getters/setters as a way of intercepting accesses to a member of an object.
-This gives you a way of having finer-grained control over how a member is accessed on each object.
+TypeScript支持通过getters/setters来截取对对象成员的访问。 它能帮助你有效的控制对对象成员的访问。
 
-Let's convert a simple class to use `get` and `set`.
-First, let's start with an example without getters and setters.
+下面来看如何把一个简单的类改写成使用`get`和`set`。 首先，我们从一个没有使用存取器的例子开始。
 
-```ts twoslash
-// @strict: false
+```typescript
 class Employee {
-  fullName: string;
+    fullName: string;
 }
 
 let employee = new Employee();
 employee.fullName = "Bob Smith";
-
 if (employee.fullName) {
-  console.log(employee.fullName);
+    console.log(employee.fullName);
 }
 ```
 
-While allowing people to randomly set `fullName` directly is pretty handy, we may also want enforce some constraints when `fullName` is set.
+允许随意设置`fullName`虽然方便，但是我们仍想在设置`fullName`强制执行某些约束。
 
-In this version, we add a setter that checks the length of the `newName` to make sure it's compatible with the max-length of our backing database field. If it isn't we throw an error notifying client code that something went wrong.
+在这个版本里，我们添加一个`setter`来检查`newName`的长度，以确保它满足数据库字段的最大长度限制。若它不满足，那么我们就抛一个错误来告诉客户端出错了。
 
-To preserve existing functionality, we also add a simple getter that retrieves `fullName` unmodified.
+为保留原有的功能，我们同时添加一个`getter`用来读取`fullName`。
 
-```ts twoslash
-// @strict: false
+```typescript
 const fullNameMaxLength = 10;
 
 class Employee {
-  private _fullName: string = "";
+    private _fullName: string;
 
-  get fullName(): string {
-    return this._fullName;
-  }
-
-  set fullName(newName: string) {
-    if (newName && newName.length > fullNameMaxLength) {
-      throw new Error("fullName has a max length of " + fullNameMaxLength);
+    get fullName(): string {
+        return this._fullName;
     }
 
-    this._fullName = newName;
-  }
+    set fullName(newName: string) {
+        if (newName && newName.length > fullNameMaxLength) {
+            throw new Error("fullName has a max length of " + fullNameMaxLength);
+        }
+
+        this._fullName = newName;
+    }
 }
 
 let employee = new Employee();
 employee.fullName = "Bob Smith";
-
 if (employee.fullName) {
-  console.log(employee.fullName);
+    alert(employee.fullName);
 }
 ```
 
-To prove to ourselves that our accessor is now checking the length of values, we can attempt to assign a name longer than 10 characters and verify that we get an error.
+为证明我们写的存取器现在能检查长度，我们可以给名字赋一个长度大于`10`字符的值，并验证是否得到一个错误。
 
-A couple of things to note about accessors:
+对于存取器有下面几点需要注意的：
 
-First, accessors require you to set the compiler to output ECMAScript 5 or higher.
-Downleveling to ECMAScript 3 is not supported.
-Second, accessors with a `get` and no `set` are automatically inferred to be `readonly`.
-This is helpful when generating a `.d.ts` file from your code, because users of your property can see that they can't change it.
+首先，存取器要求你将编译器设置为输出ECMAScript 5或更高。 不支持降级到ECMAScript 3。 其次，只带有`get`不带有`set`的存取器自动被推断为`readonly`。 这在从代码生成`.d.ts`文件时是有帮助的，因为利用这个属性的用户会看到不允许够改变它的值。
 
-## Static Properties
+## 静态属性
 
-Up to this point, we've only talked about the _instance_ members of the class, those that show up on the object when it's instantiated.
-We can also create _static_ members of a class, those that are visible on the class itself rather than on the instances.
-In this example, we use `static` on the origin, as it's a general value for all grids.
-Each instance accesses this value through prepending the name of the class.
-Similarly to prepending `this.` in front of instance accesses, here we prepend `Grid.` in front of static accesses.
+到目前为止，我们只讨论了类的实例成员，那些仅当类被实例化的时候才会被初始化的属性。 我们也可以创建类的静态成员，这些属性存在于类本身上面而不是类的实例上。 在这个例子里，我们使用`static`定义`origin`，因为它是所有网格都会用到的属性。 每个实例想要访问这个属性的时候，都要在`origin`前面加上类名。 如同在实例属性上使用`this.`前缀来访问属性一样，这里我们使用`Grid.`来访问静态属性。
 
-```ts twoslash
+```typescript
 class Grid {
-  static origin = { x: 0, y: 0 };
-
-  calculateDistanceFromOrigin(point: { x: number; y: number }) {
-    let xDist = point.x - Grid.origin.x;
-    let yDist = point.y - Grid.origin.y;
-    return Math.sqrt(xDist * xDist + yDist * yDist) / this.scale;
-  }
-
-  constructor(public scale: number) {}
+    static origin = {x: 0, y: 0};
+    calculateDistanceFromOrigin(point: {x: number; y: number;}) {
+        let xDist = (point.x - Grid.origin.x);
+        let yDist = (point.y - Grid.origin.y);
+        return Math.sqrt(xDist * xDist + yDist * yDist) / this.scale;
+    }
+    constructor (public scale: number) { }
 }
 
-let grid1 = new Grid(1.0); // 1x scale
-let grid2 = new Grid(5.0); // 5x scale
+let grid1 = new Grid(1.0);  // 1x scale
+let grid2 = new Grid(5.0);  // 5x scale
 
-console.log(grid1.calculateDistanceFromOrigin({ x: 10, y: 10 }));
-console.log(grid2.calculateDistanceFromOrigin({ x: 10, y: 10 }));
+console.log(grid1.calculateDistanceFromOrigin({x: 10, y: 10}));
+console.log(grid2.calculateDistanceFromOrigin({x: 10, y: 10}));
 ```
 
-## Abstract Classes
+## 抽象类
 
-Abstract classes are base classes from which other classes may be derived.
-They may not be instantiated directly.
-Unlike an interface, an abstract class may contain implementation details for its members.
-The `abstract` keyword is used to define abstract classes as well as abstract methods within an abstract class.
+抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节（抽象类中除抽象函数之外，其他函数可以包含具体实现）。 `abstract`关键字是用于定义抽象类和在抽象类内部定义抽象方法。
 
-```ts twoslash
+```typescript
 abstract class Animal {
-  abstract makeSound(): void;
-
-  move(): void {
-    console.log("roaming the earth...");
-  }
+    abstract makeSound(): void;
+    move(): void {
+        console.log("roaming the earth...");
+    }
 }
 ```
 
-Methods within an abstract class that are marked as abstract do not contain an implementation and must be implemented in derived classes.
-Abstract methods share a similar syntax to interface methods.
-Both define the signature of a method without including a method body.
-However, abstract methods must include the `abstract` keyword and may optionally include access modifiers.
+抽象类中的抽象方法不包含具体实现并且必须在派生类中实现。 抽象方法的语法与接口方法相似。 两者都是定义方法签名但不包含方法体。 然而，抽象方法必须包含`abstract`关键字并且可以包含访问修饰符。
 
-```ts twoslash
-// @errors: 2511 2339
+```typescript
 abstract class Department {
-  constructor(public name: string) {}
 
-  printName(): void {
-    console.log("Department name: " + this.name);
-  }
+    constructor(public name: string) {
+    }
 
-  abstract printMeeting(): void; // must be implemented in derived classes
+    printName(): void {
+        console.log('Department name: ' + this.name);
+    }
+
+    abstract printMeeting(): void; // 必须在派生类中实现
 }
 
 class AccountingDepartment extends Department {
-  constructor() {
-    super("Accounting and Auditing"); // constructors in derived classes must call super()
-  }
 
-  printMeeting(): void {
-    console.log("The Accounting Department meets each Monday at 10am.");
-  }
+    constructor() {
+        super('Accounting and Auditing'); // 在派生类的构造函数中必须调用 super()
+    }
 
-  generateReports(): void {
-    console.log("Generating accounting reports...");
-  }
+    printMeeting(): void {
+        console.log('The Accounting Department meets each Monday at 10am.');
+    }
+
+    generateReports(): void {
+        console.log('Generating accounting reports...');
+    }
 }
 
-let department: Department; // ok to create a reference to an abstract type
-department = new Department(); // error: cannot create an instance of an abstract class
-department = new AccountingDepartment(); // ok to create and assign a non-abstract subclass
+let department: Department; // 允许创建一个对抽象类型的引用
+department = new Department(); // 错误: 不能创建一个抽象类的实例
+department = new AccountingDepartment(); // 允许对一个抽象子类进行实例化和赋值
 department.printName();
 department.printMeeting();
-department.generateReports(); // error: department is not of type AccountingDepartment, cannot access generateReports
+department.generateReports(); // 错误: 方法在声明的抽象类中不存在
 ```
 
-## Advanced Techniques
+## 高级技巧
 
-## Constructor functions
+### 构造函数
 
-When you declare a class in TypeScript, you are actually creating multiple declarations at the same time.
-The first is the type of the _instance_ of the class.
+当你在TypeScript里声明了一个类的时候，实际上同时声明了很多东西。 首先就是类的_实例_的类型。
 
-```ts twoslash
+```typescript
 class Greeter {
-  greeting: string;
-
-  constructor(message: string) {
-    this.greeting = message;
-  }
-
-  greet() {
-    return "Hello, " + this.greeting;
-  }
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return "Hello, " + this.greeting;
+    }
 }
 
 let greeter: Greeter;
 greeter = new Greeter("world");
-console.log(greeter.greet()); // "Hello, world"
+console.log(greeter.greet());
 ```
 
-Here, when we say `let greeter: Greeter`, we're using `Greeter` as the type of instances of the class `Greeter`.
-This is almost second nature to programmers from other object-oriented languages.
+这里，我们写了`let greeter: Greeter`，意思是`Greeter`类的实例的类型是`Greeter`。 这对于用过其它面向对象语言的程序员来讲已经是老习惯了。
 
-We're also creating another value that we call the _constructor function_.
-This is the function that is called when we `new` up instances of the class.
-To see what this looks like in practice, let's take a look at the JavaScript created by the above example:
+我们也创建了一个叫做_构造函数_的值。 这个函数会在我们使用`new`创建类实例的时候被调用。 下面我们来看看，上面的代码被编译成JavaScript后是什么样子的：
 
-```ts twoslash
-// @strict: false
+```typescript
 let Greeter = (function () {
-  function Greeter(message) {
-    this.greeting = message;
-  }
-
-  Greeter.prototype.greet = function () {
-    return "Hello, " + this.greeting;
-  };
-
-  return Greeter;
+    function Greeter(message) {
+        this.greeting = message;
+    }
+    Greeter.prototype.greet = function () {
+        return "Hello, " + this.greeting;
+    };
+    return Greeter;
 })();
 
 let greeter;
 greeter = new Greeter("world");
-console.log(greeter.greet()); // "Hello, world"
+console.log(greeter.greet());
 ```
 
-Here, `let Greeter` is going to be assigned the constructor function.
-When we call `new` and run this function, we get an instance of the class.
-The constructor function also contains all of the static members of the class.
-Another way to think of each class is that there is an _instance_ side and a _static_ side.
+上面的代码里，`let Greeter`将被赋值为构造函数。 当我们调用`new`并执行了这个函数后，便会得到一个类的实例。 这个构造函数也包含了类的所有静态属性。 换个角度说，我们可以认为类具有_实例部分_与_静态部分_这两个部分。
 
-Let's modify the example a bit to show this difference:
+让我们稍微改写一下这个例子，看看它们之间的区别：
 
-```ts twoslash
-// @strict: false
+```typescript
 class Greeter {
-  static standardGreeting = "Hello, there";
-  greeting: string;
-  greet() {
-    if (this.greeting) {
-      return "Hello, " + this.greeting;
-    } else {
-      return Greeter.standardGreeting;
+    static standardGreeting = "Hello, there";
+    greeting: string;
+    greet() {
+        if (this.greeting) {
+            return "Hello, " + this.greeting;
+        }
+        else {
+            return Greeter.standardGreeting;
+        }
     }
-  }
 }
 
 let greeter1: Greeter;
 greeter1 = new Greeter();
-console.log(greeter1.greet()); // "Hello, there"
+console.log(greeter1.greet());
 
 let greeterMaker: typeof Greeter = Greeter;
 greeterMaker.standardGreeting = "Hey there!";
 
 let greeter2: Greeter = new greeterMaker();
-console.log(greeter2.greet()); // "Hey there!"
-
-let greeter3: Greeter;
-greeter3 = new Greeter();
-console.log(greeter3.greet()); // "Hey there!"
+console.log(greeter2.greet());
 ```
 
-In this example, `greeter1` works similarly to before.
-We instantiate the `Greeter` class, and use this object.
-This we have seen before.
+这个例子里，`greeter1`与之前看到的一样。 我们实例化`Greeter`类，并使用这个对象。 与我们之前看到的一样。
 
-Next, we then use the class directly.
-Here we create a new variable called `greeterMaker`.
-This variable will hold the class itself, or said another way its constructor function.
-Here we use `typeof Greeter`, that is "give me the type of the `Greeter` class itself" rather than the instance type.
-Or, more precisely, "give me the type of the symbol called `Greeter`," which is the type of the constructor function.
-This type will contain all of the static members of Greeter along with the constructor that creates instances of the `Greeter` class.
-We show this by using `new` on `greeterMaker`, creating new instances of `Greeter` and invoking them as before.
-It is also good to mention that changing static property is frowned upon, here `greeter3` has `"Hey there!"` instead of `"Hello, there"` on `standardGreeting`.
+再之后，我们直接使用类。 我们创建了一个叫做`greeterMaker`的变量。 这个变量保存了这个类或者说保存了类构造函数。 然后我们使用`typeof Greeter`，意思是取Greeter类的类型，而不是实例的类型。 或者更确切的说，"告诉我`Greeter`标识符的类型"，也就是构造函数的类型。 这个类型包含了类的所有静态成员和构造函数。 之后，就和前面一样，我们在`greeterMaker`上使用`new`，创建`Greeter`的实例。
 
-## Using a class as an interface
+### 把类当做接口使用
 
-As we said in the previous section, a class declaration creates two things: a type representing instances of the class and a constructor function.
-Because classes create types, you can use them in the same places you would be able to use interfaces.
+如上一节里所讲的，类定义会创建两个东西：类的实例类型和一个构造函数。 因为类可以创建出类型，所以你能够在允许使用接口的地方使用类。
 
-```ts twoslash
-// @strict: false
+```typescript
 class Point {
-  x: number;
-  y: number;
+    x: number;
+    y: number;
 }
 
 interface Point3d extends Point {
-  z: number;
+    z: number;
 }
 
-let point3d: Point3d = { x: 1, y: 2, z: 3 };
+let point3d: Point3d = {x: 1, y: 2, z: 3};
 ```
+

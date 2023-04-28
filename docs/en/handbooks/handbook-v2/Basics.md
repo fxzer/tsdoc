@@ -1,11 +1,3 @@
----
-title: The Basics
-layout: docs
-permalink: /docs/handbook/2/basic-types.html
-oneline: "Step one in learning TypeScript: The basic types."
-preamble: >
-  <p>Welcome to the first page of the handbook. If this is your first experience with TypeScript - you may want to start at one of the '<a href='https://www.typescriptlang.org/docs/handbook/intro.html#get-started'>Getting Started</a>' guides</a>
----
 
 Each and every value in JavaScript has a set of behaviors you can observe from running different operations.
 That sounds abstract, but as a quick example, consider some operations we might run on a variable named `message`.

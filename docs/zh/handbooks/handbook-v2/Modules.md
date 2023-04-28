@@ -1,9 +1,3 @@
----
-title: Modules
-layout: docs
-permalink: /docs/handbook/2/modules.html
-oneline: "How JavaScript handles communicating across file boundaries."
----
 
 JavaScript has a long history of different ways to handle modularizing code.
 TypeScript having been around since 2012, has implemented support for a lot of these formats, but over time the community and the JavaScript specification has converged on a format called ES Modules (or ES6 modules). You might know it as the `import`/`export` syntax.

@@ -4,8 +4,8 @@ export default function getNavs() {
     { text: "手册指南", link: "/zh/handbooks/handbook-v2/Basics", },
     { text: "声明文件", link: "/zh/declaration-files/By Example", },
     { text: "参考文献", link: "/zh/reference/Advanced Types" },
-    { text: "项目配置", link: "/zh/tsconfig-reference/" },
-    { text: "文档版本", link: "/zh/release-notes/TypeScript[5.0]" },
+    { text: "项目配置", link: "/zh/tsconfig-reference/options/typeAcquisition/include" },
+    { text: "发布版本", link: "/zh/release-notes/TypeScript[5.0]" },
     {
       text: "在线练习",
       items: [

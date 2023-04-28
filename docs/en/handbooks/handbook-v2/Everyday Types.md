@@ -1,9 +1,3 @@
----
-title: Everyday Types
-layout: docs
-permalink: /docs/handbook/2/everyday-types.html
-oneline: "The language primitives."
----
 
 In this chapter, we'll cover some of the most common types of values you'll find in JavaScript code, and explain the corresponding ways to describe those types in TypeScript.
 This isn't an exhaustive list, and future chapters will describe more ways to name and use other types.

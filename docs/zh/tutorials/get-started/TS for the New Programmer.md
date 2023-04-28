@@ -1,35 +1,27 @@
----
-title: TypeScript for the New Programmer
-short: TS for the New Programmer
-layout: docs
-permalink: /docs/handbook/typescript-from-scratch.html
-oneline: Learn TypeScript from scratch
----
+祝贺您选择 TypeScript 作为您的首选语言之一——您已经做出了正确的决定！
 
-Congratulations on choosing TypeScript as one of your first languages — you're already making good decisions!
+您可能已经听说过 TypeScript 是 JavaScript 的“风味”或“变体”。
+TypeScript (TS) 和 JavaScript (JS) 之间的关系在现代编程语言中相当独特，因此更多地了解这种关系将有助于您了解 TypeScript 如何添加到 JavaScript 中。
 
-You've probably already heard that TypeScript is a "flavor" or "variant" of JavaScript.
-The relationship between TypeScript (TS) and JavaScript (JS) is rather unique among modern programming languages, so learning more about this relationship will help you understand how TypeScript adds to JavaScript.
+## 什么是JavaScript？ 一个简短的历史
 
-## What is JavaScript? A Brief History
+JavaScript（也称为 ECMAScript）最初是一种用于浏览器的简单脚本语言。
+在它被发明的时候，它被期望用于嵌入网页的短代码片段——编写超过几十行的代码有点不寻常。
+因此，早期的网络浏览器执行此类代码的速度非常慢。
+不过，随着时间的推移，JS 变得越来越流行，Web 开发人员开始使用它来创建交互式体验。
 
-JavaScript (also known as ECMAScript) started its life as a simple scripting language for browsers.
-At the time it was invented, it was expected to be used for short snippets of code embedded in a web page — writing more than a few dozen lines of code would have been somewhat unusual.
-Due to this, early web browsers executed such code pretty slowly.
-Over time, though, JS became more and more popular, and web developers started using it to create interactive experiences.
+Web 浏览器开发人员通过优化他们的执行引擎（动态编译）和扩展它的功能（添加 API）来应对 JS 使用的增加，这反过来又使 Web 开发人员更多地使用它。
+在现代网站上，您的浏览器经常运行跨越数十万行代码的应用程序。
+这是“网络”的漫长而渐进的成长过程，从一个简单的静态页面网络开始，演化为各种丰富_应用程序_的平台。
 
-Web browser developers responded to this increased JS usage by optimizing their execution engines (dynamic compilation) and extending what could be done with it (adding APIs), which in turn made web developers use it even more.
-On modern websites, your browser is frequently running applications that span hundreds of thousands of lines of code.
-This is long and gradual growth of "the web", starting as a simple network of static pages, and evolving into a platform for rich _applications_ of all kinds.
+不仅如此，JS 已经变得足够流行，可以在浏览器上下文之外使用，例如使用 node.js 实现 JS 服务器。
+JS 的“随处运行”特性使其成为跨平台开发的有吸引力的选择。
+如今有许多开发人员_仅_使用 JavaScript 来对他们的整个堆栈进行编程！
 
-More than this, JS has become popular enough to be used outside the context of browsers, such as implementing JS servers using node.js.
-The "run anywhere" nature of JS makes it an attractive choice for cross-platform development.
-There are many developers these days that use _only_ JavaScript to program their entire stack!
+总而言之，我们拥有一种专为快速使用而设计的语言，然后发展成为一种成熟的工具来编写具有数百万行的应用程序。
+每种语言都有自己的_怪癖_——怪癖和惊奇，而 JavaScript 的低微起步使其拥有_许多_这样的怪癖。 一些例子：
 
-To summarize, we have a language that was designed for quick uses, and then grew to a full-fledged tool to write applications with millions of lines.
-Every language has its own _quirks_ — oddities and surprises, and JavaScript's humble beginning makes it have _many_ of these. Some examples:
-
-- JavaScript's equality operator (`==`) _coerces_ its arguments, leading to unexpected behavior:
+- JavaScript 的相等运算符 (`==`) _coerces_ 它的参数，导致意外行为：
 
   ```js
   if ("" == 0) {
@@ -40,7 +32,7 @@ Every language has its own _quirks_ — oddities and surprises, and JavaScript's
   }
   ```
 
-- JavaScript also allows accessing properties which aren't present:
+- JavaScript 还允许访问不存在的属性：
 
   ```js
   const obj = { width: 10, height: 15 };
@@ -48,18 +40,18 @@ Every language has its own _quirks_ — oddities and surprises, and JavaScript's
   const area = obj.width * obj.heigth;
   ```
 
-Most programming languages would throw an error when these sorts of errors occur, some would do so during compilation — before any code is running.
-When writing small programs, such quirks are annoying but manageable; when writing applications with hundreds or thousands of lines of code, these constant surprises are a serious problem.
+大多数编程语言会在发生此类错误时抛出错误，有些会在编译期间抛出错误——在任何代码运行之前。
+在编写小程序时，这种怪癖很烦人但可以管理； 在编写包含数百或数千行代码的应用程序时，这些不断出现的意外是一个严重的问题。
 
-## TypeScript: A Static Type Checker
+## TypeScript：静态类型检查器
 
-We said earlier that some languages wouldn't allow those buggy programs to run at all.
-Detecting errors in code without running it is referred to as _static checking_.
-Determining what's an error and what's not based on the kinds of values being operated on is known as static _type_ checking.
+我们之前说过，有些语言根本不允许那些有缺陷的程序运行。
+在不运行代码的情况下检测代码中的错误称为_静态检查_。
+根据正在操作的值的种类来确定什么是错误什么不是错误称为静态类型检查。
 
-TypeScript checks a program for errors before execution, and does so based on the _kinds of values_, making it a _static type checker_.
-For example, the last example above has an error because of the _type_ of `obj`.
-Here's the error TypeScript found:
+TypeScript 在执行前检查程序是否有错误，并根据_类型的值_进行检查，使其成为_静态类型检查器_。
+例如，上面的最后一个示例由于 `obj` 的_type_而出错。
+这是 TypeScript 发现的错误：
 
 ```ts twoslash
 // @errors: 2551
@@ -67,128 +59,89 @@ const obj = { width: 10, height: 15 };
 const area = obj.width * obj.heigth;
 ```
 
-### A Typed Superset of JavaScript
+###  JavaScript 类型超集
 
-How does TypeScript relate to JavaScript, though?
+但是，TypeScript 与 JavaScript 有何关系？
 
-#### Syntax
+#### 语法
 
-TypeScript is a language that is a _superset_ of JavaScript: JS syntax is therefore legal TS.
-Syntax refers to the way we write text to form a program.
-For example, this code has a _syntax_ error because it's missing a `)`:
+TypeScript 是一种语言，是 JavaScript 的_超集_：因此 JS 语法是合法的 TS。
+语法是指我们编写文本以形成程序的方式。
+例如，这段代码有一个_syntax_错误，因为它缺少一个`)`：
 
 ```ts twoslash
 // @errors: 1005
 let a = (4
 ```
 
-TypeScript doesn't consider any JavaScript code to be an error because of its syntax.
-This means you can take any working JavaScript code and put it in a TypeScript file without worrying about exactly how it is written.
+由于其语法，TypeScript 不会将任何 JavaScript 代码视为错误。
+这意味着您可以将任何有效的 JavaScript 代码放入 TypeScript 文件中，而不必担心它的具体编写方式。
 
-#### Types
+#### 类型
 
-However, TypeScript is a _typed_ superset, meaning that it adds rules about how different kinds of values can be used.
-The earlier error about `obj.heigth` was not a _syntax_ error: it is an error of using some kind of value (a _type_) in an incorrect way.
+然而，TypeScript 是一个 _typed_ 超集，这意味着它添加了关于如何使用不同类型的值的规则。
+之前关于  `obj.heigth` 的错误不是 _syntax_ 错误：它是以不正确的方式使用某种值（_type_）的错误。
 
-As another example, this is JavaScript code that you can run in your browser, and it _will_ log a value:
-
+作为另一个示例，这是您可以在浏览器中运行的 JavaScript 代码，它_将_记录一个值：
 ```js
 console.log(4 / []);
 ```
 
-This syntactically-legal program logs `Infinity`.
-TypeScript, though, considers division of number by an array to be a nonsensical operation, and will issue an error:
-
+这个语法上合法的程序记录了`Infinity`。
+但是，TypeScript 将数字除以数组视为无意义的操作，并且会发出错误：
 ```ts twoslash
 // @errors: 2363
 console.log(4 / []);
 ```
 
-It's possible you really _did_ intend to divide a number by an array, perhaps just to see what happens, but most of the time, though, this is a programming mistake.
-TypeScript's type checker is designed to allow correct programs through while still catching as many common errors as possible.
-(Later, we'll learn about settings you can use to configure how strictly TypeScript checks your code.)
+有可能您真的_确实_打算将一个数字除以一个数组，也许只是为了看看会发生什么，但大多数时候，这是一个编程错误。
+TypeScript 的类型检查器旨在允许正确的程序通过，同时仍然捕获尽可能多的常见错误。
+（稍后，我们将了解可用于配置 TypeScript 检查代码的严格程度的设置。）
 
-If you move some code from a JavaScript file to a TypeScript file, you might see _type errors_ depending on how the code is written.
-These may be legitimate problems with the code, or TypeScript being overly conservative.
-Throughout this guide we'll demonstrate how to add various TypeScript syntax to eliminate such errors.
+如果您将一些代码从 JavaScript 文件移动到 TypeScript 文件，您可能会看到_类型错误_，具体取决于代码的编写方式。
+这些可能是代码的合理问题，或者 TypeScript 过于保守。
+在本指南中，我们将演示如何添加各种 TypeScript 语法来消除此类错误。
 
-#### Runtime Behavior
+#### 运行时行为
 
-TypeScript is also a programming language that preserves the _runtime behavior_ of JavaScript.
-For example, dividing by zero in JavaScript produces `Infinity` instead of throwing a runtime exception.
-As a principle, TypeScript **never** changes the runtime behavior of JavaScript code.
+TypeScript 也是一种编程语言，它保留了 JavaScript 的_运行时行为_。
+例如，在 JavaScript 中除以零会产生“Infinity”而不是抛出运行时异常。
+作为一项原则，TypeScript **从不**改变 JavaScript 代码的运行时行为。
 
-This means that if you move code from JavaScript to TypeScript, it is **guaranteed** to run the same way, even if TypeScript thinks that the code has type errors.
+这意味着，如果您将代码从 JavaScript 移至 TypeScript，则**保证**以相同的方式运行，即使 TypeScript 认为代码存在类型错误。
 
-Keeping the same runtime behavior as JavaScript is a foundational promise of TypeScript because it means you can easily transition between the two languages without worrying about subtle differences that might make your program stop working.
+保持与 JavaScript 相同的运行时行为是 TypeScript 的基本承诺，因为这意味着您可以轻松地在两种语言之间转换，而不必担心可能导致程序停止运行的细微差异。
 
-<!--
-Missing subsection on the fact that TS extends JS to add syntax for type
-specification.  (Since the immediately preceding text was raving about
-how JS code can be used in TS.)
--->
+#### 擦除的类型
 
-#### Erased Types
+粗略地说，一旦 TypeScript 的编译器检查完您的代码，它就会_擦除_类型以生成生成的“已编译”代码。
+这意味着一旦你的代码被编译，生成的普通 JS 代码就没有类型信息。
 
-Roughly speaking, once TypeScript's compiler is done with checking your code, it _erases_ the types to produce the resulting "compiled" code.
-This means that once your code is compiled, the resulting plain JS code has no type information.
+这也意味着 TypeScript 永远不会根据它推断的类型更改程序的_行为_。
+最重要的是，虽然您可能会在编译期间看到类型错误，但类型系统本身与程序运行时的工作方式无关。
 
-This also means that TypeScript never changes the _behavior_ of your program based on the types it inferred.
-The bottom line is that while you might see type errors during compilation, the type system itself has no bearing on how your program works when it runs.
+最后，TypeScript 不提供任何额外的运行时库。
+您的程序将使用与 JavaScript 程序相同的标准库（或外部库），因此无需学习额外的 TypeScript 特定框架。
 
-Finally, TypeScript doesn't provide any additional runtime libraries.
-Your programs will use the same standard library (or external libraries) as JavaScript programs, so there's no additional TypeScript-specific framework to learn.
 
-<!--
-Should extend this paragraph to say that there's an exception of
-allowing you to use newer JS features and transpile the code to an older
-JS, and this might add small stubs of functionality when needed.  (Maybe
-with an example --- something like `?.` would be good in showing readers
-that this document is maintained.)
--->
+## 学习 JavaScript 和 TypeScript
 
-## Learning JavaScript and TypeScript
+我们经常会看到“我应该学习 JavaScript 还是 TypeScript？”这个问题。
 
-We frequently see the question "Should I learn JavaScript or TypeScript?".
+答案是不学JavaScript就学不会TypeScript！
+TypeScript 与 JavaScript 共享语法和运行时行为，因此您学习的任何有关 JavaScript 的知识都可以同时帮助您学习 TypeScript。
 
-The answer is that you can't learn TypeScript without learning JavaScript!
-TypeScript shares syntax and runtime behavior with JavaScript, so anything you learn about JavaScript is helping you learn TypeScript at the same time.
+有很多资源可供程序员学习 JavaScript； 如果您正在编写 TypeScript，您不应该_忽略这些资源。
+例如，标记为“javascript”的 StackOverflow 问题比“typescript”多 20 倍，但_所有_的“javascript”问题也适用于 TypeScript。
 
-There are many, many resources available for programmers to learn JavaScript; you should _not_ ignore these resources if you're writing TypeScript.
-For example, there are about 20 times more StackOverflow questions tagged `javascript` than `typescript`, but _all_ of the `javascript` questions also apply to TypeScript.
+如果您发现自己正在搜索诸如“如何在 TypeScript 中对列表进行排序”之类的内容，请记住：**TypeScript 是带有编译时类型检查器的 JavaScript 运行时**。
+在 TypeScript 中对列表进行排序的方式与在 JavaScript 中排序的方式相同。
+如果您找到直接使用 TypeScript 的资源，那也很好，但不要局限于认为您需要特定于 TypeScript 的答案来解决有关如何完成运行时任务的日常问题。
 
-If you find yourself searching for something like "how to sort a list in TypeScript", remember: **TypeScript is JavaScript's runtime with a compile-time type checker**.
-The way you sort a list in TypeScript is the same way you do so in JavaScript.
-If you find a resource that uses TypeScript directly, that's great too, but don't limit yourself to thinking you need TypeScript-specific answers for everyday questions about how to accomplish runtime tasks.
 
-## Next Steps
+## 下一步
 
-This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
+这是对日常 TypeScript 中使用的语法和工具的简要概述。 从这里，您可以：
 
-- Learn some of the JavaScript fundamentals, we recommend either:
-
-  - [Microsoft's JavaScript Resources](https://docs.microsoft.com/javascript/) or
-  - [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide)
-
-- Continue to [TypeScript for JavaScript Programmers](/tutorials/TypeScript%20Tooling%20in%205%20minutes)
-- Read the full Handbook <a href="/handbooks/handbook-v2/Basics">from start to finish</a>
-- Explore the [Playground examples](https://www.typescriptlang.org/play#show-examples)
-
-<!-- Note: I'll be happy to write the following... -->
-<!--
-## Types
-
-    * What's a type? (For newbies)
-      * A type is a *kind* of value
-      * Types implicitly define what operations make sense on them
-      * Lots of different kinds, not just primitives
-      * We can make descriptions for all kinds of values
-      * The `any` type -- a quick desctiption, what it is, and why it's bad
-    * Inference 101
-      * Examples
-      * TypeScript can figure out types most of the time
-      * Two places we'll ask you what the type is: Function boundaries, and later-initialized values
-    * Co-learning JavaScript
-      * You can+should read existing JS resources
-      * Just paste it in and see what happens
-      * Consider turning off 'strict' -->
+- <a href="/handbooks/handbook-v2/Basics">阅读完整手册</a>
+- [案例探索](https://www.typescriptlang.org/play#show-examples)

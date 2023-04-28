@@ -1,38 +1,3 @@
----
-title: "Module: Plugin"
-layout: docs
-permalink: /docs/handbook/declaration-files/templates/module-plugin-d-ts.html
----
-# module-plugin.d.ts
-For example, when you want to work with JavaScript code which extends another library.
-
-```ts
-import { greeter } from "super-greeter";
-
-// Normal Greeter API
-greeter(2);
-greeter("Hello world");
-
-// Now we extend the object with a new function at runtime
-import "hyper-super-greeter";
-greeter.hyperGreet();
-```
-
-The definition for "super-greeter":
-
-```ts
-/*~ This example shows how to have multiple overloads for your function */
-export interface GreeterFunction {
-  (name: string): void
-  (time: number): void
-}
-
-/*~ This example shows how to export a function specified by an interface */
-export const greeter: GreeterFunction;
-```
-
-We can extend the existing module like the following:
-
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
 // Project: [~THE PROJECT NAME~]
@@ -45,23 +10,27 @@ We can extend the existing module like the following:
  */
 
 /*~ On this line, import the module which this module adds to */
-import { greeter } from "super-greeter";
+import * as m from 'someModule';
 
-/*~ Here, declare the same module as the one you imported above
- *~ then we expand the existing declaration of the greeter function
- */
-export module "super-greeter" {
-  export interface GreeterFunction {
-    /** Greets even better! */
-    hyperGreet(): void;
-  }
+/*~ You can also import other modules if needed */
+import * as other from 'anotherModule';
+
+/*~ Here, declare the same module as the one you imported above */
+declare module 'someModule' {
+    /*~ Inside, add new function, classes, or variables. You can use
+     *~ unexported types from the original module if needed. */
+    export function theNewMethod(x: m.foo): other.bar;
+
+    /*~ You can also add new properties to existing interfaces from
+     *~ the original module by writing interface augmentations */
+    export interface SomeModuleOptions {
+        someModuleSetting?: string;
+    }
+
+    /*~ New types can also be declared and will appear as if they
+     *~ are in the original module */
+    export interface MyModulePluginOptions {
+        size: number;
+    }
 }
 ```
-
-This uses   <a href="/reference/Declaration Merging" >Declaration merging </a>
-
-## The Impact of ES6 on Module Plugins
-
-Some plugins add or modify top-level exports on existing modules.
-While this is legal in CommonJS and other loaders, ES6 modules are considered immutable and this pattern will not be possible.
-Because TypeScript is loader-agnostic, there is no compile-time enforcement of this policy, but developers intending to transition to an ES6 module loader should be aware of this.

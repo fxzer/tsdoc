@@ -1,11 +1,3 @@
----
-title: Interfaces
-layout: docs
-permalink: /docs/handbook/interfaces.html
-oneline: How to write an interface with TypeScript
-handbook: "true"
-deprecated_by: /docs/handbook/2/objects.html
----
 
 One of TypeScript's core principles is that type checking focuses on the _shape_ that values have.
 This is sometimes called "duck typing" or "structural subtyping".

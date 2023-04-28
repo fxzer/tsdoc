@@ -3,7 +3,6 @@ layout: home
 hero:
   name: TSDoc
   text: VitePress Front-End Learning Collection
-  # tagline: "座右铭: "
   image:
     src: https://zerdocs.oss-cn-shanghai.aliyuncs.com/interview/202304181505379.webp
     alt: TSDoc

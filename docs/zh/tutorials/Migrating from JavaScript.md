@@ -1,442 +1,234 @@
----
-title: Migrating from JavaScript
-layout: docs
-permalink: /docs/handbook/migrating-from-javascript.html
-oneline: How to migrate from JavaScript to TypeScript
----
+# React与webpack
 
-TypeScript doesn't exist in a vacuum.
-It was built with the JavaScript ecosystem in mind, and a lot of JavaScript exists today.
-Converting a JavaScript codebase over to TypeScript is, while somewhat tedious, usually not challenging.
-In this tutorial, we're going to look at how you might start out.
-We assume you've read enough of the handbook to write new TypeScript code.
+这篇指南将会教你如何将TypeScript和[React](https://reactjs.org/)还有[webpack](http://webpack.github.io/)结合在一起使用。
 
-If you're looking to convert a React project, we recommend looking at the [React Conversion Guide](https://github.com/Microsoft/TypeScript-React-Conversion-Guide#typescript-react-conversion-guide) first.
+如果你正在做一个全新的工程，可以先阅读这篇[React快速上手指南](react.md)。
 
-## Setting up your Directories
+否则，我们假设已经在使用[Node.js](https://nodejs.org/)和[npm](https://www.npmjs.com/)。
 
-If you're writing in plain JavaScript, it's likely that you're running your JavaScript directly,
-where your `.js` files are in a `src`, `lib`, or `dist` directory, and then ran as desired.
+## 初始化项目结构
 
-If that's the case, the files that you've written are going to be used as inputs to TypeScript, and you'll run the outputs it produces.
-During our JS to TS migration, we'll need to separate our input files to prevent TypeScript from overwriting them.
-If your output files need to reside in a specific directory, then that will be your output directory.
-
-You might also be running some intermediate steps on your JavaScript, such as bundling or using another transpiler like Babel.
-In this case, you might already have a folder structure like this set up.
-
-From this point on, we're going to assume that your directory is set up something like this:
+让我们新建一个目录。 将会命名为`proj`，但是你可以改成任何你喜欢的名字。
 
 ```
-projectRoot
-├── src
-│   ├── file1.js
-│   └── file2.js
-├── built
-└── tsconfig.json
+mkdir proj
+cd proj
 ```
 
-If you have a `tests` folder outside of your `src` directory, you might have one `tsconfig.json` in `src`, and one in `tests` as well.
+我们会像下面的结构组织我们的工程：
 
-## Writing a Configuration File
+```
+proj/
+├─ dist/
+└─ src/
+   └─ components/
+```
 
-TypeScript uses a file called `tsconfig.json` for managing your project's options, such as which files you want to include, and what sorts of checking you want to perform.
-Let's create a bare-bones one for our project:
+TypeScript文件会放在`src`文件夹里，通过TypeScript编译器编译，然后经webpack处理，最后生成一个`main.js`文件放在`dist`目录下。 我们自定义的组件将会放在`src/components`文件夹下。
 
-```json
+下面来创建基本结构：
+
+```
+mkdir src
+cd src
+mkdir components
+cd ..
+```
+
+Webpack会帮助我们生成`dist`目录。
+
+## 初始化工程
+
+现在把这个目录变成npm包。
+
+```
+npm init -y
+```
+
+它会使用默认值生成一个`package.json`文件。
+
+## 安装依赖
+
+首先确保已经全局安装了Webpack。
+
+```
+npm install --save-dev webpack webpack-cli
+```
+
+Webpack这个工具可以将你的所有代码和可选择地将依赖捆绑成一个单独的`.js`文件。
+
+现在我们添加React和React-DOM以及它们的声明文件到`package.json`文件里做为依赖：
+
+```
+npm install --save react react-dom
+npm install --save-dev @types/react @types/react-dom
+```
+
+使用`@types/`前缀表示我们额外要获取React和React-DOM的声明文件。 通常当你导入像`"react"`这样的路径，它会查看`react`包； 然而，并不是所有的包都包含了声明文件，所以TypeScript还会查看`@types/react`包。 你会发现我们以后将不必在意这些。
+
+接下来，我们要添加开发时依赖[ts-loader](https://www.npmjs.com/package/ts-loader)和[source-map-loader](https://www.npmjs.com/package/source-map-loader)。
+
+```
+npm install --save-dev typescript ts-loader source-map-loader
+```
+
+这些依赖会让TypeScript和webpack在一起良好地工作。 `ts-loader`可以让Webpack使用TypeScript的标准配置文件`tsconfig.json`编译TypeScript代码。 source-map-loader使用TypeScript输出的sourcemap文件来告诉webpack何时生成_自己的_sourcemaps。 这就允许你在调试最终生成的文件时就好像在调试TypeScript源码一样。
+
+请注意，`ts-loader`并不是唯一的`TypeScript`加载器。
+
+你还可以选择[awesome-typescript-loader](https://www.npmjs.com/package/awesome-typescript-loader)。 可以到[这里](https://github.com/s-panferov/awesome-typescript-loader#differences-between-ts-loader)查看它们之间的区别。
+
+注意我们安装TypeScript为一个开发依赖。 我们还可以使用`npm link typescript`来链接TypeScript到一个全局拷贝，但这不是常见用法。
+
+## 添加TypeScript配置文件
+
+我们想将TypeScript文件整合到一起 - 这包括我们写的源码和必要的声明文件。
+
+我们需要创建一个`tsconfig.json`文件，它包含了输入文件列表以及编译选项。 在工程根目录下新建文件`tsconfig.json`文件，添加以下内容：
+
+```javascript
 {
-  "compilerOptions": {
-    "outDir": "./built",
-    "allowJs": true,
-    "target": "es5"
-  },
-  "include": ["./src/**/*"]
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es6",
+        "jsx": "react"
+    }
 }
 ```
 
-Here we're specifying a few things to TypeScript:
+你可以在[这里](../project-config/tsconfig.json.md)了解更多关于`tsconfig.json`文件的说明。
 
-1. Read in any files it understands in the `src` directory (with [`include`](/tsconfig#include)).
-2. Accept JavaScript files as inputs (with [`allowJs`](/tsconfig#allowJs)).
-3. Emit all of the output files in `built` (with [`outDir`](/tsconfig#outDir)).
-4. Translate newer JavaScript constructs down to an older version like ECMAScript 5 (using [`target`](/tsconfig#target)).
+## 写些代码
 
-At this point, if you try running `tsc` at the root of your project, you should see output files in the `built` directory.
-The layout of files in `built` should look identical to the layout of `src`.
-You should now have TypeScript working with your project.
+下面使用React写一段TypeScript代码。 首先，在`src/components`目录下创建一个名为`Hello.tsx`的文件，代码如下：
 
-## Early Benefits
+```typescript
+import * as React from "react";
 
-Even at this point you can get some great benefits from TypeScript understanding your project.
-If you open up an editor like [VS Code](https://code.visualstudio.com) or [Visual Studio](https://visualstudio.com), you'll see that you can often get some tooling support like completion.
-You can also catch certain bugs with options like:
+export interface HelloProps { compiler: string; framework: string; }
 
-- [`noImplicitReturns`](/tsconfig#noImplicitReturns) which prevents you from forgetting to return at the end of a function.
-- [`noFallthroughCasesInSwitch`](/tsconfig#noFallthroughCasesInSwitch) which is helpful if you never want to forget a `break` statement between `case`s in a `switch` block.
-
-TypeScript will also warn about unreachable code and labels, which you can disable with [`allowUnreachableCode`](/tsconfig#allowUnreachableCode) and [`allowUnusedLabels`](/tsconfig#allowUnusedLabels) respectively.
-
-## Integrating with Build Tools
-
-You might have some more build steps in your pipeline.
-Perhaps you concatenate something to each of your files.
-Each build tool is different, but we'll do our best to cover the gist of things.
-
-## Gulp
-
-If you're using Gulp in some fashion, we have a tutorial on [using Gulp](/docs/handbook/gulp.html) with TypeScript, and integrating with common build tools like Browserify, Babelify, and Uglify.
-You can read more there.
-
-## Webpack
-
-Webpack integration is pretty simple.
-You can use `ts-loader`, a TypeScript loader, combined with `source-map-loader` for easier debugging.
-Simply run
-
-```shell
-npm install ts-loader source-map-loader
+export const Hello = (props: HelloProps) => <h1>Hello from {props.compiler} and {props.framework}!</h1>;
 ```
 
-and merge in options from the following into your `webpack.config.js` file:
+注意这个例子使用了[函数组件](https://reactjs.org/docs/components-and-props.html#functional-and-class-components)，我们可以让它更像一点_类_。
 
-```js
+```typescript
+import * as React from "react";
+
+export interface HelloProps { compiler: string; framework: string; }
+
+// 'HelloProps' describes the shape of props.
+// State is never set so we use the '{}' type.
+export class Hello extends React.Component<HelloProps, {}> {
+    render() {
+        return <h1>Hello from {this.props.compiler} and {this.props.framework}!</h1>;
+    }
+}
+```
+
+接下来，在`src`下创建`index.tsx`文件，源码如下：
+
+```typescript
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+
+import { Hello } from "./components/Hello";
+
+ReactDOM.render(
+    <Hello compiler="TypeScript" framework="React" />,
+    document.getElementById("example")
+);
+```
+
+我们仅仅将`Hello`组件导入`index.tsx`。 注意，不同于`"react"`或`"react-dom"`，我们使用`Hello.tsx`的_相对路径_ - 这很重要。 如果不这样做，TypeScript只会尝试在`node_modules`文件夹里查找。
+
+我们还需要一个页面来显示`Hello`组件。 在根目录`proj`创建一个名为`index.html`的文件，如下：
+
+```
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Hello React!</title>
+    </head>
+    <body>
+        <div id="example"></div>
+
+        <!-- Dependencies -->
+        <script src="./node_modules/react/umd/react.development.js"></script>
+        <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+
+        <!-- Main -->
+        <script src="./dist/main.js"></script>
+    </body>
+</html>
+```
+
+需要注意一点我们是从`node_modules`引入的文件。 React和React-DOM的npm包里包含了独立的`.js`文件，你可以在页面上引入它们，这里我们为了快捷就直接引用了。 可以随意地将它们拷贝到其它目录下，或者从CDN上引用。 Facebook在CND上提供了一系列可用的React版本，你可以在这里查看[更多内容](http://facebook.github.io/react/downloads.html#development-vs.-production-builds)。
+
+## 创建一个webpack配置文件
+
+在工程根目录下创建一个`webpack.config.js`文件。
+
+```javascript
 module.exports = {
-  entry: "./src/index.ts",
-  output: {
-    filename: "./dist/bundle.js",
-  },
+    mode: "production",
 
-  // Enable sourcemaps for debugging webpack's output.
-  devtool: "source-map",
+    // Enable sourcemaps for debugging webpack's output.
+    devtool: "source-map",
 
-  resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
-  },
+    resolve: {
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: [".ts", ".tsx"]
+    },
 
-  module: {
-    rules: [
-      // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
-      { test: /\.tsx?$/, loader: "ts-loader" },
+    module: {
+        rules: [
+            {
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "ts-loader"
+                    }
+                ]
+            },
+            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            }
+        ]
+    },
 
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { test: /\.js$/, loader: "source-map-loader" },
-    ],
-  },
-
-  // Other options...
+    // When importing a module whose path matches one of the following, just
+    // assume a corresponding global variable exists and use that instead.
+    // This is important because it allows us to avoid bundling all of our
+    // dependencies, which allows browsers to cache those libraries between builds.
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
+    }
 };
 ```
 
-It's important to note that ts-loader will need to run before any other loader that deals with `.js` files.
+大家可能对`externals`字段有所疑惑。 我们想要避免把所有的React都放到一个文件里，因为会增加编译时间并且浏览器还能够缓存没有发生改变的库文件。
 
-The same goes for [awesome-typescript-loader](https://github.com/TypeStrong/ts-loader), another TypeScript loader for Webpack.
-You can read more about the differences between the two [here](https://github.com/s-panferov/awesome-typescript-loader#differences-between-ts-loader).
+理想情况下，我们只需要在浏览器里引入React模块，但是大部分浏览器还没有支持模块。 因此大部分代码库会把自己包裹在一个单独的全局变量内，比如：`jQuery`或`_`。 这叫做“命名空间”模式，webpack也允许我们继续使用通过这种方式写的代码库。 通过我们的设置`"react": "React"`，webpack会神奇地将所有对`"react"`的导入转换成从`React`全局变量中加载。
 
-You can see an example of using Webpack in our [tutorial on React and Webpack](/docs/handbook/react-&-webpack.html).
+你可以在[这里](https://webpack.js.org/concepts)了解更多如何配置webpack。
 
-## Moving to TypeScript Files
+## 整合在一起
 
-At this point, you're probably ready to start using TypeScript files.
-The first step is to rename one of your `.js` files to `.ts`.
-If your file uses JSX, you'll need to rename it to `.tsx`.
+执行：
 
-Finished with that step?
-Great!
-You've successfully migrated a file from JavaScript to TypeScript!
-
-Of course, that might not feel right.
-If you open that file in an editor with TypeScript support (or if you run `tsc --pretty`), you might see red squiggles on certain lines.
-You should think of these the same way you'd think of red squiggles in an editor like Microsoft Word.
-TypeScript will still translate your code, just like Word will still let you print your documents.
-
-If that sounds too lax for you, you can tighten that behavior up.
-If, for instance, you _don't_ want TypeScript to compile to JavaScript in the face of errors, you can use the [`noEmitOnError`](/tsconfig#noEmitOnError) option.
-In that sense, TypeScript has a dial on its strictness, and you can turn that knob up as high as you want.
-
-If you plan on using the stricter settings that are available, it's best to turn them on now (see [Getting Stricter Checks](#getting-stricter-checks) below).
-For instance, if you never want TypeScript to silently infer `any` for a type without you explicitly saying so, you can use [`noImplicitAny`](/tsconfig#noImplicitAny) before you start modifying your files.
-While it might feel somewhat overwhelming, the long-term gains become apparent much more quickly.
-
-## Weeding out Errors
-
-Like we mentioned, it's not unexpected to get error messages after conversion.
-The important thing is to actually go one by one through these and decide how to deal with the errors.
-Often these will be legitimate bugs, but sometimes you'll have to explain what you're trying to do a little better to TypeScript.
-
-### Importing from Modules
-
-You might start out getting a bunch of errors like `Cannot find name 'require'.`, and `Cannot find name 'define'.`.
-In these cases, it's likely that you're using modules.
-While you can just convince TypeScript that these exist by writing out
-
-```ts
-// For Node/CommonJS
-declare function require(path: string): any;
+```
+npx webpack
 ```
 
-or
+在浏览器里打开`index.html`，工程应该已经可以用了！ 你可以看到页面上显示着“Hello from TypeScript and React!”
 
-```ts
-// For RequireJS/AMD
-declare function define(...args: any[]): any;
-```
-
-it's better to get rid of those calls and use TypeScript syntax for imports.
-
-First, you'll need to enable some module system by setting TypeScript's [`module`](/tsconfig#module) option.
-Valid options are `commonjs`, `amd`, `system`, and `umd`.
-
-If you had the following Node/CommonJS code:
-
-```js
-var foo = require("foo");
-
-foo.doStuff();
-```
-
-or the following RequireJS/AMD code:
-
-```js
-define(["foo"], function (foo) {
-  foo.doStuff();
-});
-```
-
-then you would write the following TypeScript code:
-
-```ts
-import foo = require("foo");
-
-foo.doStuff();
-```
-
-### Getting Declaration Files
-
-If you started converting over to TypeScript imports, you'll probably run into errors like `Cannot find module 'foo'.`.
-The issue here is that you likely don't have _declaration files_ to describe your library.
-Luckily this is pretty easy.
-If TypeScript complains about a package like `lodash`, you can just write
-
-```shell
-npm install -S @types/lodash
-```
-
-If you're using a module option other than `commonjs`, you'll need to set your [`moduleResolution`](/tsconfig#moduleResolution) option to `node`.
-
-After that, you'll be able to import lodash with no issues, and get accurate completions.
-
-### Exporting from Modules
-
-Typically, exporting from a module involves adding properties to a value like `exports` or `module.exports`.
-TypeScript allows you to use top-level export statements.
-For instance, if you exported a function like so:
-
-```js
-module.exports.feedPets = function (pets) {
-  // ...
-};
-```
-
-you could write that out as the following:
-
-```ts
-export function feedPets(pets) {
-  // ...
-}
-```
-
-Sometimes you'll entirely overwrite the exports object.
-This is a common pattern people use to make their modules immediately callable like in this snippet:
-
-```js
-var express = require("express");
-var app = express();
-```
-
-You might have previously written that like so:
-
-```js
-function foo() {
-  // ...
-}
-module.exports = foo;
-```
-
-In TypeScript, you can model this with the `export =` construct.
-
-```ts
-function foo() {
-  // ...
-}
-export = foo;
-```
-
-### Too many/too few arguments
-
-You'll sometimes find yourself calling a function with too many/few arguments.
-Typically, this is a bug, but in some cases, you might have declared a function that uses the `arguments` object instead of writing out any parameters:
-
-```js
-function myCoolFunction() {
-  if (arguments.length == 2 && !Array.isArray(arguments[1])) {
-    var f = arguments[0];
-    var arr = arguments[1];
-    // ...
-  }
-  // ...
-}
-
-myCoolFunction(
-  function (x) {
-    console.log(x);
-  },
-  [1, 2, 3, 4]
-);
-myCoolFunction(
-  function (x) {
-    console.log(x);
-  },
-  1,
-  2,
-  3,
-  4
-);
-```
-
-In this case, we need to use TypeScript to tell any of our callers about the ways `myCoolFunction` can be called using function overloads.
-
-```ts
-function myCoolFunction(f: (x: number) => void, nums: number[]): void;
-function myCoolFunction(f: (x: number) => void, ...nums: number[]): void;
-function myCoolFunction() {
-  if (arguments.length == 2 && !Array.isArray(arguments[1])) {
-    var f = arguments[0];
-    var arr = arguments[1];
-    // ...
-  }
-  // ...
-}
-```
-
-We added two overload signatures to `myCoolFunction`.
-The first checks states that `myCoolFunction` takes a function (which takes a `number`), and then a list of `number`s.
-The second one says that it will take a function as well, and then uses a rest parameter (`...nums`) to state that any number of arguments after that need to be `number`s.
-
-### Sequentially Added Properties
-
-Some people find it more aesthetically pleasing to create an object and add properties immediately after like so:
-
-```js
-var options = {};
-options.color = "red";
-options.volume = 11;
-```
-
-TypeScript will say that you can't assign to `color` and `volume` because it first figured out the type of `options` as `{}` which doesn't have any properties.
-If you instead moved the declarations into the object literal themselves, you'd get no errors:
-
-```ts
-let options = {
-  color: "red",
-  volume: 11,
-};
-```
-
-You could also define the type of `options` and add a type assertion on the object literal.
-
-```ts
-interface Options {
-  color: string;
-  volume: number;
-}
-
-let options = {} as Options;
-options.color = "red";
-options.volume = 11;
-```
-
-Alternatively, you can just say `options` has the type `any` which is the easiest thing to do, but which will benefit you the least.
-
-### `any`, `Object`, and `{}`
-
-You might be tempted to use `Object` or `{}` to say that a value can have any property on it because `Object` is, for most purposes, the most general type.
-However **`any` is actually the type you want to use** in those situations, since it's the most _flexible_ type.
-
-For instance, if you have something that's typed as `Object` you won't be able to call methods like `toLowerCase()` on it.
-Being more general usually means you can do less with a type, but `any` is special in that it is the most general type while still allowing you to do anything with it.
-That means you can call it, construct it, access properties on it, etc.
-Keep in mind though, whenever you use `any`, you lose out on most of the error checking and editor support that TypeScript gives you.
-
-If a decision ever comes down to `Object` and `{}`, you should prefer `{}`.
-While they are mostly the same, technically `{}` is a more general type than `Object` in certain esoteric cases.
-
-## Getting Stricter Checks
-
-TypeScript comes with certain checks to give you more safety and analysis of your program.
-Once you've converted your codebase to TypeScript, you can start enabling these checks for greater safety.
-
-### No Implicit `any`
-
-There are certain cases where TypeScript can't figure out what certain types should be.
-To be as lenient as possible, it will decide to use the type `any` in its place.
-While this is great for migration, using `any` means that you're not getting any type safety, and you won't get the same tooling support you'd get elsewhere.
-You can tell TypeScript to flag these locations down and give an error with the [`noImplicitAny`](/tsconfig#noImplicitAny) option.
-
-### Strict `null` & `undefined` Checks
-
-By default, TypeScript assumes that `null` and `undefined` are in the domain of every type.
-That means anything declared with the type `number` could be `null` or `undefined`.
-Since `null` and `undefined` are such a frequent source of bugs in JavaScript and TypeScript, TypeScript has the [`strictNullChecks`](/tsconfig#strictNullChecks) option to spare you the stress of worrying about these issues.
-
-When [`strictNullChecks`](/tsconfig#strictNullChecks) is enabled, `null` and `undefined` get their own types called `null` and `undefined` respectively.
-Whenever anything is _possibly_ `null`, you can use a union type with the original type.
-So for instance, if something could be a `number` or `null`, you'd write the type out as `number | null`.
-
-If you ever have a value that TypeScript thinks is possibly `null`/`undefined`, but you know better, you can use the postfix `!` operator to tell it otherwise.
-
-```ts
-declare var foo: string[] | null;
-
-foo.length; // error - 'foo' is possibly 'null'
-
-foo!.length; // okay - 'foo!' just has type 'string[]'
-```
-
-As a heads up, when using [`strictNullChecks`](/tsconfig#strictNullChecks), your dependencies may need to be updated to use [`strictNullChecks`](/tsconfig#strictNullChecks) as well.
-
-### No Implicit `any` for `this`
-
-When you use the `this` keyword outside of classes, it has the type `any` by default.
-For instance, imagine a `Point` class, and imagine a function that we wish to add as a method:
-
-```ts
-class Point {
-  constructor(public x, public y) {}
-  getDistance(p: Point) {
-    let dx = p.x - this.x;
-    let dy = p.y - this.y;
-    return Math.sqrt(dx ** 2 + dy ** 2);
-  }
-}
-// ...
-
-// Reopen the interface.
-interface Point {
-  distanceFromOrigin(): number;
-}
-Point.prototype.distanceFromOrigin = function () {
-  return this.getDistance({ x: 0, y: 0 });
-};
-```
-
-This has the same problems we mentioned above - we could easily have misspelled `getDistance` and not gotten an error.
-For this reason, TypeScript has the [`noImplicitThis`](/tsconfig#noImplicitThis) option.
-When that option is set, TypeScript will issue an error when `this` is used without an explicit (or inferred) type.
-The fix is to use a `this`-parameter to give an explicit type in the interface or in the function itself:
-
-```ts
-Point.prototype.distanceFromOrigin = function (this: Point) {
-  return this.getDistance({ x: 0, y: 0 });
-};
-```

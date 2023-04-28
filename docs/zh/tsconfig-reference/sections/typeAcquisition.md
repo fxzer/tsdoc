@@ -1,3 +1,3 @@
 ## Type Acquisition
 
-Type Acquisition is only important for JavaScript projects. In TypeScript projects you need to include the types in your projects explicitly. However, for JavaScript projects, the TypeScript tooling will download types for your modules in the background and outside of your node_modules folder.
+类型获取仅对JavaScript项目很重要。在TypeScript项目中，您需要显式地将类型包含在项目中。但是，对于JavaScript项目，TypeScript工具将在后台和node_modules文件夹之外下载模块的类型。

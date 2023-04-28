@@ -1,163 +1,93 @@
----
-title: Type Inference
-layout: docs
-permalink: /docs/handbook/type-inference.html
-oneline: How code flow analysis works in TypeScript
-translatable: true
----
+# 类型推论
 
-In TypeScript, there are several places where type inference is used to provide type information when there is no explicit type annotation. For example, in this code
+## 介绍
 
-```ts twoslash
+这节介绍TypeScript里的类型推论。即，类型是在哪里如何被推断的。
+
+## 基础
+
+TypeScript里，在有些没有明确指出类型的地方，类型推论会帮助提供类型。如下面的例子
+
+```typescript
 let x = 3;
-//  ^?
 ```
 
-The type of the `x` variable is inferred to be `number`.
-This kind of inference takes place when initializing variables and members, setting parameter default values, and determining function return types.
+变量`x`的类型被推断为数字。 这种推断发生在初始化变量和成员，设置默认参数值和决定函数返回值时。
 
-In most cases, type inference is straightforward.
-In the following sections, we'll explore some of the nuances in how types are inferred.
+大多数情况下，类型推论是直截了当地。 后面的小节，我们会浏览类型推论时的细微差别。
 
-## Best common type
+## 最佳通用类型
 
-When a type inference is made from several expressions, the types of those expressions are used to calculate a "best common type". For example,
+当需要从几个表达式中推断类型时候，会使用这些表达式的类型来推断出一个最合适的通用类型。例如，
 
-```ts twoslash
+```typescript
 let x = [0, 1, null];
-//  ^?
 ```
 
-To infer the type of `x` in the example above, we must consider the type of each array element.
-Here we are given two choices for the type of the array: `number` and `null`.
-The best common type algorithm considers each candidate type, and picks the type that is compatible with all the other candidates.
+为了推断`x`的类型，我们必须考虑所有元素的类型。 这里有两种选择：`number`和`null`。 计算通用类型算法会考虑所有的候选类型，并给出一个兼容所有候选类型的类型。
 
-Because the best common type has to be chosen from the provided candidate types, there are some cases where types share a common structure, but no one type is the super type of all candidate types. For example:
+由于最终的通用类型取自候选类型，有些时候候选类型共享相同的通用类型，但是却没有一个类型能做为所有候选类型的类型。例如：
 
-```ts twoslash
-// @strict: false
-class Animal {}
-class Rhino extends Animal {
-  hasHorn: true;
-}
-class Elephant extends Animal {
-  hasTrunk: true;
-}
-class Snake extends Animal {
-  hasLegs: false;
-}
-// ---cut---
+```typescript
 let zoo = [new Rhino(), new Elephant(), new Snake()];
-//    ^?
 ```
 
-Ideally, we may want `zoo` to be inferred as an `Animal[]`, but because there is no object that is strictly of type `Animal` in the array, we make no inference about the array element type.
-To correct this, instead explicitly provide the type when no one type is a super type of all other candidates:
+这里，我们想让zoo被推断为`Animal[]`类型，但是这个数组里没有对象是`Animal`类型的，因此不能推断出这个结果。 为了更正，当候选类型不能使用的时候我们需要明确的指出类型：
 
-```ts twoslash
-// @strict: false
-class Animal {}
-class Rhino extends Animal {
-  hasHorn: true;
-}
-class Elephant extends Animal {
-  hasTrunk: true;
-}
-class Snake extends Animal {
-  hasLegs: false;
-}
-// ---cut---
+```typescript
 let zoo: Animal[] = [new Rhino(), new Elephant(), new Snake()];
-//    ^?
 ```
 
-When no best common type is found, the resulting inference is the union array type, `(Rhino | Elephant | Snake)[]`.
+如果没有找到最佳通用类型的话，类型推断的结果为联合数组类型，`(Rhino | Elephant | Snake)[]`。
 
-## Contextual Typing
+## 上下文归类
 
-Type inference also works in "the other direction" in some cases in TypeScript.
-This is known as "contextual typing". Contextual typing occurs when the type of an expression is implied by its location. For example:
+TypeScript类型推论也可能按照相反的方向进行。 这被叫做“上下文归类”。按上下文归类会发生在表达式的类型与所处的位置相关时。比如：
 
-```ts twoslash
-// @errors: 2339
-window.onmousedown = function (mouseEvent) {
-  console.log(mouseEvent.button);
-  console.log(mouseEvent.kangaroo);
+```typescript
+window.onmousedown = function(mouseEvent) {
+    console.log(mouseEvent.button);   //<- OK
+    console.log(mouseEvent.kangaroo); //<- Error!
 };
 ```
 
-Here, the TypeScript type checker used the type of the `Window.onmousedown` function to infer the type of the function expression on the right hand side of the assignment.
-When it did so, it was able to infer the [type](https://developer.mozilla.org/docs/Web/API/MouseEvent) of the `mouseEvent` parameter, which does contain a `button` property, but not a `kangaroo` property.
+在这个例子里，TypeScript类型检查器会使用`Window.onmousedown`函数的类型来推断右边函数表达式的类型。 所以它能够推断出`mouseEvent`参数的[类型](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent)中包含了`button`属性而不包含`kangaroo`属性。
 
-This works because window already has `onmousedown` declared in its type:
+TypeScript还能够很好地推断出其它上下文中的类型。
 
-```ts
-// Declares there is a global variable called 'window'
-declare var window: Window & typeof globalThis;
-
-// Which is declared as (simplified):
-interface Window extends GlobalEventHandlers {
-  // ...
-}
-
-// Which defines a lot of known handler events
-interface GlobalEventHandlers {
-  onmousedown: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
-  // ...
+```typescript
+window.onscroll = function(uiEvent) {
+    console.log(uiEvent.button); //<- Error!
 }
 ```
 
-TypeScript is smart enough to infer types in other contexts as well:
+上面的函数被赋值给`window.onscroll`，`TypeScript`能够知道`uiEvent`是[UIEvent](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent)，而不是[MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent)。`UIEvent`对象不包含`button`属性，因此TypeScript会报错。
 
-```ts twoslash
-// @errors: 2339
-window.onscroll = function (uiEvent) {
-  console.log(uiEvent.button);
+如果这个函数不是在上下文归类的位置上，那么这个函数的参数类型将隐式的成为`any`类型，而且也不会报错（除非你开启了`--noImplicitAny`选项）：
+
+```typescript
+const handler = function(uiEvent) {
+    console.log(uiEvent.button); //<- OK
+}
+```
+
+我们也可以明确地为函数参数类型赋值来覆写上下文类型：
+
+```typescript
+window.onscroll = function(uiEvent: any) {
+    console.log(uiEvent.button);  //<- Now, no error is given
 };
 ```
 
-Based on the fact that the above function is being assigned to `Window.onscroll`, TypeScript knows that `uiEvent` is a [UIEvent](https://developer.mozilla.org/docs/Web/API/UIEvent), and not a [MouseEvent](https://developer.mozilla.org/docs/Web/API/MouseEvent) like the previous example. `UIEvent` objects contain no `button` property, and so TypeScript will throw an error.
+但这段代码会打印`undefined`，因为`uiEvent`并不包含`button`属性。
 
-If this function were not in a contextually typed position, the function's argument would implicitly have type `any`, and no error would be issued (unless you are using the [`noImplicitAny`](/tsconfig#noImplicitAny) option):
+上下文归类会在很多情况下使用到。 通常包含函数的参数，赋值表达式的右边，类型断言，对象成员和数组字面量和返回值语句。 上下文类型也会做为最佳通用类型的候选类型。比如：
 
-```ts twoslash
-// @noImplicitAny: false
-const handler = function (uiEvent) {
-  console.log(uiEvent.button); // <- OK
-};
-```
-
-We can also explicitly give type information to the function's argument to override any contextual type:
-
-```ts twoslash
-window.onscroll = function (uiEvent: any) {
-  console.log(uiEvent.button); // <- Now, no error is given
-};
-```
-
-However, this code will log `undefined`, since `uiEvent` has no property called `button`.
-
-Contextual typing applies in many cases.
-Common cases include arguments to function calls, right hand sides of assignments, type assertions, members of object and array literals, and return statements.
-The contextual type also acts as a candidate type in best common type. For example:
-
-```ts twoslash
-// @strict: false
-class Animal {}
-class Rhino extends Animal {
-  hasHorn: true;
-}
-class Elephant extends Animal {
-  hasTrunk: true;
-}
-class Snake extends Animal {
-  hasLegs: false;
-}
-// ---cut---
+```typescript
 function createZoo(): Animal[] {
-  return [new Rhino(), new Elephant(), new Snake()];
+    return [new Rhino(), new Elephant(), new Snake()];
 }
 ```
 
-In this example, best common type has a set of four candidates: `Animal`, `Rhino`, `Elephant`, and `Snake`.
-Of these, `Animal` can be chosen by the best common type algorithm.
+这个例子里，最佳通用类型有4个候选者：`Animal`，`Rhino`，`Elephant`和`Snake`。 当然，`Animal`会被做为最佳通用类型。
+

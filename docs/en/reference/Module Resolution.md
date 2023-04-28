@@ -1,10 +1,3 @@
----
-title: Module Resolution
-layout: docs
-permalink: /docs/handbook/module-resolution.html
-oneline: How TypeScript resolves modules in JavaScript
-translatable: true
----
 
 > This section assumes some basic knowledge about modules.
 > Please see the [Modules](/docs/handbook/modules.html) documentation for more information.

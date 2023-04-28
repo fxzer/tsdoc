@@ -6,28 +6,12 @@ export default {
       "collapsed": false,
       "items": [
         {
-          "text": "通过例子",
-          "link": "/zh/declaration-files/By Example"
-        },
-        {
           "text": "使用",
           "link": "/zh/declaration-files/Consumption"
         },
         {
-          "text": "深入探讨",
-          "link": "/zh/declaration-files/Deep Dive"
-        },
-        {
-          "text": "该做和不该做",
-          "link": "/zh/declaration-files/Dos and Donts"
-        },
-        {
           "text": "介绍",
           "link": "/zh/declaration-files/Introduction"
-        },
-        {
-          "text": "库结构",
-          "link": "/zh/declaration-files/Library Structures"
         },
         {
           "text": "发布",
@@ -36,6 +20,22 @@ export default {
         {
           "text": "模板",
           "link": "/zh/declaration-files/Templates"
+        },
+        {
+          "text": "by-example",
+          "link": "/zh/declaration-files/by-example"
+        },
+        {
+          "text": "deep-dive",
+          "link": "/zh/declaration-files/deep-dive"
+        },
+        {
+          "text": "do-s-and-don-ts",
+          "link": "/zh/declaration-files/do-s-and-don-ts"
+        },
+        {
+          "text": "library-structures",
+          "link": "/zh/declaration-files/library-structures"
         }
       ]
     },
@@ -53,19 +53,19 @@ export default {
           "link": "/zh/declaration-files/templates/global-plugin"
         },
         {
-          "text": "全局",
+          "text": "全局模块",
           "link": "/zh/declaration-files/templates/global"
         },
         {
-          "text": "模块类",
+          "text": "类模块",
           "link": "/zh/declaration-files/templates/module-class"
         },
         {
-          "text": "模块函数",
+          "text": "函数模块",
           "link": "/zh/declaration-files/templates/module-function"
         },
         {
-          "text": "模块插件",
+          "text": "插件模块",
           "link": "/zh/declaration-files/templates/module-plugin"
         },
         {
@@ -77,13 +77,21 @@ export default {
   ],
   "/zh/handbooks/": [
     {
-      "text": "手册 v1",
+      "text": "手册指南 v1",
       "collapsible": true,
       "collapsed": true,
       "items": [
         {
+          "text": "基本类型",
+          "link": "/zh/handbooks/handbook-v1/BasicTypes"
+        },
+        {
           "text": "类",
           "link": "/zh/handbooks/handbook-v1/Classes"
+        },
+        {
+          "text": "枚举",
+          "link": "/zh/handbooks/handbook-v1/Enums"
         },
         {
           "text": "函数",
@@ -108,12 +116,12 @@ export default {
       ]
     },
     {
-      "text": "手册 v2",
+      "text": "手册指南 v2",
       "collapsible": true,
       "collapsed": false,
       "items": [
         {
-          "text": "基础",
+          "text": "基本类型",
           "link": "/zh/handbooks/handbook-v2/Basics"
         },
         {
@@ -133,16 +141,12 @@ export default {
           "link": "/zh/handbooks/handbook-v2/More on Functions"
         },
         {
-          "text": "类型缩小",
+          "text": "类型收窄",
           "link": "/zh/handbooks/handbook-v2/Narrowing"
         },
         {
           "text": "对象类型",
           "link": "/zh/handbooks/handbook-v2/Object Types"
-        },
-        {
-          "text": "手册",
-          "link": "/zh/handbooks/handbook-v2/The Handbook"
         },
         {
           "text": "类型声明",
@@ -162,6 +166,10 @@ export default {
         {
           "text": "条件类型",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Conditional Types"
+        },
+        {
+          "text": "从类型创建类型",
+          "link": "/zh/handbooks/handbook-v2/Type Manipulation/Creating Types from Types"
         },
         {
           "text": "泛型",
@@ -186,10 +194,6 @@ export default {
         {
           "text": "Typeof 类型运算符",
           "link": "/zh/handbooks/handbook-v2/Type Manipulation/Typeof Type Operator"
-        },
-        {
-          "text": "从类型创建类型",
-          "link": "/zh/handbooks/handbook-v2/Type Manipulation/_Creating Types from Types"
         }
       ]
     }
@@ -438,7 +442,7 @@ export default {
   ],
   "/zh/tsconfig-reference/": [
     {
-      "text": "选项",
+      "text": "配置项",
       "collapsible": true,
       "collapsed": true,
       "items": [
@@ -567,7 +571,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/exactOptionalPropertyTypes"
         },
         {
-          "text": "排除",
+          "text": "exclude",
           "link": "/zh/tsconfig-reference/options/exclude"
         },
         {
@@ -623,7 +627,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/importsNotUsedAsValues"
         },
         {
-          "text": "包含",
+          "text": "include",
           "link": "/zh/tsconfig-reference/options/include"
         },
         {
@@ -687,7 +691,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/maxNodeModuleJsDepth"
         },
         {
-          "text": "模块",
+          "text": "module",
           "link": "/zh/tsconfig-reference/options/module"
         },
         {
@@ -911,7 +915,7 @@ export default {
           "link": "/zh/tsconfig-reference/options/tsBuildInfoFile"
         },
         {
-          "text": "类型获取",
+          "text": "typeAcquisition",
           "link": "/zh/tsconfig-reference/options/typeAcquisition"
         },
         {
@@ -969,7 +973,7 @@ export default {
       "collapsed": false,
       "items": [
         {
-          "text": "MSBuild 中的编译器选项",
+          "text": "MSBuild编译选项",
           "link": "/zh/tsconfig-reference/project-config/Compiler Options in MSBuild"
         },
         {
@@ -981,7 +985,7 @@ export default {
           "link": "/zh/tsconfig-reference/project-config/Configuring Watch"
         },
         {
-          "text": "与构建工具集成",
+          "text": "构建工具集成",
           "link": "/zh/tsconfig-reference/project-config/Integrating with Build Tools"
         },
         {
@@ -999,10 +1003,6 @@ export default {
       "collapsible": true,
       "collapsed": false,
       "items": [
-        {
-          "text": "顶层",
-          "link": "/zh/tsconfig-reference/sections/Top Level"
-        },
         {
           "text": "构建选项",
           "link": "/zh/tsconfig-reference/sections/buildOptions"
@@ -1029,7 +1029,7 @@ export default {
       "collapsed": false,
       "items": [
         {
-          "text": "ASP.NET Core",
+          "text": "ASP.NET核心",
           "link": "/zh/tutorials/ASP.NET Core"
         },
         {
@@ -1037,11 +1037,11 @@ export default {
           "link": "/zh/tutorials/Angular"
         },
         {
-          "text": "Babel 和 TypeScript",
+          "text": "Babel 与 TypeScript",
           "link": "/zh/tutorials/Babel with TypeScript"
         },
         {
-          "text": "DOM 操作",
+          "text": "DOM操作",
           "link": "/zh/tutorials/DOM Manipulation"
         },
         {
@@ -1057,7 +1057,7 @@ export default {
           "link": "/zh/tutorials/React"
         },
         {
-          "text": "5分钟快速入门 TypeScript 工具链",
+          "text": "5分钟快速入门 TypeScript",
           "link": "/zh/tutorials/TypeScript Tooling in 5 minutes"
         }
       ]
@@ -1068,15 +1068,15 @@ export default {
       "collapsed": false,
       "items": [
         {
-          "text": "面向函数编程者的 TypeScript",
+          "text": "TypeScript 面向函数编程",
           "link": "/zh/tutorials/get-started/TS for Functional Programmers"
         },
         {
-          "text": "面向 JavaScript 程序员的 TypeScript",
+          "text": "面向 JavaScript 程序员",
           "link": "/zh/tutorials/get-started/TS for JS Programmers"
         },
         {
-          "text": "面向面向对象编程者的 TypeScript",
+          "text": "TypeScript 面向对象编程",
           "link": "/zh/tutorials/get-started/TS for OOPers"
         },
         {
@@ -1091,11 +1091,11 @@ export default {
       "collapsed": false,
       "items": [
         {
-          "text": "从 JS 文件创建 DTS 文件",
+          "text": "从JS文件创建 DTS 文件",
           "link": "/zh/tutorials/javascript/Creating DTS files From JS"
         },
         {
-          "text": "使用 TypeScript 介绍 JavaScript",
+          "text": "使用TypeScript 介绍 JavaScript",
           "link": "/zh/tutorials/javascript/Intro to JS with TS"
         },
         {

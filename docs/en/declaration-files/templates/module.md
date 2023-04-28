@@ -1,8 +1,3 @@
----
-title: Modules .d.ts
-layout: docs
-permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
----
 # module.d.ts
 ## Comparing JavaScript to an example DTS
 

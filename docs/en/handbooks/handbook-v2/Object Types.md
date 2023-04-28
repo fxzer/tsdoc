@@ -1,9 +1,3 @@
----
-title: Object Types
-layout: docs
-permalink: /docs/handbook/2/objects.html
-oneline: "How TypeScript describes the shapes of JavaScript objects."
----
 
 In JavaScript, the fundamental way that we group and pass around data is through objects.
 In TypeScript, we represent those through _object types_.

@@ -1,158 +1,126 @@
----
-title: JSX
-layout: docs
-permalink: /docs/handbook/jsx.html
-oneline: Using JSX with TypeScript
-translatable: true
----
+# JSX
 
-[JSX](https://facebook.github.io/jsx/) is an embeddable XML-like syntax.
-It is meant to be transformed into valid JavaScript, though the semantics of that transformation are implementation-specific.
-JSX rose to popularity with the [React](https://reactjs.org/) framework, but has since seen other implementations as well.
-TypeScript supports embedding, type checking, and compiling JSX directly to JavaScript.
+## 介绍
 
-## Basic usage
+[JSX](https://facebook.github.io/jsx/)是一种嵌入式的类似XML的语法。 它可以被转换成合法的JavaScript，尽管转换的语义是依据不同的实现而定的。 JSX因[React](https://reactjs.org/)框架而流行，但也存在其它的实现。 TypeScript支持内嵌，类型检查以及将JSX直接编译为JavaScript。
 
-In order to use JSX you must do two things.
+## 基本用法
 
-1. Name your files with a `.tsx` extension
-2. Enable the [`jsx`](/tsconfig#jsx) option
+想要使用JSX必须做两件事：
 
-TypeScript ships with three JSX modes: `preserve`, `react`, and `react-native`.
-These modes only affect the emit stage - type checking is unaffected.
-The `preserve` mode will keep the JSX as part of the output to be further consumed by another transform step (e.g. [Babel](https://babeljs.io/)).
-Additionally the output will have a `.jsx` file extension.
-The `react` mode will emit `React.createElement`, does not need to go through a JSX transformation before use, and the output will have a `.js` file extension.
-The `react-native` mode is the equivalent of `preserve` in that it keeps all JSX, but the output will instead have a `.js` file extension.
+1. 给文件一个`.tsx`扩展名
+2. 启用`jsx`选项
 
-| Mode           | Input     | Output                                            | Output File Extension |
-| -------------- | --------- | ------------------------------------------------- | --------------------- |
-| `preserve`     | `<div />` | `<div />`                                         | `.jsx`                |
-| `react`        | `<div />` | `React.createElement("div")`                      | `.js`                 |
-| `react-native` | `<div />` | `<div />`                                         | `.js`                 |
-| `react-jsx`    | `<div />` | `_jsx("div", {}, void 0);`                        | `.js`                 |
-| `react-jsxdev` | `<div />` | `_jsxDEV("div", {}, void 0, false, {...}, this);` | `.js`                 |
+TypeScript具有三种JSX模式：`preserve`，`react`和`react-native`。 这些模式只在代码生成阶段起作用 - 类型检查并不受影响。 在`preserve`模式下生成代码中会保留JSX以供后续的转换操作使用（比如：[Babel](https://babeljs.io/)）。 另外，输出文件会带有`.jsx`扩展名。 `react`模式会生成`React.createElement`，在使用前不需要再进行转换操作了，输出文件的扩展名为`.js`。 `react-native`相当于`preserve`，它也保留了所有的JSX，但是输出文件的扩展名是`.js`。
 
-You can specify this mode using either the [`jsx`](/tsconfig#jsx) command line flag or the corresponding option [`jsx` in your tsconfig.json](/tsconfig#jsx) file.
+| 模式 | 输入 | 输出 | 输出文件扩展名 |
+| :--- | :--- | :--- | :--- |
+| `preserve` | `<div />` | `<div />` | `.jsx` |
+| `react` | `<div />` | `React.createElement("div")` | `.js` |
+| `react-native` | `<div />` | `<div />` | `.js` |
 
-> \*Note: You can specify the JSX factory function to use when targeting react JSX emit with [`jsxFactory`](/tsconfig#jsxFactory) option (defaults to `React.createElement`)
+你可以通过在命令行里使用`--jsx`标记或[tsconfig.json](../project-config/tsconfig.json.md)里的选项来指定模式。
 
-## The `as` operator
+> \*注意：当输出目标为`react JSX`时，你可以使用`--jsxFactory`指定JSX工厂函数（默认值为`React.createElement`）
 
-Recall how to write a type assertion:
+## `as`操作符
 
-```ts
-const foo = <foo>bar;
+回想一下怎么写类型断言：
+
+```typescript
+var foo = <foo>bar;
 ```
 
-This asserts the variable `bar` to have the type `foo`.
-Since TypeScript also uses angle brackets for type assertions, combining it with JSX's syntax would introduce certain parsing difficulties. As a result, TypeScript disallows angle bracket type assertions in `.tsx` files.
+这里断言`bar`变量是`foo`类型的。 因为TypeScript也使用尖括号来表示类型断言，在结合JSX的语法后将带来解析上的困难。因此，TypeScript在`.tsx`文件里禁用了使用尖括号的类型断言。
 
-Since the above syntax cannot be used in `.tsx` files, an alternate type assertion operator should be used: `as`.
-The example can easily be rewritten with the `as` operator.
+由于不能够在`.tsx`文件里使用上述语法，因此我们应该使用另一个类型断言操作符：`as`。 上面的例子可以很容易地使用`as`操作符改写：
 
-```ts
-const foo = bar as foo;
+```typescript
+var foo = bar as foo;
 ```
 
-The `as` operator is available in both `.ts` and `.tsx` files, and is identical in behavior to the angle-bracket type assertion style.
+`as`操作符在`.ts`和`.tsx`里都可用，并且与尖括号类型断言行为是等价的。
 
-## Type Checking
+## 类型检查
 
-In order to understand type checking with JSX, you must first understand the difference between intrinsic elements and value-based elements.
-Given a JSX expression `<expr />`, `expr` may either refer to something intrinsic to the environment (e.g. a `div` or `span` in a DOM environment) or to a custom component that you've created.
-This is important for two reasons:
+为了理解JSX的类型检查，你必须首先理解固有元素与基于值的元素之间的区别。 假设有这样一个JSX表达式`<expr />`，`expr`可能引用环境自带的某些东西（比如，在DOM环境里的`div`或`span`）或者是你自定义的组件。 这是非常重要的，原因有如下两点：
 
-1. For React, intrinsic elements are emitted as strings (`React.createElement("div")`), whereas a component you've created is not (`React.createElement(MyComponent)`).
-2. The types of the attributes being passed in the JSX element should be looked up differently.
-   Intrinsic element attributes should be known _intrinsically_ whereas components will likely want to specify their own set of attributes.
+1. 对于React，固有元素会生成字符串（`React.createElement("div")`），然而由你自定义的组件却不会生成（`React.createElement(MyComponent)`）。
+2. 传入JSX元素里的属性类型的查找方式不同。
 
-TypeScript uses the [same convention that React does](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) for distinguishing between these.
-An intrinsic element always begins with a lowercase letter, and a value-based element always begins with an uppercase letter.
+   固有元素属性_本身_就支持，然而自定义的组件会自己去指定它们具有哪个属性。
 
-## Intrinsic elements
+TypeScript使用[与React相同的规范](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) 来区别它们。 固有元素总是以一个小写字母开头，基于值的元素总是以一个大写字母开头。
 
-Intrinsic elements are looked up on the special interface `JSX.IntrinsicElements`.
-By default, if this interface is not specified, then anything goes and intrinsic elements will not be type checked.
-However, if this interface _is_ present, then the name of the intrinsic element is looked up as a property on the `JSX.IntrinsicElements` interface.
-For example:
+### 固有元素
 
-```ts
+固有元素使用特殊的接口`JSX.IntrinsicElements`来查找。 默认地，如果这个接口没有指定，会全部通过，不对固有元素进行类型检查。 然而，如果这个接口存在，那么固有元素的名字需要在`JSX.IntrinsicElements`接口的属性里查找。 例如：
+
+```typescript
 declare namespace JSX {
-  interface IntrinsicElements {
-    foo: any;
-  }
+    interface IntrinsicElements {
+        foo: any
+    }
 }
 
-<foo />; // ok
-<bar />; // error
+<foo />; // 正确
+<bar />; // 错误
 ```
 
-In the above example, `<foo />` will work fine but `<bar />` will result in an error since it has not been specified on `JSX.IntrinsicElements`.
+在上例中，`<foo />`没有问题，但是`<bar />`会报错，因为它没在`JSX.IntrinsicElements`里指定。
 
-> Note: You can also specify a catch-all string indexer on `JSX.IntrinsicElements` as follows:
+> 注意：你也可以在`JSX.IntrinsicElements`上指定一个用来捕获所有字符串索引：
 
-```ts
+```typescript
 declare namespace JSX {
-  interface IntrinsicElements {
-    [elemName: string]: any;
-  }
+    interface IntrinsicElements {
+        [elemName: string]: any;
+    }
 }
 ```
 
-## Value-based elements
+### 基于值的元素
 
-Value-based elements are simply looked up by identifiers that are in scope.
+基于值的元素会简单的在它所在的作用域里按标识符查找。
 
-```ts
+```typescript
 import MyComponent from "./myComponent";
 
-<MyComponent />; // ok
-<SomeOtherComponent />; // error
+<MyComponent />; // 正确
+<SomeOtherComponent />; // 错误
 ```
 
-There are two ways to define a value-based element:
+有两种方式可以定义基于值的元素：
 
-1. Function Component (FC)
-2. Class Component
+1. 函数组件 \(FC\)
+2. 类组件
 
-Because these two types of value-based elements are indistinguishable from each other in a JSX expression, first TS tries to resolve the expression as a Function Component using overload resolution. If the process succeeds, then TS finishes resolving the expression to its declaration. If the value fails to resolve as a Function Component, TS will then try to resolve it as a class component. If that fails, TS will report an error.
+由于这两种基于值的元素在JSX表达式里无法区分，因此TypeScript首先会尝试将表达式做为函数组件进行解析。如果解析成功，那么TypeScript就完成了表达式到其声明的解析操作。如果按照函数组件解析失败，那么TypeScript会继续尝试以类组件的形式进行解析。如果依旧失败，那么将输出一个错误。
 
-### Function Component
+#### 函数组件
 
-As the name suggests, the component is defined as a JavaScript function where its first argument is a `props` object.
-TS enforces that its return type must be assignable to `JSX.Element`.
+正如其名，组件被定义成JavaScript函数，它的第一个参数是`props`对象。 TypeScript会强制它的返回值可以赋值给`JSX.Element`。
 
-```ts
+```typescript
 interface FooProp {
   name: string;
   X: number;
   Y: number;
 }
 
-declare function AnotherComponent(prop: { name: string });
+declare function AnotherComponent(prop: {name: string});
 function ComponentFoo(prop: FooProp) {
   return <AnotherComponent name={prop.name} />;
 }
 
-const Button = (prop: { value: string }, context: { color: string }) => (
-  <button />
-);
+const Button = (prop: {value: string}, context: { color: string }) => <button>
 ```
 
-Because a Function Component is simply a JavaScript function, function overloads may be used here as well:
+由于函数组件是简单的JavaScript函数，所以我们还可以利用函数重载。
 
-```ts twoslash
-// @noErrors
-declare module JSX {
-  interface Element {}
-  interface IntrinsicElements {
-    [s: string]: any;
-  }
-}
-// ---cut---
+```typescript
 interface ClickableProps {
-  children: JSX.Element[] | JSX.Element;
+  children: JSX.Element[] | JSX.Element
 }
 
 interface HomeProps extends ClickableProps {
@@ -164,54 +132,49 @@ interface SideProps extends ClickableProps {
 }
 
 function MainButton(prop: HomeProps): JSX.Element;
-function MainButton(prop: SideProps): JSX.Element;
-function MainButton(prop: ClickableProps): JSX.Element {
-  // ...
+function MainButton(prop: SideProps): JSX.Element {
+  ...
 }
 ```
 
-> Note: Function Components were formerly known as Stateless Function Components (SFC). As Function Components can no longer be considered stateless in recent versions of react, the type `SFC` and its alias `StatelessComponent` were deprecated.
+> 注意：函数组件之前叫做无状态函数组件（SFC）。由于在当前React版本里，函数组件不再被当作是无状态的，因此类型`SFC`和它的别名`StatelessComponent`被废弃了。
 
-### Class Component
+#### 类组件
 
-It is possible to define the type of a class component.
-However, to do so it is best to understand two new terms: the _element class type_ and the _element instance type_.
+我们可以定义类组件的类型。 然而，我们首先最好弄懂两个新的术语：_元素类的类型_和_元素实例的类型_。
 
-Given `<Expr />`, the _element class type_ is the type of `Expr`.
-So in the example above, if `MyComponent` was an ES6 class the class type would be that class's constructor and statics.
-If `MyComponent` was a factory function, the class type would be that function.
+现在有`<Expr />`，_元素类的类型_为`Expr`的类型。 所以在上面的例子里，如果`MyComponent`是ES6的类，那么类类型就是类的构造函数和静态部分。 如果`MyComponent`是个工厂函数，类类型为这个函数。
 
-Once the class type is established, the instance type is determined by the union of the return types of the class type's construct or call signatures (whichever is present).
-So again, in the case of an ES6 class, the instance type would be the type of an instance of that class, and in the case of a factory function, it would be the type of the value returned from the function.
+一旦建立起了类类型，实例类型由类构造器或调用签名（如果存在的话）的返回值的联合构成。 再次说明，在ES6类的情况下，实例类型为这个类的实例的类型，并且如果是工厂函数，实例类型为这个函数返回值类型。
 
-```ts
+```typescript
 class MyComponent {
   render() {}
 }
 
-// use a construct signature
-const myComponent = new MyComponent();
+// 使用构造签名
+var myComponent = new MyComponent();
 
-// element class type => MyComponent
-// element instance type => { render: () => void }
+// 元素类的类型 => MyComponent
+// 元素实例的类型 => { render: () => void }
 
 function MyFactoryFunction() {
   return {
-    render: () => {},
-  };
+    render: () => {
+    }
+  }
 }
 
-// use a call signature
-const myComponent = MyFactoryFunction();
+// 使用调用签名
+var myComponent = MyFactoryFunction();
 
-// element class type => MyFactoryFunction
-// element instance type => { render: () => void }
+// 元素类的类型 => MyFactoryFunction
+// 元素实例的类型 => { render: () => void }
 ```
 
-The element instance type is interesting because it must be assignable to `JSX.ElementClass` or it will result in an error.
-By default `JSX.ElementClass` is `{}`, but it can be augmented to limit the use of JSX to only those types that conform to the proper interface.
+元素的实例类型很有趣，因为它必须赋值给`JSX.ElementClass`或抛出一个错误。 默认的`JSX.ElementClass`为`{}`，但是它可以被扩展用来限制JSX的类型以符合相应的接口。
 
-```ts
+```typescript
 declare namespace JSX {
   interface ElementClass {
     render: any;
@@ -222,111 +185,104 @@ class MyComponent {
   render() {}
 }
 function MyFactoryFunction() {
-  return { render: () => {} };
+  return { render: () => {} }
 }
 
-<MyComponent />; // ok
-<MyFactoryFunction />; // ok
+<MyComponent />; // 正确
+<MyFactoryFunction />; // 正确
 
 class NotAValidComponent {}
 function NotAValidFactoryFunction() {
   return {};
 }
 
-<NotAValidComponent />; // error
-<NotAValidFactoryFunction />; // error
+<NotAValidComponent />; // 错误
+<NotAValidFactoryFunction />; // 错误
 ```
 
-## Attribute type checking
+### 属性类型检查
 
-The first step to type checking attributes is to determine the _element attributes type_.
-This is slightly different between intrinsic and value-based elements.
+属性类型检查的第一步是确定_元素属性类型_。 这在固有元素和基于值的元素之间稍有不同。
 
-For intrinsic elements, it is the type of the property on `JSX.IntrinsicElements`
+对于固有元素，这是`JSX.IntrinsicElements`属性的类型。
 
-```ts
+```typescript
 declare namespace JSX {
   interface IntrinsicElements {
-    foo: { bar?: boolean };
+    foo: { bar?: boolean }
   }
 }
 
-// element attributes type for 'foo' is '{bar?: boolean}'
+// `foo`的元素属性类型为`{bar?: boolean}`
 <foo bar />;
 ```
 
-For value-based elements, it is a bit more complex.
-It is determined by the type of a property on the _element instance type_ that was previously determined.
-Which property to use is determined by `JSX.ElementAttributesProperty`.
-It should be declared with a single property.
-The name of that property is then used.
-As of TypeScript 2.8, if `JSX.ElementAttributesProperty` is not provided, the type of first parameter of the class element's constructor or Function Component's call will be used instead.
+对于基于值的元素，就稍微复杂些。 它取决于先前确定的在元素实例类型上的某个属性的类型。 至于该使用哪个属性来确定类型取决于`JSX.ElementAttributesProperty`。 它应该使用单一的属性来定义。 这个属性名之后会被使用。 TypeScript 2.8，如果未指定`JSX.ElementAttributesProperty`，那么将使用类元素构造函数或函数组件调用的第一个参数的类型。
 
-```ts
+```typescript
 declare namespace JSX {
   interface ElementAttributesProperty {
-    props; // specify the property name to use
+    props; // 指定用来使用的属性名
   }
 }
 
 class MyComponent {
-  // specify the property on the element instance type
+  // 在元素实例类型上指定属性
   props: {
     foo?: string;
-  };
+  }
 }
 
-// element attributes type for 'MyComponent' is '{foo?: string}'
-<MyComponent foo="bar" />;
+// `MyComponent`的元素属性类型为`{foo?: string}`
+<MyComponent foo="bar" />
 ```
 
-The element attribute type is used to type check the attributes in the JSX.
-Optional and required properties are supported.
+元素属性类型用于的JSX里进行属性的类型检查。 支持可选属性和必须属性。
 
-```ts
+```typescript
 declare namespace JSX {
   interface IntrinsicElements {
-    foo: { requiredProp: string; optionalProp?: number };
+    foo: { requiredProp: string; optionalProp?: number }
   }
 }
 
-<foo requiredProp="bar" />; // ok
-<foo requiredProp="bar" optionalProp={0} />; // ok
-<foo />; // error, requiredProp is missing
-<foo requiredProp={0} />; // error, requiredProp should be a string
-<foo requiredProp="bar" unknownProp />; // error, unknownProp does not exist
-<foo requiredProp="bar" some-unknown-prop />; // ok, because 'some-unknown-prop' is not a valid identifier
+<foo requiredProp="bar" />; // 正确
+<foo requiredProp="bar" optionalProp={0} />; // 正确
+<foo />; // 错误, 缺少 requiredProp
+<foo requiredProp={0} />; // 错误, requiredProp 应该是字符串
+<foo requiredProp="bar" unknownProp />; // 错误, unknownProp 不存在
+<foo requiredProp="bar" some-unknown-prop />; // 正确, `some-unknown-prop`不是个合法的标识符
 ```
 
-> Note: If an attribute name is not a valid JS identifier (like a `data-*` attribute), it is not considered to be an error if it is not found in the element attributes type.
+> 注意：如果一个属性名不是个合法的JS标识符（像`data-*`属性），并且它没出现在元素属性类型里时不会当做一个错误。
 
-Additionally, the `JSX.IntrinsicAttributes` interface can be used to specify extra properties used by the JSX framework which are not generally used by the components' props or arguments - for instance `key` in React. Specializing further, the generic `JSX.IntrinsicClassAttributes<T>` type may also be used to specify the same kind of extra attributes just for class components (and not Function Components). In this type, the generic parameter corresponds to the class instance type. In React, this is used to allow the `ref` attribute of type `Ref<T>`. Generally speaking, all of the properties on these interfaces should be optional, unless you intend that users of your JSX framework need to provide some attribute on every tag.
+另外，JSX还会使用`JSX.IntrinsicAttributes`接口来指定额外的属性，这些额外的属性通常不会被组件的props或arguments使用 - 比如React里的`key`。还有，`JSX.IntrinsicClassAttributes<T>`泛型类型也可以用来为类组件（非函数组件）指定相同种类的额外属性。这里的泛型参数表示类实例类型。在React里，它用来允许`Ref<T>`类型上的`ref`属性。通常来讲，这些接口上的所有属性都是可选的，除非你想要用户在每个JSX标签上都提供一些属性。
 
-The spread operator also works:
+延展操作符也可以使用：
 
-```ts
-const props = { requiredProp: "bar" };
-<foo {...props} />; // ok
+```jsx
+var props = { requiredProp: 'bar' };
+<foo {...props} />; // 正确
 
-const badProps = {};
-<foo {...badProps} />; // error
+var badProps = {};
+<foo {...badProps} />; // 错误
 ```
 
-## Children Type Checking
+### 子孙类型检查
 
-In TypeScript 2.3, TS introduced type checking of _children_. _children_ is a special property in an _element attributes type_ where child *JSXExpression*s are taken to be inserted into the attributes.
-Similar to how TS uses `JSX.ElementAttributesProperty` to determine the name of _props_, TS uses `JSX.ElementChildrenAttribute` to determine the name of _children_ within those props.
-`JSX.ElementChildrenAttribute` should be declared with a single property.
+从TypeScript 2.3开始，我们引入了_children_类型检查。_children_是_元素属性\(attribute\)类型_的一个特殊属性\(property\)，子_JSXExpression_将会被插入到属性里。 与使用`JSX.ElementAttributesProperty`来决定_props_名类似，我们可以利用`JSX.ElementChildrenAttribute`来决定_children_名。 `JSX.ElementChildrenAttribute`应该被声明在单一的属性\(property\)里。
 
-```ts
+```typescript
 declare namespace JSX {
   interface ElementChildrenAttribute {
-    children: {}; // specify children name to use
+    children: {};  // specify children name to use
   }
 }
 ```
 
-```ts
+如不特殊指定子孙的类型，我们将使用[React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react)里的默认类型。
+
+```typescript
 <div>
   <h1>Hello</h1>
 </div>;
@@ -343,9 +299,7 @@ const CustomComp = (props) => <div>{props.children}</div>
 </CustomComp>
 ```
 
-You can specify the type of _children_ like any other attribute. This will override the default type from, e.g. the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react) if you use them.
-
-```ts
+```typescript
 interface PropsType {
   children: JSX.Element
   name: string
@@ -379,46 +333,33 @@ class Component extends React.Component<PropsType, {}> {
 </Component>
 ```
 
-## The JSX result type
+## JSX结果类型
 
-By default the result of a JSX expression is typed as `any`.
-You can customize the type by specifying the `JSX.Element` interface.
-However, it is not possible to retrieve type information about the element, attributes or children of the JSX from this interface.
-It is a black box.
+默认地JSX表达式结果的类型为`any`。 你可以自定义这个类型，通过指定`JSX.Element`接口。 然而，不能够从接口里检索元素，属性或JSX的子元素的类型信息。 它是一个黑盒。
 
-## Embedding Expressions
+## 嵌入的表达式
 
-JSX allows you to embed expressions between tags by surrounding the expressions with curly braces (`{ }`).
+JSX允许你使用`{ }`标签来内嵌表达式。
 
-```ts
-const a = (
-  <div>
-    {["foo", "bar"].map((i) => (
-      <span>{i / 2}</span>
-    ))}
-  </div>
-);
+```jsx
+var a = <div>
+  {['foo', 'bar'].map(i => <span>{i / 2}</span>)}
+</div>
 ```
 
-The above code will result in an error since you cannot divide a string by a number.
-The output, when using the `preserve` option, looks like:
+上面的代码产生一个错误，因为你不能用数字来除以一个字符串。 输出如下，若你使用了`preserve`选项：
 
-```ts
-const a = (
-  <div>
-    {["foo", "bar"].map(function (i) {
-      return <span>{i / 2}</span>;
-    })}
-  </div>
-);
+```jsx
+var a = <div>
+  {['foo', 'bar'].map(function (i) { return <span>{i / 2}</span>; })}
+</div>
 ```
 
-## React integration
+## React整合
 
-To use JSX with React you should use the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react).
-These typings define the `JSX` namespace appropriately for use with React.
+要想一起使用JSX和React，你应该使用[React类型定义](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react)。 这些类型声明定义了`JSX`合适命名空间来使用React。
 
-```ts
+```typescript
 /// <reference path="react.d.ts" />
 
 interface Props {
@@ -427,18 +368,32 @@ interface Props {
 
 class MyComponent extends React.Component<Props, {}> {
   render() {
-    return <span>{this.props.foo}</span>;
+    return <span>{this.props.foo}</span>
   }
 }
 
-<MyComponent foo="bar" />; // ok
-<MyComponent foo={0} />; // error
+<MyComponent foo="bar" />; // 正确
+<MyComponent foo={0} />; // 错误
 ```
 
-### Configuring JSX
+## 工厂函数
 
-There are multiple compiler flags which can be used to customize your JSX, which work as both a compiler flag and via inline per-file pragmas. To learn more see their tsconfig reference pages:
+`jsx: react`编译选项使用的工厂函数是可以配置的。可以使用`jsxFactory`命令行选项，或内联的`@jsx`注释指令在每个文件上设置。比如，给`createElement`设置`jsxFactory`，`<div />`会使用`createElement("div")`来生成，而不是`React.createElement("div")`。
 
-- [`jsxFactory`](/tsconfig#jsxFactory)
-- [`jsxFragmentFactory`](/tsconfig#jsxFragmentFactory)
-- [`jsxImportSource`](/tsconfig#jsxImportSource)
+注释指令可以像下面这样使用（在TypeScript 2.8里）：
+
+```typescript
+import preact = require("preact");
+/* @jsx preact.h */
+const x = <div />;
+```
+
+生成：
+
+```typescript
+const preact = require("preact");
+const x = preact.h("div", null);
+```
+
+工厂函数的选择同样会影响`JSX`命名空间的查找（类型检查）。如果工厂函数使用`React.createElement`定义（默认），编译器会先检查`React.JSX`，之后才检查全局的`JSX`。如果工厂函数定义为`h`，那么在检查全局的`JSX`之前先检查`h.JSX`。
+

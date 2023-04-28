@@ -1,12 +1,49 @@
----
-title: Utility Types
-layout: docs
-permalink: /docs/handbook/utility-types.html
-oneline: Types which are globally included in TypeScript
-translatable: true
----
 
-TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
+# 实用工具类型
+
+TypeScript 提供一些工具类型来帮助常见的类型转换。这些类型是全局可见的。
+
+- [`Awaited<Type>`](#awaitedtype)
+      - [例子](#例子)
+- [`Partial<Type>`](#partialtype)
+      - [例子](#例子-1)
+- [`Required<Type>`](#requiredtype)
+      - [例子](#例子-2)
+- [`Readonly<Type>`](#readonlytype)
+      - [例子](#例子-3)
+      - [`Object.freeze`](#objectfreeze)
+- [`Record<Keys, Type>`](#recordkeys-type)
+      - [例子](#例子-4)
+- [`Pick<Type, Keys>`](#picktype-keys)
+      - [例子](#例子-5)
+- [`Omit<Type, Keys>`](#omittype-keys)
+      - [例子](#例子-6)
+- [`Exclude<UnionType, ExcludedMembers>`](#excludeuniontype-excludedmembers)
+      - [例子](#例子-7)
+- [`Extract<Type, Union>`](#extracttype-union)
+      - [例子](#例子-8)
+- [`NonNullable<Type>`](#nonnullabletype)
+      - [例子](#例子-9)
+- [`Parameters<Type>`](#parameterstype)
+      - [例子](#例子-10)
+- [`ConstructorParameters<Type>`](#constructorparameterstype)
+      - [例子](#例子-11)
+- [`ReturnType<Type>`](#returntypetype)
+      - [例子](#例子-12)
+- [`InstanceType<Type>`](#instancetypetype)
+      - [例子](#例子-13)
+- [`ThisParameterType<Type>`](#thisparametertypetype)
+      - [例子](#例子-14)
+- [`OmitThisParameter<Type>`](#omitthisparametertype)
+      - [例子](#例子-15)
+- [`ThisType<Type>`](#thistypetype)
+      - [例子](#例子-16)
+- [Intrinsic String Manipulation Types](#intrinsic-string-manipulation-types)
+  - [`Uppercase<StringType>`](#uppercasestringtype)
+  - [`Lowercase<StringType>`](#lowercasestringtype)
+  - [`Capitalize<StringType>`](#capitalizestringtype)
+  - [`Uncapitalize<StringType>`](#uncapitalizestringtype)
+
 
 ## `Awaited<Type>`
 
@@ -17,11 +54,9 @@ Released:
 
 </blockquote>
 
-This type is meant to model operations like `await` in `async` functions, or the
-`.then()` method on `Promise`s - specifically, the way that they recursively
-unwrap `Promise`s.
+这种类型旨在模拟像`async`函数中的`await`操作或者Promise对象上的`.then()`方法，特别是它们递归展开Promise对象的方式。
 
-##### Example
+##### 例子
 
 ```ts twoslash
 type A = Awaited<Promise<string>>;
@@ -34,18 +69,8 @@ type C = Awaited<boolean | Promise<number>>;
 //   ^?
 ```
 
-## `Partial<Type>`
 
-<blockquote class=bg-reading>
-
-Released:  
-[2.1](/release-notes/TypeScript[2.1]#partial-readonly-record-and-pick)
-
-</blockquote>
-
-Constructs a type with all properties of `Type` set to optional. This utility will return a type that represents all subsets of a given type.
-
-##### Example
+##### 例子
 
 ```ts twoslash
 interface Todo {
@@ -66,406 +91,289 @@ const todo2 = updateTodo(todo1, {
   description: "throw out trash",
 });
 ```
+## `Partial<Type>`
 
-## `Required<Type>`
+构造类型`Type`，并将它所有的属性设置为可选的。它的返回类型表示输入类型的所有子类型。
 
-<blockquote class=bg-reading>
+### 例子
 
-Released:  
-[2.8](/release-notes/TypeScript[2.8]#improved-control-over-mapped-type-modifiers)
-
-</blockquote>
-
-Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
-
-##### Example
-
-```ts twoslash
-// @errors: 2741
-interface Props {
-  a?: number;
-  b?: string;
+```typescript
+interface Todo {
+    title: string;
+    description: string;
 }
 
-const obj: Props = { a: 5 };
+function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
+    return { ...todo, ...fieldsToUpdate };
+}
 
-const obj2: Required<Props> = { a: 5 };
+const todo1 = {
+    title: 'organize desk',
+    description: 'clear clutter',
+};
+
+const todo2 = updateTodo(todo1, {
+    description: 'throw out trash',
+});
 ```
 
 ## `Readonly<Type>`
 
-<blockquote class=bg-reading>
+构造类型`Type`，并将它所有的属性设置为`readonly`，也就是说构造出的类型的属性不能被再次赋值。
 
-Released:  
-[2.1](/release-notes/TypeScript[2.1]#partial-readonly-record-and-pick)
+### 例子
 
-</blockquote>
-
-Constructs a type with all properties of `Type` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
-
-##### Example
-
-```ts twoslash
-// @errors: 2540
+```typescript
 interface Todo {
-  title: string;
+    title: string;
 }
 
 const todo: Readonly<Todo> = {
-  title: "Delete inactive users",
+    title: 'Delete inactive users',
 };
 
-todo.title = "Hello";
+todo.title = 'Hello'; // Error: cannot reassign a readonly property
 ```
 
-This utility is useful for representing assignment expressions that will fail at runtime (i.e. when attempting to reassign properties of a [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
+这个工具可用来表示在运行时会失败的赋值表达式（比如，当尝试给[冻结对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)的属性再次赋值时）。
 
-##### `Object.freeze`
+### `Object.freeze`
 
-```ts
-function freeze<Type>(obj: Type): Readonly<Type>;
+```typescript
+function freeze<T>(obj: T): Readonly<T>;
 ```
 
 ## `Record<Keys, Type>`
 
-<blockquote class=bg-reading>
+构造一个类型，其属性名的类型为`K`，属性值的类型为`T`。这个工具可用来将某个类型的属性映射到另一个类型上。
 
-Released:  
-[2.1](/release-notes/TypeScript[2.1]#partial-readonly-record-and-pick)
+### 例子
 
-</blockquote>
-
-Constructs an object type whose property keys are `Keys` and whose property values are `Type`. This utility can be used to map the properties of a type to another type.
-
-##### Example
-
-```ts twoslash
-interface CatInfo {
-  age: number;
-  breed: string;
+```typescript
+interface PageInfo {
+    title: string;
 }
 
-type CatName = "miffy" | "boris" | "mordred";
+type Page = 'home' | 'about' | 'contact';
 
-const cats: Record<CatName, CatInfo> = {
-  miffy: { age: 10, breed: "Persian" },
-  boris: { age: 5, breed: "Maine Coon" },
-  mordred: { age: 16, breed: "British Shorthair" },
+const x: Record<Page, PageInfo> = {
+    about: { title: 'about' },
+    contact: { title: 'contact' },
+    home: { title: 'home' },
 };
-
-cats.boris;
-// ^?
 ```
 
 ## `Pick<Type, Keys>`
 
-<blockquote class=bg-reading>
+从类型`Type`中挑选部分属性`Keys`来构造类型。
 
-Released:  
-[2.1](/release-notes/TypeScript[2.1]#partial-readonly-record-and-pick)
+### 例子
 
-</blockquote>
-
-Constructs a type by picking the set of properties `Keys` (string literal or union of string literals) from `Type`.
-
-##### Example
-
-```ts twoslash
+```typescript
 interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
+    title: string;
+    description: string;
+    completed: boolean;
 }
 
-type TodoPreview = Pick<Todo, "title" | "completed">;
+type TodoPreview = Pick<Todo, 'title' | 'completed'>;
 
 const todo: TodoPreview = {
-  title: "Clean room",
-  completed: false,
+    title: 'Clean room',
+    completed: false,
 };
-
-todo;
-// ^?
 ```
 
 ## `Omit<Type, Keys>`
 
-<blockquote class=bg-reading>
+从类型`Type`中获取所有属性，然后从中剔除`Keys`属性后构造一个类型。
 
-Released:  
-[3.5](/release-notes/TypeScript[3.5]#the-omit-helper-type)
+### 例子
 
-</blockquote>
-
-Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals).
-
-##### Example
-
-```ts twoslash
+```typescript
 interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
-  createdAt: number;
+    title: string;
+    description: string;
+    completed: boolean;
 }
 
-type TodoPreview = Omit<Todo, "description">;
+type TodoPreview = Omit<Todo, 'description'>;
 
 const todo: TodoPreview = {
-  title: "Clean room",
-  completed: false,
-  createdAt: 1615544252770,
+    title: 'Clean room',
+    completed: false,
 };
-
-todo;
-// ^?
-
-type TodoInfo = Omit<Todo, "completed" | "createdAt">;
-
-const todoInfo: TodoInfo = {
-  title: "Pick up kids",
-  description: "Kindergarten closes at 5pm",
-};
-
-todoInfo;
-// ^?
 ```
 
-## `Exclude<UnionType, ExcludedMembers>`
+## `Exclude<Type, ExcludedUnion>`
 
-<blockquote class=bg-reading>
+从类型`Type`中剔除所有可以赋值给`ExcludedUnion`的属性，然后构造一个类型。
 
-Released:  
-[2.8](/release-notes/TypeScript[2.8]#predefined-conditional-types)
+### 例子
 
-</blockquote>
-
-Constructs a type by excluding from `UnionType` all union members that are assignable to `ExcludedMembers`.
-
-##### Example
-
-```ts twoslash
-type T0 = Exclude<"a" | "b" | "c", "a">;
-//    ^?
-type T1 = Exclude<"a" | "b" | "c", "a" | "b">;
-//    ^?
-type T2 = Exclude<string | number | (() => void), Function>;
-//    ^?
+```typescript
+type T0 = Exclude<'a' | 'b' | 'c', 'a'>; // "b" | "c"
+type T1 = Exclude<'a' | 'b' | 'c', 'a' | 'b'>; // "c"
+type T2 = Exclude<string | number | (() => void), Function>; // string | number
 ```
 
 ## `Extract<Type, Union>`
 
-<blockquote class=bg-reading>
+从类型`Type`中提取所有可以赋值给`Union`的类型，然后构造一个类型。
 
-Released:  
-[2.8](/release-notes/TypeScript[2.8]#predefined-conditional-types)
+### 例子
 
-</blockquote>
-
-Constructs a type by extracting from `Type` all union members that are assignable to `Union`.
-
-##### Example
-
-```ts twoslash
-type T0 = Extract<"a" | "b" | "c", "a" | "f">;
-//    ^?
-type T1 = Extract<string | number | (() => void), Function>;
-//    ^?
+```typescript
+type T0 = Extract<'a' | 'b' | 'c', 'a' | 'f'>; // "a"
+type T1 = Extract<string | number | (() => void), Function>; // () => void
 ```
 
 ## `NonNullable<Type>`
 
-<blockquote class=bg-reading>
+从类型`Type`中剔除`null`和`undefined`，然后构造一个类型。
 
-Released:  
-[2.8](/release-notes/TypeScript[2.8]#predefined-conditional-types)
+### 例子
 
-</blockquote>
-
-Constructs a type by excluding `null` and `undefined` from `Type`.
-
-##### Example
-
-```ts twoslash
-type T0 = NonNullable<string | number | undefined>;
-//    ^?
-type T1 = NonNullable<string[] | null | undefined>;
-//    ^?
+```typescript
+type T0 = NonNullable<string | number | undefined>; // string | number
+type T1 = NonNullable<string[] | null | undefined>; // string[]
 ```
 
 ## `Parameters<Type>`
 
-<blockquote class=bg-reading>
+由函数类型`Type`的参数类型来构建出一个元组类型。
 
-Released:  
-[3.1](https://github.com/microsoft/TypeScript/pull/26243)
+### 例子
 
-</blockquote>
-
-Constructs a tuple type from the types used in the parameters of a function type `Type`.
-
-##### Example
-
-```ts twoslash
-// @errors: 2344
+```ts
 declare function f1(arg: { a: number; b: string }): void;
 
 type T0 = Parameters<() => string>;
-//    ^?
+//    []
 type T1 = Parameters<(s: string) => void>;
-//    ^?
+//    [s: string]
 type T2 = Parameters<<T>(arg: T) => T>;
-//    ^?
+//    [arg: unknown]
 type T3 = Parameters<typeof f1>;
-//    ^?
+//    [arg: { a: number; b: string; }]
 type T4 = Parameters<any>;
-//    ^?
+//    unknown[]
 type T5 = Parameters<never>;
-//    ^?
+//    never
 type T6 = Parameters<string>;
-//    ^?
+//   never
+//   Type 'string' does not satisfy the constraint '(...args: any) => any'.
 type T7 = Parameters<Function>;
-//    ^?
+//   never
+//   Type 'Function' does not satisfy the constraint '(...args: any) => any'.
 ```
 
 ## `ConstructorParameters<Type>`
 
-<blockquote class=bg-reading>
+由构造函数类型来构建出一个元组类型或数组类型。
+由构造函数类型`Type`的参数类型来构建出一个元组类型。（若`Type`不是构造函数类型，则返回`never`）。
 
-Released:  
-[3.1](https://github.com/microsoft/TypeScript/pull/26243)
+### 例子
 
-</blockquote>
-
-Constructs a tuple or array type from the types of a constructor function type. It produces a tuple type with all the parameter types (or the type `never` if `Type` is not a function).
-
-##### Example
-
-```ts twoslash
-// @errors: 2344
-// @strict: false
+```ts
 type T0 = ConstructorParameters<ErrorConstructor>;
-//    ^?
+//    [message?: string | undefined]
 type T1 = ConstructorParameters<FunctionConstructor>;
-//    ^?
+//    string[]
 type T2 = ConstructorParameters<RegExpConstructor>;
-//    ^?
+//    [pattern: string | RegExp, flags?: string | undefined]
 type T3 = ConstructorParameters<any>;
-//    ^?
+//   unknown[]
 
 type T4 = ConstructorParameters<Function>;
-//    ^?
+//    never
+// Type 'Function' does not satisfy the constraint 'new (...args: any) => any'.
 ```
 
 ## `ReturnType<Type>`
 
-<blockquote class=bg-reading>
+由函数类型`Type`的返回值类型构建一个新类型。
 
-Released:  
-[2.8](/release-notes/TypeScript[2.8]#predefined-conditional-types)
+### 例子
 
-</blockquote>
-
-Constructs a type consisting of the return type of function `Type`.
-
-##### Example
-
-```ts twoslash
-// @errors: 2344 2344
-declare function f1(): { a: number; b: string };
-
-type T0 = ReturnType<() => string>;
-//    ^?
-type T1 = ReturnType<(s: string) => void>;
-//    ^?
-type T2 = ReturnType<<T>() => T>;
-//    ^?
-type T3 = ReturnType<<T extends U, U extends number[]>() => T>;
-//    ^?
-type T4 = ReturnType<typeof f1>;
-//    ^?
-type T5 = ReturnType<any>;
-//    ^?
-type T6 = ReturnType<never>;
-//    ^?
-type T7 = ReturnType<string>;
-//    ^?
-type T8 = ReturnType<Function>;
-//    ^?
+```
+type T0 = ReturnType<() => string>;  // string
+type T1 = ReturnType<(s: string) => void>;  // void
+type T2 = ReturnType<(<T>() => T)>;  // {}
+type T3 = ReturnType<(<T extends U, U extends number[]>() => T)>;  // number[]
+type T4 = ReturnType<typeof f1>;  // { a: number, b: string }
+type T5 = ReturnType<any>;  // any
+type T6 = ReturnType<never>;  // any
+type T7 = ReturnType<string>;  // Error
+type T8 = ReturnType<Function>;  // Error
 ```
 
 ## `InstanceType<Type>`
 
-<blockquote class=bg-reading>
+由构造函数类型`Type`的实例类型来构建一个新类型。
 
-Released:  
-[2.8](/release-notes/TypeScript[2.8]#predefined-conditional-types)
+### 例子
 
-</blockquote>
-
-Constructs a type consisting of the instance type of a constructor function in `Type`.
-
-##### Example
-
-```ts twoslash
-// @errors: 2344 2344
-// @strict: false
+```typescript
 class C {
-  x = 0;
-  y = 0;
+    x = 0;
+    y = 0;
 }
 
-type T0 = InstanceType<typeof C>;
-//    ^?
-type T1 = InstanceType<any>;
-//    ^?
-type T2 = InstanceType<never>;
-//    ^?
-type T3 = InstanceType<string>;
-//    ^?
-type T4 = InstanceType<Function>;
-//    ^?
+type T0 = InstanceType<typeof C>; // C
+type T1 = InstanceType<any>; // any
+type T2 = InstanceType<never>; // any
+type T3 = InstanceType<string>; // Error
+type T4 = InstanceType<Function>; // Error
+```
+
+## `Required<Type>`
+
+构建一个类型，使类型`Type`的所有属性为`required`。
+与此相反的是[`Partial`](#partialtype)。
+
+### 例子
+
+```typescript
+interface Props {
+    a?: number;
+    b?: string;
+}
+
+const obj: Props = { a: 5 }; // OK
+
+const obj2: Required<Props> = { a: 5 }; // Error: property 'b' missing
 ```
 
 ## `ThisParameterType<Type>`
 
-<blockquote class=bg-reading>
+从函数类型中提取 [this](../handbook/functions.md#this参数) 参数的类型。
+若函数类型不包含 `this` 参数，则返回 [unknown](../handbook/basic-types.md#unknown) 类型。
 
-Released:  
-[3.3](https://github.com/microsoft/TypeScript/pull/28920)
+### 例子
 
-</blockquote>
-
-Extracts the type of the [this](/handbooks/handbook-v1/Functions#this-parameters) parameter for a function type, or [unknown](/release-notes/TypeScript[3.0]#new-unknown-top-type) if the function type has no `this` parameter.
-
-##### Example
-
-```ts twoslash
+```ts
 function toHex(this: Number) {
-  return this.toString(16);
+    return this.toString(16);
 }
 
 function numberToString(n: ThisParameterType<typeof toHex>) {
-  return toHex.apply(n);
+    return toHex.apply(n);
 }
 ```
 
 ## `OmitThisParameter<Type>`
 
-<blockquote class=bg-reading>
+从`Type`类型中剔除 [`this`](../handbook/functions.md#this参数) 参数。
+若未声明 `this` 参数，则结果类型为 `Type` 。
+否则，由`Type`类型来构建一个不带`this`参数的类型。
+泛型会被忽略，并且只有最后的重载签名会被采用。
 
-Released:  
-[3.3](https://github.com/microsoft/TypeScript/pull/28920)
+### 例子
 
-</blockquote>
-
-Removes the [`this`](/docs/handbook/functions.html#this-parameters) parameter from `Type`. If `Type` has no explicitly declared `this` parameter, the result is simply `Type`. Otherwise, a new function type with no `this` parameter is created from `Type`. Generics are erased and only the last overload signature is propagated into the new function type.
-
-##### Example
-
-```ts twoslash
+```ts
 function toHex(this: Number) {
-  return this.toString(16);
+    return this.toString(16);
 }
 
 const fiveToHex: OmitThisParameter<typeof toHex> = toHex.bind(5);
@@ -475,38 +383,34 @@ console.log(fiveToHex());
 
 ## `ThisType<Type>`
 
-<blockquote class=bg-reading>
+这个工具不会返回一个转换后的类型。
+它做为上下文的[`this`](../handbook/functions.md#this)类型的一个标记。
+注意，若想使用此类型，必须启用`--noImplicitThis`。
 
-Released:  
-[2.3](https://github.com/microsoft/TypeScript/pull/14141)
+### 例子
 
-</blockquote>
+```typescript
+// Compile with --noImplicitThis
 
-This utility does not return a transformed type. Instead, it serves as a marker for a contextual [`this`](/handbooks/handbook-v1/Functions#this) type. Note that the [`noImplicitThis`](/tsconfig#noImplicitThis) flag must be enabled to use this utility.
-
-##### Example
-
-```ts twoslash
-// @noImplicitThis: false
 type ObjectDescriptor<D, M> = {
-  data?: D;
-  methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
+    data?: D;
+    methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
 };
 
 function makeObject<D, M>(desc: ObjectDescriptor<D, M>): D & M {
-  let data: object = desc.data || {};
-  let methods: object = desc.methods || {};
-  return { ...data, ...methods } as D & M;
+    let data: object = desc.data || {};
+    let methods: object = desc.methods || {};
+    return { ...data, ...methods } as D & M;
 }
 
 let obj = makeObject({
-  data: { x: 0, y: 0 },
-  methods: {
-    moveBy(dx: number, dy: number) {
-      this.x += dx; // Strongly typed this
-      this.y += dy; // Strongly typed this
+    data: { x: 0, y: 0 },
+    methods: {
+        moveBy(dx: number, dy: number) {
+            this.x += dx; // Strongly typed this
+            this.y += dy; // Strongly typed this
+        },
     },
-  },
 });
 
 obj.x = 10;
@@ -514,11 +418,12 @@ obj.y = 20;
 obj.moveBy(5, 5);
 ```
 
-In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/handbooks/handbook-v1/Functions#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
+上面例子中，`makeObject`参数里的`methods`对象具有一个上下文类型`ThisType<D & M>`，因此`methods`对象的方法里`this`的类型为`{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`。
 
-The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
+在`lib.d.ts`里，`ThisType<T>`标识接口是个简单的空接口声明。除了在被识别为对象字面量的上下文类型之外，这个接口与一般的空接口没有什么不同。
 
-## Intrinsic String Manipulation Types
+
+## 操作字符串的类型
 
 ### `Uppercase<StringType>`
 
@@ -528,5 +433,5 @@ The `ThisType<T>` marker interface is simply an empty interface declared in `lib
 
 ### `Uncapitalize<StringType>`
 
-To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can find those in the 
-<a href="/handbooks/handbook-v2/Type Manipulation/Template Literal Types">Template Literal Types</a>  documentation.
+为了便于操作模版字符串字面量，TypeScript 引入了一些能够操作字符串的类型。
+更多详情，请阅读<a href="/handbooks/handbook-v2/Type Manipulation/Template Literal Types">模版字面量类型</a> 。

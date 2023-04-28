@@ -1,10 +1,3 @@
----
-title: Angular
-layout: docs
-permalink: /docs/handbook/angular.html
-oneline: Using Angular with TypeScript
-deprecated: true
----
 
 Angular 是一个完全用 TypeScript 构建的现代框架，因此，将 TypeScript 与 Angular 结合使用可提供无缝体验。
 

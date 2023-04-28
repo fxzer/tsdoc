@@ -1,9 +1,3 @@
----
-title: Classes
-layout: docs
-permalink: /docs/handbook/2/classes.html
-oneline: "How classes work in TypeScript"
----
 
 <blockquote class='bg-reading'>
   <p>Background Reading:<br /><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes'>Classes (MDN)</a></p>

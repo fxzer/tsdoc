@@ -1,17 +1,10 @@
----
-title: ECMAScript Modules in Node.js
-layout: docs
-permalink: /docs/handbook/esm-node.html
-oneline: Using ECMAScript Modules in Node.js
----
 
-For the last few years, Node.js has been working to support running ECMAScript modules (ESM).
-This has been a very difficult feature to support, since the foundation of the Node.js ecosystem is built on a different module system called CommonJS (CJS).
+在过去的几年中，Node.js一直致力于支持运行ECMAScript模块(ESM)。
+这是一个很难支持的特性，因为Node.js生态系统的基础构建在一个名为CommonJS(CJS)的不同模块系统上。
+两个模块系统之间的互操作带来了巨大的挑战，有许多新的功能需要处理；
+然而，Node.js中对ESM的支持现在在Node.js中实现，并且尘埃落定。
 
-Interoperating between the two module systems brings large challenges, with many new features to juggle;
-however, support for ESM in Node.js is now implemented in Node.js, and the dust has begun to settle.
-
-That's why TypeScript brings two new `module` and `moduleResolution` settings: `node16` and `nodenext`.
+这就是为什么TypeScript引入了两个新的 `module` 和 `moduleResolution` 设置：`node16` 和 `nodenext`。
 
 ```json tsconfig
 {
@@ -21,12 +14,12 @@ That's why TypeScript brings two new `module` and `moduleResolution` settings: `
 }
 ```
 
-These new modes bring a few high-level features which we'll explore here.
+这些新的模式引入了一些高级功能，我们将在此处探讨。
 
-### `type` in `package.json` and New Extensions
+### `package.json` 中的 `type` 和新扩展名
 
-Node.js supports [a new setting in `package.json`](https://nodejs.org/api/packages.html#packages_package_json_and_file_extensions) called `type`.
-`"type"` can be set to either `"module"` or `"commonjs"`.
+Node.js支持在 `package.json` 中的 [一个新设置](https://nodejs.org/api/packages.html#packages_package_json_and_file_extensions)，叫做 `type`。
+`"type"` 可以设置为 `"module"` 或 `"commonjs"`。
 
 ```json tsconfig
 {
@@ -39,28 +32,28 @@ Node.js supports [a new setting in `package.json`](https://nodejs.org/api/packag
 }
 ```
 
-This setting controls whether `.js` and `.d.ts` files are interpreted as ES modules or CommonJS modules, and defaults to CommonJS when not set.
-When a file is considered an ES module, a few different rules come into play compared to CommonJS:
+此设置控制 `.js` 和 `.d.ts` 文件是解释为ES模块还是CommonJS模块，并在未设置时默认为CommonJS。
+当一个文件被视为ES模块时，与CommonJS相比，会出现一些不同的规则：
 
-* `import`/`export` statements and top-level `await` can be used
-* relative import paths need full extensions (e.g we have to write `import "./foo.js"` instead of `import "./foo"`)
-* imports might resolve differently from dependencies in `node_modules`
-* certain global-like values like `require()` and `__dirname` cannot be used directly
-* CommonJS modules get imported under certain special rules
+* 可以使用 `import` / `export` 语句和顶级 `await`
+* 相对导入路径需要全扩展名（例如，我们必须写成 `import "./foo.js"` 而不是 `import "./foo"`）
+* 导入可能与 `node_modules` 中的依赖项不同
+* 一些类似全局变量的值，如 `require()` 和 `__dirname`，不能直接使用
+* CommonJS模块根据特定的规则被导入
 
-We'll come back to some of these.
+我们稍后会回到其中一些问题。
 
-To overlay the way TypeScript works in this system, `.ts` and `.tsx` files now work the same way.
-When TypeScript finds a `.ts`, `.tsx`, `.js`, or `.jsx` file, it will walk up looking for a `package.json` to see whether that file is an ES module, and use that to determine:
+为了覆盖TypeScript在此系统中的工作方式，`.ts` 和 `.tsx` 文件现在以相同的方式工作。
+当TypeScript找到一个 `.ts`、`.tsx`、`.js` 或 `.jsx` 文件时，它会向上查找一个 `package.json`，看看那个文件是否是一个ES模块，并使用它来确定：
 
-* how to find other modules which that file imports
-* and how to transform that file if producing outputs
+* 如何找到该文件导入的其他模块
+* 如果生成输出，则如何转换该文件
 
-When a `.ts` file is compiled as an ES module, ECMAScript `import`/`export` syntax is left alone in the `.js` output;
-when it's compiled as a CommonJS module, it will produce the same output you get today under [`module`](/tsconfig#module): `commonjs`.
+当一个 `.ts` 文件被编译为ES模块时，ECMAScript `import` / `export` 语法在 `.js` 输出中保持不变；
+当它被编译为CommonJS模块时，它将生成与今天在 [`module`](/tsconfig#module) 下获得的相同输出：`commonjs`。
 
-This also means paths resolve differently between `.ts` files that are ES modules and ones that are CJS modules.
-For example, let's say you have the following code today:
+这也意味着，在 `.ts` 文件是ES模块和CJS模块之间解析路径的方式不同。
+例如，假设您今天有以下代码：
 
 ```ts
 // ./foo.ts
@@ -69,13 +62,14 @@ export function helper() {
 }
 
 // ./bar.ts
-import { helper } from "./foo"; // only works in CJS
+import { helper } from "./foo"; // 仅在CJS中起作用
 
 helper();
 ```
 
-This code works in CommonJS modules, but will fail in ES modules because relative import paths need to use extensions.
-As a result, it will have to be rewritten to use the extension of the *output* of `foo.ts` - so `bar.ts` will instead have to import from `./foo.js`.
+这段代码在CommonJS模块中工作，但在ES模块中会失败，因为相对导入路径需要使用扩展名。
+
+因此，它将不得不重写以使用`foo.ts`的*输出*的扩展名-因此，`bar.ts`将不得不从`./foo.js`导入。
 
 ```ts
 // ./bar.ts
@@ -84,31 +78,25 @@ import { helper } from "./foo.js"; // works in ESM & CJS
 helper();
 ```
 
-This might feel a bit cumbersome at first, but TypeScript tooling like auto-imports and path completion will typically just do this for you.
+这可能一开始会有点繁琐，但像自动导入和路径补全这样的 TypeScript 工具通常会自动为您完成这些操作。
 
-One other thing to mention is the fact that this applies to `.d.ts` files too.
-When TypeScript finds a `.d.ts` file in package, whether it is treated as an ESM or CommonJS file is based on the containing package.
+另一个需要提到的事情是这也适用于 `.d.ts` 文件。当 TypeScript 在一个包中找到一个 `.d.ts` 文件时，它是作为 ESM 或 CommonJS 文件处理还是基于包含该文件的包来决定的。
 
-### New File Extensions
+### 新文件扩展名
 
-The `type` field in `package.json` is nice because it allows us to continue using the `.ts` and `.js` file extensions which can be convenient;
-however, you will occasionally need to write a file that differs from what `type` specifies.
-You might also just prefer to always be explicit.
+`package.json` 中的 `type` 字段很好用，因为它允许我们继续使用 `.ts` 和 `.js` 文件扩展名，这很方便。但是，您偶尔需要编写与 `type` 指定的不同的文件。您也可能更喜欢始终明确地指定。
 
-Node.js supports two extensions to help with this: `.mjs` and `.cjs`.
-`.mjs` files are always ES modules, and `.cjs` files are always CommonJS modules, and there's no way to override these.
+Node.js 支持两个扩展名来帮助处理这个问题：`.mjs` 和 `.cjs`。`.mjs` 文件始终是 ES 模块，`.cjs` 文件始终是 CommonJS 模块，并且没有办法覆盖这些设置。
 
-In turn, TypeScript supports two new source file extensions: `.mts` and `.cts`.
-When TypeScript emits these to JavaScript files, it will emit them to `.mjs` and `.cjs` respectively.
+另外，TypeScript 还支持两个新的源文件扩展名：`.mts` 和 `.cts`。当 TypeScript 将这些文件编译为 JavaScript 文件时，它们将分别编译为 `.mjs` 和 `.cjs`。
 
-Furthermore, TypeScript also supports two new declaration file extensions: `.d.mts` and `.d.cts`.
-When TypeScript generates declaration files for `.mts` and `.cts`, their corresponding extensions will be `.d.mts` and `.d.cts`.
+此外，TypeScript 还支持两个新的声明文件扩展名：`.d.mts` 和 `.d.cts`。当 TypeScript 为 `.mts` 和 `.cts` 生成声明文件时，它们对应的扩展名将是 `.d.mts` 和 `.d.cts`。
 
-Using these extensions is entirely optional, but will often be useful even if you choose not to use them as part of your primary workflow.
+使用这些扩展名是完全可选的，但即使您选择不将它们作为主要工作流程的一部分使用，它们通常也会很有用。
 
-### CommonJS Interop
+### CommonJS 互操作性
 
-Node.js allows ES modules to import CommonJS modules as if they were ES modules with a default export.
+Node.js 允许 ES 模块导入 CommonJS 模块，就像它们是带有默认导出的 ES 模块一样。
 
 ```ts twoslash
 // @module: nodenext
@@ -120,12 +108,11 @@ export function helper() {
 // @filename: index.mts
 import foo from "./helper.cjs";
 
-// prints "hello world!"
+// 输出 "hello world!"
 foo.helper();
 ```
 
-In some cases, Node.js also synthesizes named exports from CommonJS modules, which can be more convenient.
-In these cases, ES modules can use a "namespace-style" import (i.e. `import * as foo from "..."`), or named imports (i.e. `import { helper } from "..."`).
+在某些情况下，Node.js 还从 CommonJS 模块中合成命名导出，这可能更方便。在这些情况下，ES 模块可以使用“命名空间式”导入（即 `import * as foo from "..."`），或使用命名导入（即 `import { helper } from "..."`）。
 
 ```ts twoslash
 // @module: nodenext
@@ -137,21 +124,20 @@ export function helper() {
 // @filename: index.mts
 import { helper } from "./helper.cjs";
 
-// prints "hello world!"
+// 输出 "hello world!"
 helper();
 ```
 
-There isn't always a way for TypeScript to know whether these named imports will be synthesized, but TypeScript will err on being permissive and use some heuristics when importing from a file that is definitely a CommonJS module.
 
-One TypeScript-specific note about interop is the following syntax:
+TypeScript并不总是能够知道这些命名导入是否会被合成，但当从绝对是一个CommonJS模块的文件导入时，TypeScript会出于容错考虑并使用一些启发式方法。
+
+关于交互操作，有一个TypeScript特定的语法如下所示：
 
 ```ts
 import foo = require("foo");
 ```
 
-In a CommonJS module, this just boils down to a `require()` call, and in an ES module, this imports [`createRequire`](https://nodejs.org/api/module.html#module_module_createrequire_filename) to achieve the same thing.
-This will make code less portable on runtimes like the browser (which don't support `require()`), but will often be useful for interoperability.
-In turn, you can write the above example using this syntax as follows:
+在一个CommonJS模块中，这只是一个`require()`调用，而在ES模块中，它导入[`createRequire`](https://nodejs.org/api/module.html#module_module_createrequire_filename) 来实现同样的功能。这将使代码在不支持`require()`的运行时，如浏览器中，不太可移植，但通常用于交互操作。因此，您可以使用以下语法编写上面的示例：
 
 ```ts twoslash
 // @module: nodenext
@@ -166,17 +152,15 @@ import foo = require("./foo.cjs");
 foo.helper()
 ```
 
-Finally, it's worth noting that the only way to import ESM files from a CJS module is using dynamic `import()` calls.
-This can present challenges, but is the behavior in Node.js today.
+最后，值得注意的是，从CJS模块中导入ESM文件的唯一方法是使用动态的`import()`调用。这可能会带来一些挑战，但是这是Node.js的行为。
 
-You can [read more about ESM/CommonJS interop in Node.js here](https://nodejs.org/api/esm.html#esm_interoperability_with_commonjs).
+您可以[在此处阅读有关Node.js中ESM / CommonJS交互操作的更多信息](https://nodejs.org/api/esm.html#esm_interoperability_with_commonjs)。
 
-### `package.json` Exports, Imports, and Self-Referencing
+### `package.json` 中的导出、导入和自引用
 
-Node.js supports [a new field for defining entry points in `package.json` called `"exports"`](https://nodejs.org/api/packages.html#packages_exports).
-This field is a more powerful alternative to defining `"main"` in `package.json`, and can control what parts of your package are exposed to consumers.
+Node.js 支持在 `package.json` 中定义入口点的新字段，称为 `"exports"`。该字段是定义 `package.json` 中 `"main"` 的更强大的替代方案，可以控制向使用者公开包的哪些部分。
 
-Here's an `package.json` that supports separate entry-points for CommonJS and ESM:
+以下是一个支持 CommonJS 和 ESM 分别设置入口点的 `package.json` 示例：
 
 ```json5
 // package.json
@@ -185,30 +169,25 @@ Here's an `package.json` that supports separate entry-points for CommonJS and ES
     "type": "module",
     "exports": {
         ".": {
-            // Entry-point for `import "my-package"` in ESM
+            // 在 ESM 中 `import "my-package"` 的入口点
             "import": "./esm/index.js",
 
-            // Entry-point for `require("my-package") in CJS
+            // 在 CJS 中 `require("my-package")` 的入口点
             "require": "./commonjs/index.cjs",
         },
     },
 
-    // CJS fall-back for older versions of Node.js
+    // 为旧版本的 Node.js 提供 CJS 的后备
     "main": "./commonjs/index.cjs",
 }
 ```
 
-There's a lot to this feature, [which you can read more about on the Node.js documentation](https://nodejs.org/api/packages.html).
-Here we'll try to focus on how TypeScript supports it.
+这个功能很强大，您可以在 [Node.js 文档中阅读更多内容](https://nodejs.org/api/packages.html)。在此，我们将着重介绍 TypeScript 如何支持它。
 
-With TypeScript's original Node support, it would look for a `"main"` field, and then look for declaration files that corresponded to that entry.
-For example, if `"main"` pointed to `./lib/index.js`, TypeScript would look for a file called `./lib/index.d.ts`.
-A package author could override this by specifying a separate field called `"types"` (e.g. `"types": "./types/index.d.ts"`).
+在 TypeScript 的原始 Node 支持中，它会查找 `"main"` 字段，然后查找与该入口对应的声明文件。例如，如果 `"main"` 指向 `./lib/index.js`，TypeScript 会查找名为 `./lib/index.d.ts` 的文件。包的作者可以通过指定单独的字段 `"types"` 来覆盖此行为（例如 `"types": "./types/index.d.ts"`）。
 
-The new support works similarly with [import conditions](https://nodejs.org/api/packages.html).
-By default, TypeScript overlays the same rules with import conditions - if you write an `import` from an ES module, it will look up the `import` field, and from a CommonJS module, it will look at the `require` field.
-If it finds them, it will look for a colocated declaration file.
-If you need to point to a different location for your type declarations, you can add a `"types"` import condition.
+新的支持使用 [导入条件](https://nodejs.org/api/packages.html) 类似地工作。默认情况下，TypeScript 使用相同的导入条件规则 - 如果您从一个 ESM 模块导入，它会查找 `import` 字段，如果您从一个 CommonJS 模块导入，则会查找 `require` 字段。如果找到它们，它将查找相应的声明文件。如果您需要指向不同位置的类型声明，则可以添加 `"types"` 导入条件。
+
 
 ```json5
 // package.json
@@ -243,12 +222,10 @@ If you need to point to a different location for your type declarations, you can
     "main": "./commonjs/index.cjs"
 }
 ```
+> `"types"` 条件应该始终放在 `"exports"` 的第一位。
 
-> The `"types"` condition should always come first in `"exports"`.
+需要注意的是，CommonJS 入口点和 ES 模块入口点每个都需要自己的声明文件，即使它们之间的内容相同。
+每个声明文件都根据其文件扩展名和 `package.json` 中的 `"type"` 字段被解释为 CommonJS 模块或 ES 模块，检测到的模块类型必须与 Node 检测到的相应 JavaScript 文件的模块类型匹配，以确保类型检查的正确性。
+尝试使用单个 `.d.ts` 文件为 ES 模块入口点和 CommonJS 入口点同时提供类型信息将导致 TypeScript 认为这两个入口点中只存在一个，从而导致使用该包的用户出现编译器错误。
 
-It's important to note that the CommonJS entrypoint and the ES module entrypoint each needs its own declaration file, even if the contents are the same between them.
-Every declaration file is interpreted either as a CommonJS module or as an ES module, based on its file extension and the `"type"` field of the `package.json`, and this detected module kind must match the module kind that Node will detect for the corresponding JavaScript file for type checking to be correct.
-Attempting to use a single `.d.ts` file to type both an ES module entrypoint and a CommonJS entrypoint will cause TypeScript to think only one of those entrypoints exists, causing compiler errors for users of the package.
-
-TypeScript also supports [the `"imports"` field of `package.json`](https://nodejs.org/api/packages.html#packages_imports) in a similar manner (looking for declaration files alongside corresponding files), and supports [packages self-referencing themselves](https://nodejs.org/api/packages.html#packages_self_referencing_a_package_using_its_name).
-These features are generally not as involved, but are supported.
+TypeScript 还以类似的方式支持 `package.json` 中的 `"imports"` 字段（在相应文件旁查找声明文件），并支持 [包自引用](https://nodejs.org/api/packages.html#packages_self_referencing_a_package_using_its_name) 这一特性。这些功能通常不是很复杂，但是被支持。

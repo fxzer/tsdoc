@@ -1,44 +1,38 @@
----
-title: Consumption
-layout: docs
-permalink: /docs/handbook/declaration-files/consumption.html
-oneline: "How to download d.ts files for your project"
----
+# 使用
 
-## Downloading
+## 下载
 
-Getting type declarations requires no tools apart from npm.
+想要获取声明文件只需要用到 npm。
 
-As an example, getting the declarations for a library like lodash takes nothing more than the following command
+比如，想要获取 lodash 库的声明文件，只需使用下面的命令：
 
-```cmd
-npm install --save-dev @types/lodash
+```text
+npm install --save @types/lodash
 ```
 
-It is worth noting that if the npm package already includes its declaration file as described in [Publishing](/docs/handbook/declaration-files/publishing.html), downloading the corresponding `@types` package is not needed.
+如果一个 npm 包像[Publishing](publishing.md)里介绍的一样已经包含其声明文件，那就不必再去下载相应的`@types`包了。
 
-## Consuming
+## 使用
 
-From there you’ll be able to use lodash in your TypeScript code with no fuss.
-This works for both modules and global code.
+下载完后，就可以直接在 TypeScript 里使用 lodash 了。 不论是在模块里还是全局代码里使用。
 
-For example, once you’ve `npm install`-ed your type declarations, you can use imports and write
+比如，你已经`npm install`安装了声明文件，你可以使用导入：
 
 ```ts
-import * as _ from "lodash";
-_.padStart("Hello TypeScript!", 20, " ");
+import * as _ from 'lodash';
+_.padStart('Hello TypeScript!', 20, ' ');
 ```
 
-or if you’re not using modules, you can just use the global variable `_`.
+或者如果你没有使用模块，那么你只需使用全局的变量`_`。
 
 ```ts
-_.padStart("Hello TypeScript!", 20, " ");
+_.padStart('Hello TypeScript!', 20, ' ');
 ```
 
-## Searching
+## 查找
 
-For the most part, type declaration packages should always have the same name as the package name on `npm`, but prefixed with `@types/`,
-but if you need, you can use the [Yarn package search](https://yarnpkg.com/) to find the package for your favorite library.
+大多数情况下，类型声明包的名字总是与其在`npm`上的包的名字相同，但是有`@types/`前缀。
+但如果你需要的话，你可以在[https://aka.ms/types](https://aka.ms/types)上查找你喜欢的库。
 
-> Note: if the declaration file you are searching for is not present, you can always contribute one back and help out the next developer looking for it.
-> Please see the DefinitelyTyped [contribution guidelines page](https://definitelytyped.org/guides/contributing.html) for details.
+> 注意：如果你要找的声明文件不存在，你可以贡献一份，这样就方便了下一位开发者。
+> 查看 DefinitelyTyped [贡献指南页](http://definitelytyped.org/guides/contributing.html)了解详情。

@@ -1,55 +1,53 @@
----
-title: Introduction
-layout: docs
-permalink: /docs/handbook/declaration-files/introduction.html
-oneline: "How to write a high-quality TypeScript Declaration (d.ts) file"
----
+声明文件一章的目的是教你如何编写高质量的 TypeScript 声明文件。
+我们假设你对 TypeScript 已经有了基本的了解。
 
-The Declaration Files section is designed to teach you how to write a high-quality TypeScript Declaration File. We need to assume basic familiarity with the TypeScript language in order to get started.
+如果没有，请先阅读[TypeScript 手册](../handbook/basic-types.md) 来了解一些基本知识，尤其是类型和模块的部分。
 
-If you haven't already, you should read the [TypeScript Handbook](/handbooks/handbook-v2/Basics)
-to familiarize yourself with basic concepts, especially types and modules.
+需要编写`.d.ts`文件的常见场景是为某个 npm 包添加类型信息。
+如果是这种情况，你可以直接阅读[Modules .d.ts](./templates/module.d.ts.md)
 
-The most common case for learning how .d.ts files work is that you're typing an npm package with no types. 
-In that case, you can jump straight to `Modules .d.ts `
+这篇指南被分成了以下章节。
 
-The Declaration Files section is broken down into the following sections.
+## [示例](./by-example.md)
 
-## <a href="/declaration-files/By Example" >Declaration Reference</a> 
+在编写声明文件时，我们经常遇到以下情况，那就是需要根据代码库提供的示例来编写声明文件。
+[示例](./by-example.md)一节展示了了许多常见的 API 模式，以及如何为它们编写声明文件。
+该指南面向的是 TypeScript 的初学者，这些人可能并不熟悉 TypeScript 语言的每个特性。
 
-We are often faced with writing a declaration file when we only have examples of the underlying library to guide us.
-The  Declaration Reference  section shows many common API patterns and how to write declarations for each of them.
-This guide is aimed at the TypeScript novice who may not yet be familiar with every language construct in TypeScript.
+## [结构](./library-structures.md)
 
-## <a href="/declaration-files/Library Structures" >Library Structures</a> 
+[结构](./library-structures.md)一节将帮助你了解常见库的格式以及如何为每种格式书写正确的声明文件。
+如果你正在编辑一个已有文件，那么你可能不需要阅读此章节。
+如果你在编写新的声明文件，那么强烈建议阅读此章节以理解库的不同格式是如何影响声明文件的编写的。
 
-The  Library Structures    guide helps you understand common library formats and how to write a proper declaration file for each format.
-If you're editing an existing file, you probably don't need to read this section.
-Authors of new declaration files are strongly encouraged to read this section to properly understand how the format of the library influences the writing of the declaration file. 
+## [模版](./templates.md)
 
-In the Template section you'll find a number of declaration files that serve as a useful starting point
-when writing a new file. If you already know what your structure is, see the d.ts Template section in the sidebar.
+在[模版](./templates.md)一节里，你能找到一些声明文件，它们对于编写新的声明文件来讲会有所帮助。
+如果你已经了解了库的结构，那么可以阅读相应的模版文件：
 
-## <a href="/declaration-files/Dos and Donts" >Do's and Don'ts</a> 
+-   [global-modifying-module.d.ts](templates/global-modifying-module.d.ts.md)
+-   [global-plugin.d.ts](templates/global-plugin.d.ts.md)
+-   [global.d.ts](templates/global.d.ts.md)
+-   [module-class.d.ts](templates/module-class.d.ts.md)
+-   [module-function.d.ts](templates/module-function.d.ts.md)
+-   [module-plugin.d.ts](templates/module-plugin.d.ts.md)
+-   [module.d.ts](templates/module.d.ts.md)
 
-Many common mistakes in declaration files can be easily avoided.
-The  Do's and Don'ts  section identifies common errors, 
-describes how to detect them, 
-and how to fix them.
-Everyone should read this section to help themselves avoid common mistakes.
+## [规范](./do-s-and-don-ts.md)
 
-## <a href="/declaration-files/Deep Dive" > Deep Dive </a>  
+声明文件里有些常见错误是很容易就可以避免的。
+[规范](./do-s-and-don-ts.md)一节列出了常见的错误，并且描述了如何检测以及修复它们。
+每个人都应该阅读这个章节以了解如何避免常见错误。
 
-For seasoned authors interested in the underlying mechanics of how declaration files work, 
-the  Deep Dive  section explains many advanced concepts in declaration writing, 
-and shows how to leverage these concepts to create cleaner and more intuitive declaration files.
+## [深入](./deep-dive.md)
 
-##  <a href="/declaration-files/Publishing" > Publish to npm </a>  
+针对那些对声明文件底层工作机制感兴趣的老手们，[深入](./deep-dive.md)一节解释了编写声明文件时的很多高级概念，
+并且展示了如何利用这些概念来创建整洁和直观的声明文件。
 
+## [发布到 npm](./publishing.md)
 
-The  Publishing section explains how to publish your declaration files to an npm package, and shows how to manage your dependent packages.
+[发布](./publishing.md)一节讲解了如何将声明文件发布为 npm 包，以及如何管理包的依赖。
 
-## <a href="/declaration-files/Consumption" > Find and Install Declaration Files</a>  
+## [查找与安装声明文件](./consumption.md)
 
-
-For JavaScript library users, the  Consumption  section offers a few simple steps to locate and install corresponding declaration files.
+对于 JavaScript 库的使用者来讲，[使用](./consumption.md)一节提供了一些简单步骤来查找与安装相应的声明文件。

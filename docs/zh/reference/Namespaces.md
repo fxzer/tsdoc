@@ -1,171 +1,149 @@
----
-title: Namespaces
-layout: docs
-permalink: /docs/handbook/namespaces.html
-oneline: How TypeScript namespaces work
-translatable: true
----
+# 命名空间
 
-> **A note about terminology:**
-> It's important to note that in TypeScript 1.5, the nomenclature has changed.
-> "Internal modules" are now "namespaces".
-> "External modules" are now simply "modules", as to align with [ECMAScript 2015](https://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
+> **关于术语的一点说明:** 请务必注意一点，TypeScript 1.5里术语名已经发生了变化。 “内部模块”现在称做“命名空间”。 “外部模块”现在则简称为“模块”，这是为了与[ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)里的术语保持一致，\(也就是说 `module X {` 相当于现在推荐的写法 `namespace X {`\)。
 
-This post outlines the various ways to organize your code using namespaces (previously "internal modules") in TypeScript.
-As we alluded in our note about terminology, "internal modules" are now referred to as "namespaces".
-Additionally, anywhere the `module` keyword was used when declaring an internal module, the `namespace` keyword can and should be used instead.
-This avoids confusing new users by overloading them with similarly named terms.
+## 介绍
 
-## First steps
+这篇文章描述了如何在TypeScript里使用命名空间（之前叫做“内部模块”）来组织你的代码。 就像我们在术语说明里提到的那样，“内部模块”现在叫做“命名空间”。 另外，任何使用`module`关键字来声明一个内部模块的地方都应该使用`namespace`关键字来替换。 这就避免了让新的使用者被相似的名称所迷惑。
 
-Let's start with the program we'll be using as our example throughout this page.
-We've written a small set of simplistic string validators, as you might write to check a user's input on a form in a webpage or check the format of an externally-provided data file.
+## 第一步
 
-## Validators in a single file
+我们先来写一段程序并将在整篇文章中都使用这个例子。 我们定义几个简单的字符串验证器，假设你会使用它们来验证表单里的用户输入或验证外部数据。
 
-```ts
+### 所有的验证器都放在一个文件里
+
+```typescript
 interface StringValidator {
-  isAcceptable(s: string): boolean;
+    isAcceptable(s: string): boolean;
 }
 
 let lettersRegexp = /^[A-Za-z]+$/;
 let numberRegexp = /^[0-9]+$/;
 
 class LettersOnlyValidator implements StringValidator {
-  isAcceptable(s: string) {
-    return lettersRegexp.test(s);
-  }
+    isAcceptable(s: string) {
+        return lettersRegexp.test(s);
+    }
 }
 
 class ZipCodeValidator implements StringValidator {
-  isAcceptable(s: string) {
-    return s.length === 5 && numberRegexp.test(s);
-  }
+    isAcceptable(s: string) {
+        return s.length === 5 && numberRegexp.test(s);
+    }
 }
 
 // Some samples to try
 let strings = ["Hello", "98052", "101"];
 
 // Validators to use
-let validators: { [s: string]: StringValidator } = {};
+let validators: { [s: string]: StringValidator; } = {};
 validators["ZIP code"] = new ZipCodeValidator();
 validators["Letters only"] = new LettersOnlyValidator();
 
 // Show whether each string passed each validator
 for (let s of strings) {
-  for (let name in validators) {
-    let isMatch = validators[name].isAcceptable(s);
-    console.log(`'${s}' ${isMatch ? "matches" : "does not match"} '${name}'.`);
-  }
+    for (let name in validators) {
+        let isMatch = validators[name].isAcceptable(s);
+        console.log(`'${ s }' ${ isMatch ? "matches" : "does not match" } '${ name }'.`);
+    }
 }
 ```
 
-## Namespacing
+## 命名空间
 
-As we add more validators, we're going to want to have some kind of organization scheme so that we can keep track of our types and not worry about name collisions with other objects.
-Instead of putting lots of different names into the global namespace, let's wrap up our objects into a namespace.
+随着更多验证器的加入，我们需要一种手段来组织代码，以便于在记录它们类型的同时还不用担心与其它对象产生命名冲突。 因此，我们把验证器包裹到一个命名空间内，而不是把它们放在全局命名空间下。
 
-In this example, we'll move all validator-related entities into a namespace called `Validation`.
-Because we want the interfaces and classes here to be visible outside the namespace, we preface them with `export`.
-Conversely, the variables `lettersRegexp` and `numberRegexp` are implementation details, so they are left unexported and will not be visible to code outside the namespace.
-In the test code at the bottom of the file, we now need to qualify the names of the types when used outside the namespace, e.g. `Validation.LettersOnlyValidator`.
+下面的例子里，把所有与验证器相关的类型都放到一个叫做`Validation`的命名空间里。 因为我们想让这些接口和类在命名空间之外也是可访问的，所以需要使用`export`。 相反的，变量`lettersRegexp`和`numberRegexp`是实现的细节，不需要导出，因此它们在命名空间外是不能访问的。 在文件末尾的测试代码里，由于是在命名空间之外访问，因此需要限定类型的名称，比如`Validation.LettersOnlyValidator`。
 
-## Namespaced Validators
+### 使用命名空间的验证器
 
-```ts
+```typescript
 namespace Validation {
-  export interface StringValidator {
-    isAcceptable(s: string): boolean;
-  }
-
-  const lettersRegexp = /^[A-Za-z]+$/;
-  const numberRegexp = /^[0-9]+$/;
-
-  export class LettersOnlyValidator implements StringValidator {
-    isAcceptable(s: string) {
-      return lettersRegexp.test(s);
+    export interface StringValidator {
+        isAcceptable(s: string): boolean;
     }
-  }
 
-  export class ZipCodeValidator implements StringValidator {
-    isAcceptable(s: string) {
-      return s.length === 5 && numberRegexp.test(s);
+    const lettersRegexp = /^[A-Za-z]+$/;
+    const numberRegexp = /^[0-9]+$/;
+
+    export class LettersOnlyValidator implements StringValidator {
+        isAcceptable(s: string) {
+            return lettersRegexp.test(s);
+        }
     }
-  }
+
+    export class ZipCodeValidator implements StringValidator {
+        isAcceptable(s: string) {
+            return s.length === 5 && numberRegexp.test(s);
+        }
+    }
 }
 
 // Some samples to try
 let strings = ["Hello", "98052", "101"];
 
 // Validators to use
-let validators: { [s: string]: Validation.StringValidator } = {};
+let validators: { [s: string]: Validation.StringValidator; } = {};
 validators["ZIP code"] = new Validation.ZipCodeValidator();
 validators["Letters only"] = new Validation.LettersOnlyValidator();
 
 // Show whether each string passed each validator
 for (let s of strings) {
-  for (let name in validators) {
-    console.log(
-      `"${s}" - ${
-        validators[name].isAcceptable(s) ? "matches" : "does not match"
-      } ${name}`
-    );
-  }
+    for (let name in validators) {
+        console.log(`"${ s }" - ${ validators[name].isAcceptable(s) ? "matches" : "does not match" } ${ name }`);
+    }
 }
 ```
 
-## Splitting Across Files
+## 分离到多文件
 
-As our application grows, we'll want to split the code across multiple files to make it easier to maintain.
+当应用变得越来越大时，我们需要将代码分离到不同的文件中以便于维护。
 
-## Multi-file namespaces
+### 多文件中的命名空间
 
-Here, we'll split our `Validation` namespace across many files.
-Even though the files are separate, they can each contribute to the same namespace and can be consumed as if they were all defined in one place.
-Because there are dependencies between files, we'll add reference tags to tell the compiler about the relationships between the files.
-Our test code is otherwise unchanged.
+现在，我们把`Validation`命名空间分割成多个文件。 尽管是不同的文件，它们仍是同一个命名空间，并且在使用的时候就如同它们在一个文件中定义的一样。 因为不同文件之间存在依赖关系，所以我们加入了引用标签来告诉编译器文件之间的关联。 我们的测试代码保持不变。
 
-##### Validation.ts
+#### Validation.ts
 
-```ts
+```typescript
 namespace Validation {
-  export interface StringValidator {
-    isAcceptable(s: string): boolean;
-  }
+    export interface StringValidator {
+        isAcceptable(s: string): boolean;
+    }
 }
 ```
 
-##### LettersOnlyValidator.ts
+#### LettersOnlyValidator.ts
 
-```ts
+```typescript
 /// <reference path="Validation.ts" />
 namespace Validation {
-  const lettersRegexp = /^[A-Za-z]+$/;
-  export class LettersOnlyValidator implements StringValidator {
-    isAcceptable(s: string) {
-      return lettersRegexp.test(s);
+    const lettersRegexp = /^[A-Za-z]+$/;
+    export class LettersOnlyValidator implements StringValidator {
+        isAcceptable(s: string) {
+            return lettersRegexp.test(s);
+        }
     }
-  }
 }
 ```
 
-##### ZipCodeValidator.ts
+#### ZipCodeValidator.ts
 
-```ts
+```typescript
 /// <reference path="Validation.ts" />
 namespace Validation {
-  const numberRegexp = /^[0-9]+$/;
-  export class ZipCodeValidator implements StringValidator {
-    isAcceptable(s: string) {
-      return s.length === 5 && numberRegexp.test(s);
+    const numberRegexp = /^[0-9]+$/;
+    export class ZipCodeValidator implements StringValidator {
+        isAcceptable(s: string) {
+            return s.length === 5 && numberRegexp.test(s);
+        }
     }
-  }
 }
 ```
 
-##### Test.ts
+#### Test.ts
 
-```ts
+```typescript
 /// <reference path="Validation.ts" />
 /// <reference path="LettersOnlyValidator.ts" />
 /// <reference path="ZipCodeValidator.ts" />
@@ -174,108 +152,92 @@ namespace Validation {
 let strings = ["Hello", "98052", "101"];
 
 // Validators to use
-let validators: { [s: string]: Validation.StringValidator } = {};
+let validators: { [s: string]: Validation.StringValidator; } = {};
 validators["ZIP code"] = new Validation.ZipCodeValidator();
 validators["Letters only"] = new Validation.LettersOnlyValidator();
 
 // Show whether each string passed each validator
 for (let s of strings) {
-  for (let name in validators) {
-    console.log(
-      `"${s}" - ${
-        validators[name].isAcceptable(s) ? "matches" : "does not match"
-      } ${name}`
-    );
-  }
+    for (let name in validators) {
+        console.log(`"${ s }" - ${ validators[name].isAcceptable(s) ? "matches" : "does not match" } ${ name }`);
+    }
 }
 ```
 
-Once there are multiple files involved, we'll need to make sure all of the compiled code gets loaded.
-There are two ways of doing this.
+当涉及到多文件时，我们必须确保所有编译后的代码都被加载了。 我们有两种方式。
 
-First, we can use concatenated output using the [`outFile`](/tsconfig#outFile) option to compile all of the input files into a single JavaScript output file:
+第一种方式，把所有的输入文件编译为一个输出文件，需要使用`--outFile`标记：
 
-```Shell
+```text
 tsc --outFile sample.js Test.ts
 ```
 
-The compiler will automatically order the output file based on the reference tags present in the files. You can also specify each file individually:
+编译器会根据源码里的引用标签自动地对输出进行排序。你也可以单独地指定每个文件。
 
-```Shell
+```text
 tsc --outFile sample.js Validation.ts LettersOnlyValidator.ts ZipCodeValidator.ts Test.ts
 ```
 
-Alternatively, we can use per-file compilation (the default) to emit one JavaScript file for each input file.
-If multiple JS files get produced, we'll need to use `<script>` tags on our webpage to load each emitted file in the appropriate order, for example:
+第二种方式，我们可以编译每一个文件（默认方式），那么每个源文件都会对应生成一个JavaScript文件。 然后，在页面上通过`<script>`标签把所有生成的JavaScript文件按正确的顺序引进来，比如：
 
-##### MyTestPage.html (excerpt)
+#### MyTestPage.html \(excerpt\)
 
-```html
-<script src="Validation.js" type="text/javascript" />
-<script src="LettersOnlyValidator.js" type="text/javascript" />
-<script src="ZipCodeValidator.js" type="text/javascript" />
-<script src="Test.js" type="text/javascript" />
+```markup
+    <script src="Validation.js" type="text/javascript" />
+    <script src="LettersOnlyValidator.js" type="text/javascript" />
+    <script src="ZipCodeValidator.js" type="text/javascript" />
+    <script src="Test.js" type="text/javascript" />
 ```
 
-## Aliases
+## 别名
 
-Another way that you can simplify working with namespaces is to use `import q = x.y.z` to create shorter names for commonly-used objects.
-Not to be confused with the `import x = require("name")` syntax used to load modules, this syntax simply creates an alias for the specified symbol.
-You can use these sorts of imports (commonly referred to as aliases) for any kind of identifier, including objects created from module imports.
+另一种简化命名空间操作的方法是使用`import q = x.y.z`给常用的对象起一个短的名字。 不要与用来加载模块的`import x = require('name')`语法弄混了，这里的语法是为指定的符号创建一个别名。 你可以用这种方法为任意标识符创建别名，也包括导入的模块中的对象。
 
-```ts
+```typescript
 namespace Shapes {
-  export namespace Polygons {
-    export class Triangle {}
-    export class Square {}
-  }
+    export namespace Polygons {
+        export class Triangle { }
+        export class Square { }
+    }
 }
 
 import polygons = Shapes.Polygons;
-let sq = new polygons.Square(); // Same as 'new Shapes.Polygons.Square()'
+let sq = new polygons.Square(); // Same as "new Shapes.Polygons.Square()"
 ```
 
-Notice that we don't use the `require` keyword; instead we assign directly from the qualified name of the symbol we're importing.
-This is similar to using `var`, but also works on the type and namespace meanings of the imported symbol.
-Importantly, for values, `import` is a distinct reference from the original symbol, so changes to an aliased `var` will not be reflected in the original variable.
+注意，我们并没有使用`require`关键字，而是直接使用导入符号的限定名赋值。 这与使用`var`相似，但它还适用于类型和导入的具有命名空间含义的符号。 重要的是，对于值来讲，`import`会生成与原始符号不同的引用，所以改变别名的`var`值并不会影响原始变量的值。
 
-## Working with Other JavaScript Libraries
+## 使用其它的JavaScript库
 
-To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes.
-Because most JavaScript libraries expose only a few top-level objects, namespaces are a good way to represent them.
+为了描述不是用TypeScript编写的类库的类型，我们需要声明类库导出的API。 由于大部分程序库只提供少数的顶级对象，命名空间是用来表示它们的一个好办法。
 
-We call declarations that don't define an implementation "ambient".
-Typically these are defined in `.d.ts` files.
-If you're familiar with C/C++, you can think of these as `.h` files.
-Let's look at a few examples.
+我们称其为声明是因为它不是外部程序的具体实现。 我们通常在`.d.ts`里写这些声明。 如果你熟悉C/C++，你可以把它们当做`.h`文件。 让我们看一些例子。
 
-## Ambient Namespaces
+### 外部命名空间
 
-The popular library D3 defines its functionality in a global object called `d3`.
-Because this library is loaded through a `<script>` tag (instead of a module loader), its declaration uses namespaces to define its shape.
-For the TypeScript compiler to see this shape, we use an ambient namespace declaration.
-For example, we could begin writing it as follows:
+流行的程序库D3在全局对象`d3`里定义它的功能。 因为这个库通过一个`<script>`标签加载（不是通过模块加载器），它的声明文件使用内部模块来定义它的类型。 为了让TypeScript编译器识别它的类型，我们使用外部命名空间声明。 比如，我们可以像下面这样写：
 
-##### D3.d.ts (simplified excerpt)
+#### D3.d.ts \(部分摘录\)
 
-```ts
+```typescript
 declare namespace D3 {
-  export interface Selectors {
-    select: {
-      (selector: string): Selection;
-      (element: EventTarget): Selection;
-    };
-  }
+    export interface Selectors {
+        select: {
+            (selector: string): Selection;
+            (element: EventTarget): Selection;
+        };
+    }
 
-  export interface Event {
-    x: number;
-    y: number;
-  }
+    export interface Event {
+        x: number;
+        y: number;
+    }
 
-  export interface Base extends Selectors {
-    event: Event;
-  }
+    export interface Base extends Selectors {
+        event: Event;
+    }
 }
 
 declare var d3: D3.Base;
 ```
+

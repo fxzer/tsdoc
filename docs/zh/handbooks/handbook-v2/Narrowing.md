@@ -1,9 +1,3 @@
----
-title: Narrowing
-layout: docs
-permalink: /docs/handbook/2/narrowing.html
-oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects."
----
 
 Imagine we have a function called `padLeft`.
 

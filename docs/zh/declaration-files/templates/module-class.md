@@ -1,9 +1,3 @@
----
-title: "Module: Class"
-layout: docs
-permalink: /docs/handbook/declaration-files/templates/module-class-d-ts.html
----
-# module-class.d.ts
 <!--
 TODO:
 
@@ -11,16 +5,16 @@ TODO:
 2. Give both commonjs and ES module examples.
 -->
 
-For example, when you want to work with JavaScript code which looks like:
+示例，当你想要处理如下的 JavaScriptr 的代码时：
 
 ```ts
-const Greeter = require("super-greeter");
+const Greeter = require('super-greeter');
 
 const greeter = new Greeter();
 greeter.greet();
 ```
 
-To handle both importing via UMD and modules:
+能够同时处理UMD导入和模块导入：
 
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
@@ -50,20 +44,20 @@ To handle both importing via UMD and modules:
  *~ loaded outside a module loader environment, declare that global here.
  *~ Otherwise, delete this declaration.
  */
-export as namespace "super-greeter";
+export as namespace myClassLib;
 
 /*~ This declaration specifies that the class constructor function
  *~ is the exported object from the file
  */
-export = Greeter;
+export = MyClass;
 
 /*~ Write your module's methods and properties in this class */
-declare class Greeter {
-  constructor(customGreeting?: string);
+declare class MyClass {
+    constructor(customGreeting?: string);
 
-  greet: void;
+    greet: void;
 
-  myMethod(opts: MyClass.MyClassMethodOptions): number;
+    myMethod(opts: MyClass.MyClassMethodOptions): number;
 }
 
 /*~ If you want to expose types from your module as well, you can
@@ -75,9 +69,9 @@ declare class Greeter {
  *~   import * as x from '[~THE MODULE~]'; // WRONG! DO NOT DO THIS!
  */
 declare namespace MyClass {
-  export interface MyClassMethodOptions {
-    width?: number;
-    height?: number;
-  }
+    export interface MyClassMethodOptions {
+        width?: number;
+        height?: number;
+    }
 }
 ```

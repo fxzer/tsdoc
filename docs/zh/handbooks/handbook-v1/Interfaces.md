@@ -1,21 +1,14 @@
----
-title: Interfaces
-layout: docs
-permalink: /docs/handbook/interfaces.html
-oneline: How to write an interface with TypeScript
-handbook: "true"
-deprecated_by: /docs/handbook/2/objects.html
----
+# 接口
 
-One of TypeScript's core principles is that type checking focuses on the _shape_ that values have.
-This is sometimes called "duck typing" or "structural subtyping".
-In TypeScript, interfaces fill the role of naming these types, and are a powerful way of defining contracts within your code as well as contracts with code outside of your project.
+## 介绍
 
-## Our First Interface
+TypeScript 的核心原则之一是对值所具有的_结构_进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在 TypeScript 里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
 
-The easiest way to see how interfaces work is to start with a simple example:
+## 接口初探
 
-```ts twoslash
+下面通过一个简单示例来观察接口是如何工作的：
+
+```typescript
 function printLabel(labeledObj: { label: string }) {
   console.log(labeledObj.label);
 }
@@ -24,14 +17,11 @@ let myObj = { size: 10, label: "Size 10 Object" };
 printLabel(myObj);
 ```
 
-The type checker checks the call to `printLabel`.
-The `printLabel` function has a single parameter that requires that the object passed in has a property called `label` of type `string`.
-Notice that our object actually has more properties than this, but the compiler only checks that _at least_ the ones required are present and match the types required.
-There are some cases where TypeScript isn't as lenient, which we'll cover in a bit.
+类型检查器会查看`printLabel`的调用。 `printLabel`有一个参数，并要求这个对象参数有一个名为`label`类型为`string`的属性。 需要注意的是，我们传入的对象参数实际上会包含很多属性，但是编译器只会检查那些必需的属性是否存在，并且其类型是否匹配。 然而，有些时候 TypeScript 却并不会这么宽松，我们下面会稍做讲解。
 
-We can write the same example again, this time using an interface to describe the requirement of having the `label` property that is a string:
+下面我们重写上面的例子，这次使用接口来描述：必须包含一个`label`属性且类型为`string`：
 
-```ts twoslash
+```typescript
 interface LabeledValue {
   label: string;
 }
@@ -44,22 +34,17 @@ let myObj = { size: 10, label: "Size 10 Object" };
 printLabel(myObj);
 ```
 
-The interface `LabeledValue` is a name we can now use to describe the requirement in the previous example.
-It still represents having a single property called `label` that is of type `string`.
-Notice we didn't have to explicitly say that the object we pass to `printLabel` implements this interface like we might have to in other languages.
-Here, it's only the shape that matters. If the object we pass to the function meets the requirements listed, then it's allowed.
+`LabeledValue`接口就好比一个名字，用来描述上面例子里的要求。 它代表了有一个`label`属性且类型为`string`的对象。 需要注意的是，我们在这里并不能像在其它语言里一样，说传给`printLabel`的对象实现了这个接口。我们只会去关注值的外形。 只要传入的对象满足上面提到的必要条件，那么它就是被允许的。
 
-It's worth pointing out that the type checker does not require that these properties come in any sort of order, only that the properties the interface requires are present and have the required type.
+还有一点值得提的是，类型检查器不会去检查属性的顺序，只要相应的属性存在并且类型也是对的就可以。
 
-## Optional Properties
+## 可选属性
 
-Not all properties of an interface may be required.
-Some exist under certain conditions or may not be there at all.
-These optional properties are popular when creating patterns like "option bags" where you pass an object to a function that only has a couple of properties filled in.
+接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在。 可选属性在应用“option bags”模式时很常用，即给函数传入的参数对象中只有部分属性赋值了。
 
-Here's an example of this pattern:
+下面是应用了“option bags”的例子：
 
-```ts twoslash
+```typescript
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -79,13 +64,11 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 let mySquare = createSquare({ color: "black" });
 ```
 
-Interfaces with optional properties are written similar to other interfaces, with each optional property denoted by a `?` at the end of the property name in the declaration.
+带有可选属性的接口与普通的接口定义差不多，只是在可选属性名字定义的后面加一个`?`符号。
 
-The advantage of optional properties is that you can describe these possibly available properties while still also preventing use of properties that are not part of the interface.
-For example, had we mistyped the name of the `color` property in `createSquare`, we would get an error message letting us know:
+可选属性的好处之一是可以对可能存在的属性进行预定义，好处之二是可以捕获引用了不存在的属性时的错误。 比如，我们故意将`createSquare`里的`color`属性名拼错，就会得到一个错误提示：
 
-```ts twoslash
-// @errors: 2551
+```typescript
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -106,134 +89,84 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 let mySquare = createSquare({ color: "black" });
 ```
 
-## Readonly properties
+## 只读属性
 
-Some properties should only be modifiable when an object is first created.
-You can specify this by putting `readonly` before the name of the property:
+一些对象属性只能在对象刚刚创建的时候修改其值。 你可以在属性名前用`readonly`来指定只读属性:
 
-```ts twoslash
+```typescript
 interface Point {
   readonly x: number;
   readonly y: number;
 }
 ```
 
-You can construct a `Point` by assigning an object literal.
-After the assignment, `x` and `y` can't be changed.
+你可以通过赋值一个对象字面量来构造一个`Point`。 赋值后，`x`和`y`再也不能被改变了。
 
-```ts twoslash
-// @errors: 2540
-interface Point {
-  readonly x: number;
-  readonly y: number;
-}
-// ---cut---
+```typescript
 let p1: Point = { x: 10, y: 20 };
 p1.x = 5; // error!
 ```
 
-TypeScript comes with a `ReadonlyArray<T>` type that is the same as `Array<T>` with all mutating methods removed, so you can make sure you don't change your arrays after creation:
+TypeScript 具有`ReadonlyArray<T>`类型，它与`Array<T>`相似，只是把所有可变方法去掉了，因此可以确保数组创建后再也不能被修改：
 
-```ts twoslash
-// @errors: 2542 2339 2540 4104
+```typescript
 let a: number[] = [1, 2, 3, 4];
 let ro: ReadonlyArray<number> = a;
-
 ro[0] = 12; // error!
 ro.push(5); // error!
 ro.length = 100; // error!
 a = ro; // error!
 ```
 
-On the last line of the snippet you can see that even assigning the entire `ReadonlyArray` back to a normal array is illegal.
-You can still override it with a type assertion, though:
+上面代码的最后一行，可以看到就算把整个`ReadonlyArray`赋值到一个普通数组也是不可以的。 但是你可以用类型断言重写：
 
-```ts twoslash
-let a: number[] = [1, 2, 3, 4];
-let ro: ReadonlyArray<number> = a;
-
+```typescript
 a = ro as number[];
 ```
 
 ### `readonly` vs `const`
 
-The easiest way to remember whether to use `readonly` or `const` is to ask whether you're using it on a variable or a property.
-Variables use `const` whereas properties use `readonly`.
+最简单判断该用`readonly`还是`const`的方法是看要把它做为变量使用还是做为一个属性。 做为变量使用的话用`const`，若做为属性则使用`readonly`。
 
-## Excess Property Checks
+## 额外的属性检查
 
-In our first example using interfaces, TypeScript lets us pass `{ size: number; label: string; }` to something that only expected a `{ label: string; }`.
-We also just learned about optional properties, and how they're useful when describing so-called "option bags".
+我们在第一个例子里使用了接口，TypeScript 让我们传入`{ size: number; label: string; }`到仅期望得到`{ label: string; }`的函数里。 我们已经学过了可选属性，并且知道他们在“option bags”模式里很有用。
 
-However, combining the two naively would allow an error to sneak in. For example, taking our last example using `createSquare`:
+然而，天真地将这两者结合的话就会像在 JavaScript 里那样搬起石头砸自己的脚。比如，拿`createSquare`例子来说：
 
-```ts twoslash
-// @errors: 2345 2739
+```typescript
 interface SquareConfig {
   color?: string;
   width?: number;
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return {
-    color: config.color || "red",
-    area: config.width ? config.width * config.width : 20,
-  };
+  // ...
 }
 
 let mySquare = createSquare({ colour: "red", width: 100 });
 ```
 
-Notice the given argument to `createSquare` is spelled _`colour`_ instead of `color`.
-In plain JavaScript, this sort of thing fails silently.
+注意传入`createSquare`的参数拼写为`colour`而不是`color`。 在 JavaScript 里，这会默默地失败。
 
-You could argue that this program is correctly typed, since the `width` properties are compatible, there's no `color` property present, and the extra `colour` property is insignificant.
+你可能会争辩这个程序已经正确地类型化了，因为`width`属性是兼容的，不存在`color`属性，而且额外的`colour`属性是无意义的。
 
-However, TypeScript takes the stance that there's probably a bug in this code.
-Object literals get special treatment and undergo _excess property checking_ when assigning them to other variables, or passing them as arguments.
-If an object literal has any properties that the "target type" doesn't have, you'll get an error:
+然而，TypeScript 会认为这段代码可能存在 bug。 对象字面量会被特殊对待而且会经过_额外属性检查_，当将它们赋值给变量或作为参数传递的时候。 如果一个对象字面量存在任何“目标类型”不包含的属性时，你会得到一个错误。
 
-```ts twoslash
-// @errors: 2345 2739
-interface SquareConfig {
-  color?: string;
-  width?: number;
-}
-
-function createSquare(config: SquareConfig): { color: string; area: number } {
-  return {
-    color: config.color || "red",
-    area: config.width ? config.width * config.width : 20,
-  };
-}
-// ---cut---
+```typescript
+// error: Object literal may only specify known properties, but 'colour' does not exist in type 'SquareConfig'. Did you mean to write 'color'?
 let mySquare = createSquare({ colour: "red", width: 100 });
 ```
 
-Getting around these checks is actually really simple.
-The easiest method is to just use a type assertion:
+绕开这些检查非常简单。 最简便的方法是使用类型断言：
 
-```ts twoslash
-// @errors: 2345 2739
-interface SquareConfig {
-  color?: string;
-  width?: number;
-}
-
-function createSquare(config: SquareConfig): { color: string; area: number } {
-  return {
-    color: config.color || "red",
-    area: config.width ? config.width * config.width : 20,
-  };
-}
-// ---cut---
+```typescript
 let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
 ```
 
-However, a better approach might be to add a string index signature if you're sure that the object can have some extra properties that are used in some special way.
-If `SquareConfig` can have `color` and `width` properties with the above types, but could _also_ have any number of other properties, then we could define it like so:
+然而，最佳的方式是能够添加一个字符串索引签名，前提是你能够确定这个对象可能具有某些做为特殊用途使用的额外属性。 如果`SquareConfig`带有上面定义的类型的`color`和`width`属性，并且_还会_带有任意数量的其它属性，那么我们可以这样定义它：
 
-```ts twoslash
+```typescript
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -241,142 +174,84 @@ interface SquareConfig {
 }
 ```
 
-We'll discuss index signatures in a bit, but here we're saying a `SquareConfig` can have any number of properties, and as long as they aren't `color` or `width`, their types don't matter.
+我们稍后会讲到索引签名，但在这我们要表示的是`SquareConfig`可以有任意数量的属性，并且只要它们不是`color`和`width`，那么就无所谓它们的类型是什么。
 
-One final way to get around these checks, which might be a bit surprising, is to assign the object to another variable:
-Since `squareOptions` won't undergo excess property checks, the compiler won't give you an error.
+还有最后一种跳过这些检查的方式，这可能会让你感到惊讶，它就是将这个对象赋值给一个另一个变量： 因为`squareOptions`不会经过额外属性检查，所以编译器不会报错。
 
-```ts twoslash
-interface SquareConfig {
-  color?: string;
-  width?: number;
-  [propName: string]: any;
-}
-
-function createSquare(config: SquareConfig): { color: string; area: number } {
-  return {
-    color: config.color || "red",
-    area: config.width ? config.width * config.width : 20,
-  };
-}
-// ---cut---
+```typescript
 let squareOptions = { colour: "red", width: 100 };
 let mySquare = createSquare(squareOptions);
 ```
 
-The above workaround will work as long as you have a common property between `squareOptions` and `SquareConfig`.
-In this example, it was the property `width`. It will however, fail if the variable does not have any common object property. For example:
+上面的方法只在`squareOptions`和`SquareConfig`之间有共同的属性时才好用。 在这个例子中，这个属性为`width`。如果变量间不存在共同的对象属性将会报错。例如：
 
-```ts twoslash
-// @errors: 2559
-interface SquareConfig {
-  color?: string;
-  width?: number;
-}
-
-function createSquare(config: SquareConfig): { color: string; area: number } {
-  return {
-    color: config.color || "red",
-    area: config.width ? config.width * config.width : 20,
-  };
-}
-// ---cut---
+```typescript
 let squareOptions = { colour: "red" };
 let mySquare = createSquare(squareOptions);
 ```
 
-Keep in mind that for simple code like above, you probably shouldn't be trying to "get around" these checks.
-For more complex object literals that have methods and hold state, you might need to keep these techniques in mind, but a majority of excess property errors are actually bugs.
-That means if you're running into excess property checking problems for something like option bags, you might need to revise some of your type declarations.
-In this instance, if it's okay to pass an object with both a `color` or `colour` property to `createSquare`, you should fix up the definition of `SquareConfig` to reflect that.
+要留意，在像上面一样的简单代码里，你可能不应该去绕开这些检查。 对于包含方法和内部状态的复杂对象字面量来讲，你可能需要使用这些技巧，但是大部额外属性检查错误是真正的 bug。 就是说你遇到了额外类型检查出的错误，比如“option bags”，你应该去审查一下你的类型声明。 在这里，如果支持传入`color`或`colour`属性到`createSquare`，你应该修改`SquareConfig`定义来体现出这一点。
 
-## Function Types
+## 函数类型
 
-Interfaces are capable of describing the wide range of shapes that JavaScript objects can take.
-In addition to describing an object with properties, interfaces are also capable of describing function types.
+接口能够描述 JavaScript 中对象拥有的各种各样的外形。 除了描述带有属性的普通对象外，接口也可以描述函数类型。
 
-To describe a function type with an interface, we give the interface a call signature.
-This is like a function declaration with only the parameter list and return type given. Each parameter in the parameter list requires both name and type.
+为了使用接口表示函数类型，我们需要给接口定义一个调用签名。 它就像是一个只有参数列表和返回值类型的函数定义。参数列表里的每个参数都需要名字和类型。
 
-```ts twoslash
+```typescript
 interface SearchFunc {
   (source: string, subString: string): boolean;
 }
 ```
 
-Once defined, we can use this function type interface like we would other interfaces.
-Here, we show how you can create a variable of a function type and assign it a function value of the same type.
+这样定义后，我们可以像使用其它接口一样使用这个函数类型的接口。 下例展示了如何创建一个函数类型的变量，并将一个同类型的函数赋值给这个变量。
 
-```ts twoslash
-interface SearchFunc {
-  (source: string, subString: string): boolean;
-}
-// ---cut---
+```typescript
 let mySearch: SearchFunc;
-
-mySearch = function (source: string, subString: string): boolean {
+mySearch = function(source: string, subString: string) {
   let result = source.search(subString);
   return result > -1;
 };
 ```
 
-For function types to correctly type check, the names of the parameters do not need to match.
-We could have, for example, written the above example like this:
+对于函数类型的类型检查来说，函数的参数名不需要与接口里定义的名字相匹配。 比如，我们使用下面的代码重写上面的例子：
 
-```ts twoslash
-interface SearchFunc {
-  (source: string, subString: string): boolean;
-}
-// ---cut---
+```typescript
 let mySearch: SearchFunc;
-
-mySearch = function (src: string, sub: string): boolean {
+mySearch = function(src: string, sub: string): boolean {
   let result = src.search(sub);
   return result > -1;
 };
 ```
 
-Function parameters are checked one at a time, with the type in each corresponding parameter position checked against each other.
-If you do not want to specify types at all, TypeScript's contextual typing can infer the argument types since the function value is assigned directly to a variable of type `SearchFunc`.
-Here, also, the return type of our function expression is implied by the values it returns (here `false` and `true`).
+函数的参数会逐个进行检查，要求对应位置上的参数类型是兼容的。 如果你不想指定类型，TypeScript 的类型系统会推断出参数类型，因为函数直接赋值给了`SearchFunc`类型变量。 函数的返回值类型是通过其返回值推断出来的（此例是`false`和`true`）。
 
-```ts twoslash
-interface SearchFunc {
-  (source: string, subString: string): boolean;
-}
-// ---cut---
+```typescript
 let mySearch: SearchFunc;
-
-mySearch = function (src, sub) {
+mySearch = function(src, sub) {
   let result = src.search(sub);
   return result > -1;
 };
 ```
 
-Had the function expression returned numbers or strings, the type checker would have made an error that indicates return type doesn't match the return type described in the `SearchFunc` interface.
+如果让这个函数返回数字或字符串，类型检查器会警告我们函数的返回值类型与`SearchFunc`接口中的定义不匹配。
 
-```ts twoslash
-// @errors: 2322
-interface SearchFunc {
-  (source: string, subString: string): boolean;
-}
-// ---cut---
+```typescript
 let mySearch: SearchFunc;
 
-mySearch = function (src, sub) {
+// error: Type '(src: string, sub: string) => string' is not assignable to type 'SearchFunc'.
+// Type 'string' is not assignable to type 'boolean'.
+mySearch = function(src, sub) {
   let result = src.search(sub);
   return "string";
 };
 ```
 
-## Indexable Types
+## 可索引的类型
 
-Similarly to how we can use interfaces to describe function types, we can also describe types that we can "index into" like `a[10]`, or `ageMap["daniel"]`.
-Indexable types have an _index signature_ that describes the types we can use to index into the object, along with the corresponding return types when indexing.
+与使用接口描述函数类型差不多，我们也可以描述那些能够“通过索引得到”的类型，比如`a[10]`或`ageMap["daniel"]`。 可索引类型具有一个_索引签名_，它描述了对象索引的类型，还有相应的索引返回值类型。 让我们看一个例子：
 
-Let's take an example:
-
-```ts twoslash
+```typescript
 interface StringArray {
   [index: number]: string;
 }
@@ -387,105 +262,64 @@ myArray = ["Bob", "Fred"];
 let myStr: string = myArray[0];
 ```
 
-Above, we have a `StringArray` interface that has an index signature.
-This index signature states that when a `StringArray` is indexed with a `number`, it will return a `string`.
+上面例子里，我们定义了`StringArray`接口，它具有索引签名。 这个索引签名表示了当用`number`去索引`StringArray`时会得到`string`类型的返回值。
 
-There are four types of supported index signatures: string, number, symbol and template strings.
-It is possible to support many types of indexers, but the type returned from a numeric indexer must be a subtype of the type returned from the string indexer.
+Typescript 支持两种索引签名：字符串和数字。 可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。 这是因为当使用`number`来索引时，JavaScript 会将它转换成`string`然后再去索引对象。 也就是说用`100`（一个`number`）去索引等同于使用`"100"`（一个`string`）去索引，因此两者需要保持一致。
 
-This is because when indexing with a `number`, JavaScript will actually convert that to a `string` before indexing into an object.
-That means that indexing with `100` (a `number`) is the same thing as indexing with `"100"` (a `string`), so the two need to be consistent.
-
-```ts twoslash
-// @errors: 2413
-// @strictPropertyInitialization: false
-interface Animal {
+```typescript
+class Animal {
   name: string;
 }
-
-interface Dog extends Animal {
+class Dog extends Animal {
   breed: string;
 }
 
-// Error: indexing with a numeric string might get you a completely separate type of Animal!
+// 错误：使用数值型的字符串索引，有时会得到完全不同的Animal!
 interface NotOkay {
   [x: number]: Animal;
   [x: string]: Dog;
 }
 ```
 
-While string index signatures are a powerful way to describe the "dictionary" pattern, they also enforce that all properties match their return type.
-This is because a string index declares that `obj.property` is also available as `obj["property"]`.
-In the following example, `name`'s type does not match the string index's type, and the type checker gives an error:
+字符串索引签名能够很好的描述`dictionary`模式，并且它们也会确保所有属性与其返回值类型相匹配。 因为字符串索引声明了`obj.property`和`obj["property"]`两种形式都可以。 下面的例子里，`name`的类型与字符串索引类型不匹配，所以类型检查器给出一个错误提示：
 
-```ts twoslash
-// @errors: 2411
+```typescript
 interface NumberDictionary {
   [index: string]: number;
-
-  length: number; // ok, length is a number
-  name: string; // error, the type of 'name' is not a subtype of the indexer
+  length: number; // 可以，length是number类型
+  name: string; // 错误，`name`的类型与索引类型返回值的类型不匹配
 }
 ```
 
-However, properties of different types are acceptable if the index signature is a union of the property types:
+但如果索引签名是包含属性类型的联合类型，那么使用不同类型的属性就是允许的。
 
-```ts twoslash
+```typescript
 interface NumberOrStringDictionary {
-  [index: string]: number | string;
-
-  length: number; // ok, length is a number
-  name: string; // ok, name is a string
+   [index: string]: number | string;
+   length: number;    // ok, length is a number
+   name: string;      // ok, name is a string
 }
 ```
 
-Finally, you can make index signatures `readonly` in order to prevent assignment to their indices:
+最后，你可以将索引签名设置为只读，这样就防止了给索引赋值：
 
-```ts twoslash
-// @errors: 2542
+```typescript
 interface ReadonlyStringArray {
   readonly [index: number]: string;
 }
-
 let myArray: ReadonlyStringArray = ["Alice", "Bob"];
 myArray[2] = "Mallory"; // error!
 ```
 
-You can't set `myArray[2]` because the index signature is `readonly`.
+你不能设置`myArray[2]`，因为索引签名是只读的。
 
-### Indexable Types with Template Strings
+## 类类型
 
-A template string can be used to indicate that a particular pattern is allowed, but not all. For example, a HTTP headers object may have a set list of known headers and support any [custom defined properties](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers) which are prefixed with `x-`.
+### 实现接口
 
-```ts twoslash
-// @errors: 2339
+与 C\# 或 Java 里接口的基本作用一样，TypeScript 也能够用它来明确的强制一个类去符合某种契约。
 
-interface HeadersResponse {
-  "content-type": string,
-  date: string,
-  "content-length": string
-
-  // Permit any property starting with 'data-'.
-  [headerName: `x-${string}`]: string;
-}
-
-function handleResponse(r: HeadersResponse) {
-  // Handle known, and x- prefixed
-  const type = r["content-type"]
-  const poweredBy = r["x-powered-by"]
-
-  // Unknown keys without the prefix raise errors
-  const origin = r.origin
-}
-```
-
-## Class Types
-
-### Implementing an interface
-
-One of the most common uses of interfaces in languages like C# and Java, that of explicitly enforcing that a class meets a particular contract, is also possible in TypeScript.
-
-```ts twoslash
+```typescript
 interface ClockInterface {
   currentTime: Date;
 }
@@ -496,10 +330,9 @@ class Clock implements ClockInterface {
 }
 ```
 
-You can also describe methods in an interface that are implemented in the class, as we do with `setTime` in the below example:
+你也可以在接口中描述一个方法，在类里实现它，如同下面的`setTime`方法一样：
 
-```ts twoslash
-// @strictPropertyInitialization: false
+```typescript
 interface ClockInterface {
   currentTime: Date;
   setTime(d: Date): void;
@@ -514,18 +347,13 @@ class Clock implements ClockInterface {
 }
 ```
 
-Interfaces describe the public side of the class, rather than both the public and private side.
-This prohibits you from using them to check that a class also has particular types for the private side of the class instance.
+接口描述了类的公共部分，而不是公共和私有两部分。 它不会帮你检查类是否具有某些私有成员。
 
-### Difference between the static and instance sides of classes
+### 类静态部分与实例部分的区别
 
-When working with classes and interfaces, it helps to keep in mind that a class has _two_ types: the type of the static side and the type of the instance side.
-You may notice that if you create an interface with a construct signature and try to create a class that implements this interface you get an error:
+当你操作类和接口的时候，你要知道类是具有两个类型的：静态部分的类型和实例的类型。 你会注意到，当你用构造器签名去定义一个接口并试图定义一个类去实现这个接口时会得到一个错误：
 
-```ts twoslash
-// @errors: 7013 2420 2564
-// @strictPropertyInitialization: false
-// @noImplicitAny: false
+```typescript
 interface ClockConstructor {
   new (hour: number, minute: number);
 }
@@ -536,18 +364,14 @@ class Clock implements ClockConstructor {
 }
 ```
 
-This is because when a class implements an interface, only the instance side of the class is checked.
-Since the constructor sits in the static side, it is not included in this check.
+这里因为当一个类实现了一个接口时，只对其实例部分进行类型检查。 constructor 存在于类的静态部分，所以不在检查的范围内。
 
-Instead, you would need to work with the static side of the class directly.
-In this example, we define two interfaces, `ClockConstructor` for the constructor and `ClockInterface` for the instance methods.
-Then, for convenience, we define a constructor function `createClock` that creates instances of the type that is passed to it:
+因此，我们应该直接操作类的静态部分。 看下面的例子，我们定义了两个接口，`ClockConstructor`为构造函数所用和`ClockInterface`为实例方法所用。 为了方便我们定义一个构造函数`createClock`，它用传入的类型创建实例。
 
-```ts twoslash
+```typescript
 interface ClockConstructor {
   new (hour: number, minute: number): ClockInterface;
 }
-
 interface ClockInterface {
   tick(): void;
 }
@@ -566,7 +390,6 @@ class DigitalClock implements ClockInterface {
     console.log("beep beep");
   }
 }
-
 class AnalogClock implements ClockInterface {
   constructor(h: number, m: number) {}
   tick() {
@@ -578,19 +401,17 @@ let digital = createClock(DigitalClock, 12, 17);
 let analog = createClock(AnalogClock, 7, 32);
 ```
 
-Because `createClock`'s first parameter is of type `ClockConstructor`, in `createClock(AnalogClock, 7, 32)`, it checks that `AnalogClock` has the correct constructor signature.
+因为`createClock`的第一个参数是`ClockConstructor`类型，在`createClock(AnalogClock, 7, 32)`里，会检查`AnalogClock`是否符合构造函数签名。
 
-Another simple way is to use class expressions:
+另一种简单方式是使用类表达式：
 
-```ts twoslash
-// @strictPropertyInitialization: false
-// @noImplicitAny: false
+```typescript
 interface ClockConstructor {
-  new (hour: number, minute: number): ClockInterface;
+  new (hour: number, minute: number);
 }
 
 interface ClockInterface {
-  tick(): void;
+  tick();
 }
 
 const Clock: ClockConstructor = class Clock implements ClockInterface {
@@ -599,17 +420,13 @@ const Clock: ClockConstructor = class Clock implements ClockInterface {
     console.log("beep beep");
   }
 };
-
-let clock = new Clock(12, 17);
-clock.tick();
 ```
 
-## Extending Interfaces
+## 继承接口
 
-Like classes, interfaces can extend each other.
-This allows you to copy the members of one interface into another, which gives you more flexibility in how you separate your interfaces into reusable components.
+和类一样，接口也可以相互继承。 这让我们能够从一个接口里复制成员到另一个接口里，可以更灵活地将接口分割到可重用的模块里。
 
-```ts twoslash
+```typescript
 interface Shape {
   color: string;
 }
@@ -623,9 +440,9 @@ square.color = "blue";
 square.sideLength = 10;
 ```
 
-An interface can extend multiple interfaces, creating a combination of all of the interfaces.
+一个接口可以继承多个接口，创建出多个接口的合成接口。
 
-```ts twoslash
+```typescript
 interface Shape {
   color: string;
 }
@@ -644,14 +461,13 @@ square.sideLength = 10;
 square.penWidth = 5.0;
 ```
 
-## Hybrid Types
+## 混合类型
 
-As we mentioned earlier, interfaces can describe the rich types present in real world JavaScript.
-Because of JavaScript's dynamic and flexible nature, you may occasionally encounter an object that works as a combination of some of the types described above.
+先前我们提过，接口能够描述 JavaScript 里丰富的类型。 因为 JavaScript 其动态灵活的特点，有时你会希望一个对象可以同时具有上面提到的多种类型。
 
-One such example is an object that acts as both a function and an object, with additional properties:
+一个例子就是，一个对象可以同时作为函数和对象使用，并带有额外的属性。
 
-```ts twoslash
+```typescript
 interface Counter {
   (start: number): string;
   interval: number;
@@ -659,9 +475,9 @@ interface Counter {
 }
 
 function getCounter(): Counter {
-  let counter = function (start: number) {} as Counter;
+  let counter = function(start: number) {} as Counter;
   counter.interval = 123;
-  counter.reset = function () {};
+  counter.reset = function() {};
   return counter;
 }
 
@@ -671,21 +487,15 @@ c.reset();
 c.interval = 5.0;
 ```
 
-When interacting with 3rd-party JavaScript, you may need to use patterns like the above to fully describe the shape of the type.
+在使用 JavaScript 第三方库的时候，你可能需要像上面那样去完整地定义类型。
 
-## Interfaces Extending Classes
+## 接口继承类
 
-When an interface type extends a class type it inherits the members of the class but not their implementations.
-It is as if the interface had declared all of the members of the class without providing an implementation.
-Interfaces inherit even the private and protected members of a base class.
-This means that when you create an interface that extends a class with private or protected members, that interface type can only be implemented by that class or a subclass of it.
+当接口继承了一个类类型时，它会继承类的成员但不包括其实现。 就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样。 接口同样会继承到类的 private 和 protected 成员。 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型只能被这个类或其子类所实现（implement）。
 
-This is useful when you have a large inheritance hierarchy, but want to specify that your code works with only subclasses that have certain properties.
-The subclasses don't have to be related besides inheriting from the base class.
-For example:
+当你有一个庞大的继承结构时这很有用，但要指出的是你的代码只在子类拥有特定属性时起作用。 除了继承自基类，子类之间不必相关联。 例：
 
-```ts twoslash
-// @errors: 2300 2420 2300
+```typescript
 class Control {
   private state: any;
 }
@@ -703,15 +513,14 @@ class TextBox extends Control {
 }
 
 class ImageControl implements SelectableControl {
+// Error: Class 'ImageControl' incorrectly implements interface 'SelectableControl'.
+//  Types have separate declarations of a private property 'state'.
   private state: any;
   select() {}
 }
 ```
 
-In the above example, `SelectableControl` contains all of the members of `Control`, including the private `state` property.
-Since `state` is a private member it is only possible for descendants of `Control` to implement `SelectableControl`.
-This is because only descendants of `Control` will have a `state` private member that originates in the same declaration, which is a requirement for private members to be compatible.
+在上面的例子里，`SelectableControl`包含了`Control`的所有成员，包括私有成员`state`。 因为`state`是私有成员，所以只能够是`Control`的子类们才能实现`SelectableControl`接口。 因为只有`Control`的子类才能够拥有一个声明于`Control`的私有成员`state`，这对私有成员的兼容性是必需的。
 
-Within the `Control` class it is possible to access the `state` private member through an instance of `SelectableControl`.
-Effectively, a `SelectableControl` acts like a `Control` that is known to have a `select` method.
-The `Button` and `TextBox` classes are subtypes of `SelectableControl` (because they both inherit from `Control` and have a `select` method). The `ImageControl` class has its own `state` private member rather than extending `Control`, so it cannot implement `SelectableControl`.
+在`Control`类内部，是允许通过`SelectableControl`的实例来访问私有成员`state`的。 实际上，`SelectableControl`就像`Control`一样，并拥有一个`select`方法。 `Button`和`TextBox`类是`SelectableControl`的子类（因为它们都继承自`Control`并有`select`方法）。而对于 `ImageControl` 类，它有自身的私有成员 `state` 而不是通过继承 `Control` 得来的，所以它不可以实现 `SelectableControl` 。
+

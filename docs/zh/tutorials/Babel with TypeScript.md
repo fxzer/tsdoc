@@ -1,49 +1,43 @@
----
-title: Using Babel with TypeScript
-layout: docs
-permalink: /docs/handbook/babel-with-typescript.html
-oneline: How to create a hybrid Babel + TypeScript project
-translatable: true
----
+使用Babel和TypeScript
 
-## Babel vs `tsc` for TypeScript
+## TypeScript中的Babel和`tsc`的比较
 
-When making a modern JavaScript project, you might ask yourself what is the right way to convert files from TypeScript to JavaScript?
+当创建一个现代化的JavaScript项目时，你可能会问自己，将TypeScript文件转换为JavaScript的正确方式是什么？
 
-A lot of the time the answer is _"it depends"_, or _"someone may have decided for you"_ depending on the project. If you are building your project with an existing framework like [tsdx](https://tsdx.io), [Angular](https://angular.io/), [NestJS](https://nestjs.com/) or any framework mentioned in the [Getting Started](/docs/home) then this decision is handled for you.
+很多时候，答案是“这取决于情况”，或者“有人可能已经为你做出了决定”，这取决于项目。如果你正在使用像[tsdx](https://tsdx.io)、[Angular](https://angular.io/)、[NestJS](https://nestjs.com/)或[Getting Started](/docs/home)中提到的任何框架构建你的项目，那么这个决定已经为你处理好了。
 
-However, a useful heuristic could be:
+然而，一个有用的启发式可能是：
 
-- Is your build output mostly the same as your source input files? Use `tsc`
-- Do you need a build pipeline with multiple potential outputs? Use `babel` for transpiling and `tsc` for type checking
+- 你的构建输出是否与你的源输入文件大致相同？使用`tsc`
+- 你需要一个有多个潜在输出的构建管道？使用`babel`进行转换和`ts`进行类型检查
 
-## Babel for transpiling, `tsc` for types
+## 使用Babel进行转换，使用`tsc`进行类型检查
 
-This is a common pattern for projects with existing build infrastructure which may have been ported from a JavaScript codebase to TypeScript.
+这是一个常见的模式，适用于已经从JavaScript代码库转移到TypeScript的具有现有构建基础设施的项目。
 
-This technique is a hybrid approach, using Babel's [preset-typescript](https://babeljs.io/docs/en/babel-preset-typescript) to generate your JS files, and then using TypeScript to do type checking and `.d.ts` file generation.
+这种技术是一种混合方法，使用Babel的[preset-typescript](https://babeljs.io/docs/en/babel-preset-typescript)生成你的JS文件，然后使用TypeScript进行类型检查和`.d.ts`文件生成。
 
-By using babel's support for TypeScript, you get the ability to work with existing build pipelines and are more likely to have a faster JS emit time because Babel does not type check your code.
+通过使用babel对TypeScript的支持，你可以使用现有的构建管道，并更有可能具有更快的JS发射时间，因为Babel不会对你的代码进行类型检查。
 
-#### Type Checking and d.ts file generation
+#### 类型检查和d.ts文件生成
 
-The downside to using babel is that you don't get type checking during the transition from TS to JS. This can mean that type errors which you miss in your editor could sneak through into production code.
+使用babel的缺点是，在从TS到JS的转换过程中，你不会得到类型检查。这可能意味着你在编辑器中错过的类型错误可能会在生产代码中出现。
 
-In addition to that, Babel cannot create `.d.ts` files for your TypeScript which can make it harder to work with your project if it is a library.
+除此之外，Babel无法为你的TypeScript创建`.d.ts`文件，这可能会使与库项目的工作变得更加困难。
 
-To fix these issues, you would probably want to set up a command to type check your project using TSC. This likely means duplicating some of your babel config into a corresponding [`tsconfig.json`](/tsconfig) and ensuring these flags are enabled:
+为了解决这些问题，你可能需要设置一个命令来使用TSC对你的项目进行类型检查。这可能意味着将一些你的babel配置复制到相应的[`tsconfig.json`](/tsconfig)中，并确保启用了这些标志：
 
 ```json tsconfig
 "compilerOptions": {
-  // Ensure that .d.ts files are created by tsc, but not .js files
+  // 确保tsc创建.d.ts文件，但不创建.js文件
   "declaration": true,
   "emitDeclarationOnly": true,
-  // Ensure that Babel can safely transpile files in the TypeScript project
+  // 确保Babel可以安全地转换TypeScript项目中的文件
   "isolatedModules": true
 }
 ```
 
-For more information on these flags:
+有关这些标志的更多信息：
 
 - [`isolatedModules`](/tsconfig#isolatedModules)
 - [`declaration`](/tsconfig#declaration), [`emitDeclarationOnly`](/tsconfig#emitDeclarationOnly)

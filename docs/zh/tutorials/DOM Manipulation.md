@@ -10,12 +10,11 @@ translatable: true
 
 ### _An exploration into the `HTMLElement` type_
 
-In the 20+ years since its standardization, JavaScript has come a very long way. While in 2020, JavaScript can be used on servers, in data science, and even on IoT devices, it is important to remember its most popular use case: web browsers.
+自标准化以来的 20 多年里，JavaScript 取得了长足的进步。虽然在 2020 年，JavaScript 可以用于服务器、数据科学甚至物联网设备，但重要的是要记住它最流行的用例：网络浏览器。
 
-Websites are made up of HTML and/or XML documents. These documents are static, they do not change. The *Document Object Model (DOM)* is a programming interface implemented by browsers in order to make static websites functional. The DOM API can be used to change the document structure, style, and content. The API is so powerful that countless frontend frameworks (jQuery, React, Angular, etc.) have been developed around it in order to make dynamic websites even easier to develop.
+网站由 HTML 和/或 XML 文档组成。这些文件是静态的，它们不会改变。 *文档对象模型 (DOM)* 是由浏览器实现的编程接口，目的是使静态网站发挥作用。 DOM API 可用于更改文档结构、样式和内容。该 API 非常强大，以至于围绕它开发了无数前端框架（jQuery、React、Angular 等），以使动态网站更易于开发。
 
-TypeScript is a typed superset of JavaScript, and it ships type definitions for the DOM API. These definitions are readily available in any default TypeScript project. Of the 20,000+ lines of definitions in _lib.dom.d.ts_, one stands out among the rest: `HTMLElement` . This type is the backbone for DOM manipulation with TypeScript.
-
+TypeScript 是 JavaScript 的类型化超集，它为 DOM API 提供了类型定义。 这些定义在任何默认的 TypeScript 项目中都很容易获得。 在 _lib.dom.d.ts_ 的 20,000 多行定义中，有一个脱颖而出：`HTMLElement`。 这种类型是使用 TypeScript 进行 DOM 操作的支柱。
 > You can explore the source code for the [DOM type definitions](https://github.com/microsoft/TypeScript/blob/main/lib/lib.dom.d.ts)
 
 ## Basic Example

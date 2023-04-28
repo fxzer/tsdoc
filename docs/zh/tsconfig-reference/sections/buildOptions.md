@@ -1,8 +1,8 @@
-## Build Options
+## 构建选项
 
-Type Acquisition is only important for JavaScript projects. In TypeScript projects you need to include the types in your projects explicitly. However, for JavaScript projects, the TypeScript tooling will download types for your modules in the background and outside of your node_modules folder.
+类型获取只对JavaScript项目很重要。在TypeScrip项目中，您需要显式包括项目中的类型。但是，对于JavaScript项目，类型脚本工具将在后台下载模块的类型，并将其下载到您的NODE_MODULES文件夹之外。
 
-You may not want this, in which case you can turn off type acquisition by having this `jsconfig.json` in the root of your project:
+如果您不想要这个功能，那么您可以通过在项目根目录下创建 `jsconfig.json` 文件来关闭类型获取：
 
 ```json
 {
@@ -12,7 +12,7 @@ You may not want this, in which case you can turn off type acquisition by having
 }
 ```
 
-Common uses for this section of a `jsconfig.json` is to tell TypeScript to download additional definitions for your tooling experience:
+`jsconfig.json`此部分的常见用法，是告诉TypeScript下载额外的定义，以供您的工具体验：
 
 ```json
 {

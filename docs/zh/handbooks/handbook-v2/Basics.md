@@ -389,7 +389,7 @@ greet("Maddison", new Date());
 TypeScript 有几个可以打开或关闭的类型检查严格性标志，除非另有说明，否则我们的所有示例都将启用所有这些标志。
 CLI 中的 [`strict`](/tsconfig#strict) 标志，或 [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig -json.html) 同时打开它们，但我们可以单独选择退出它们。
 您应该了解的两个最大的是 [`noImplicitAny`](/tsconfig#noImplicitAny) 和 [`strictNullChecks`](/tsconfig#strictNullChecks)。
-## 禁止隐式any`noImplicitAny`
+## 禁止隐式any 
 
 回想一下，在某些地方，TypeScript 不会尝试为我们推断类型，而是回退到最宽松的类型：`any`。
 这不是可能发生的最糟糕的事情——毕竟，回退到 `any`  只是普通的 JavaScript 体验。
@@ -397,7 +397,7 @@ CLI 中的 [`strict`](/tsconfig#strict) 标志，或 [`tsconfig.json`](https://w
 然而，使用 `any`  通常会违背使用 TypeScript 的初衷。
 您的程序类型越多，您获得的验证和工具就越多，这意味着您在编写代码时遇到的错误会更少。
 打开 [`noImplicitAny`](/tsconfig#noImplicitAny) 标志将对类型被隐式推断为 any 的任何变量发出错误。
-## `strictNullChecks`
+## 严格空值检查
 默认情况下，像 `null` 和 `undefined`  这样的值可以分配给任何其他类型。
 这可以使编写一些代码更容易，但忘记处理 `null` 和 `undefined` 是世界上无数错误的原因——有些人认为这是一个 [十亿美元的错误](https://www.youtube.com/watch?v=ybrQvs4x0Ps)！
  `strictNullChecks`  标志使处理 `null` 和 `undefined` 更加明确，并且_spares_ 我们不必担心我们是否_忘记_处理 `null` 和 `undefined`。

@@ -1,26 +1,20 @@
 
-<blockquote class='bg-reading'>
-  <p>Background Reading:<br /><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes'>Classes (MDN)</a></p>
-</blockquote>
 
-TypeScript offers full support for the `class` keyword introduced in ES2015.
+TypeScript 全面支持 ES2015 中引入的`class`关键字。
 
-As with other JavaScript language features, TypeScript adds type annotations and other syntax to allow you to express relationships between classes and other types.
+与其他 JavaScript 语言功能一样，TypeScript 添加了类型注释和其他语法，以允许您表达类和其他类型之间的关系。
+## 类成员
 
-## Class Members
-
-Here's the most basic class - an empty one:
-
+这是最基本的类——一个空类：
 ```ts twoslash
 class Point {}
 ```
 
-This class isn't very useful yet, so let's start adding some members.
+这个类还不是很有用，所以让我们开始添加一些成员。
 
-### Fields
+### 字段
 
-A field declaration creates a public writeable property on a class:
-
+字段声明在类上创建一个公共可写属性：
 ```ts twoslash
 // @strictPropertyInitialization: false
 class Point {
@@ -33,10 +27,9 @@ pt.x = 0;
 pt.y = 0;
 ```
 
-As with other locations, the type annotation is optional, but will be an implicit `any` if not specified.
+与其他位置一样，类型注释是可选的，但如果未指定，则将是隐式的`any`。
 
-Fields can also have _initializers_; these will run automatically when the class is instantiated:
-
+字段也可以有初始值设定项； 这些将在实例化类时自动运行：
 ```ts twoslash
 class Point {
   x = 0;
@@ -48,8 +41,7 @@ const pt = new Point();
 console.log(`${pt.x}, ${pt.y}`);
 ```
 
-Just like with `const`, `let`, and `var`, the initializer of a class property will be used to infer its type:
-
+就像 `const`、`let` 和 `var` 一样，类属性的初始值设定项将用于推断其类型：
 ```ts twoslash
 // @errors: 2322
 class Point {
@@ -63,7 +55,7 @@ pt.x = "0";
 
 #### `--strictPropertyInitialization`
 
-The [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization) setting controls whether class fields need to be initialized in the constructor.
+ `strictPropertyInitialization`可控制类字段是否需要在构造函数中初始化。
 
 ```ts twoslash
 // @errors: 2564
@@ -82,11 +74,10 @@ class GoodGreeter {
 }
 ```
 
-Note that the field needs to be initialized _in the constructor itself_.
-TypeScript does not analyze methods you invoke from the constructor to detect initializations, because a derived class might override those methods and fail to initialize the members.
+请注意，该字段需要 _在构造函数本身_ 中初始化。
+TypeScript 不会分析您从构造函数调用的方法来检测初始化，因为派生类可能会覆盖这些方法并且无法初始化成员。
 
-If you intend to definitely initialize a field through means other than the constructor (for example, maybe an external library is filling in part of your class for you), you can use the _definite assignment assertion operator_, `!`:
-
+如果你打算通过构造函数以外的方式明确地初始化一个字段（例如，可能一个外部库正在为你填充你的类的一部分），你可以使用 _明确赋值断言运算符_，`!`：
 ```ts twoslash
 class OKGreeter {
   // Not initialized, but no error
@@ -96,9 +87,8 @@ class OKGreeter {
 
 ### `readonly`
 
-Fields may be prefixed with the `readonly` modifier.
-This prevents assignments to the field outside of the constructor.
-
+字段可以以 `readonly` 修饰符为前缀。
+这可以防止对构造函数之外的字段进行赋值。
 ```ts twoslash
 // @errors: 2540 2540
 class Greeter {
@@ -118,17 +108,11 @@ const g = new Greeter();
 g.name = "also not ok";
 ```
 
-### Constructors
+### 构造函数
 
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor'>Constructor (MDN)</a><br/>
-   </p>
-</blockquote>
 
-Class constructors are very similar to functions.
-You can add parameters with type annotations, default values, and overloads:
-
+类构造函数与函数非常相似。
+您可以添加带有类型注释、默认值和重载的参数：
 ```ts twoslash
 class Point {
   x: number;
@@ -153,15 +137,14 @@ class Point {
 }
 ```
 
-There are just a few differences between class constructor signatures and function signatures:
+类构造函数签名和函数签名之间只有一些区别：
 
-- Constructors can't have type parameters - these belong on the outer class declaration, which we'll learn about later
-- Constructors can't have return type annotations - the class instance type is always what's returned
+- 构造函数不能有类型参数 - 这些属于外部类声明，我们稍后会了解
+- 构造函数不能有返回类型注释 - 类实例类型总是返回的
 
-#### Super Calls
+#### 超级调用
 
-Just as in JavaScript, if you have a base class, you'll need to call `super();` in your constructor body before using any `this.` members:
-
+就像在 JavaScript 中一样，如果您有基类，则需要在构造函数主体中调用 `super();` 在使用任何 `this.`成员之前：
 ```ts twoslash
 // @errors: 17009
 class Base {
@@ -177,19 +160,12 @@ class Derived extends Base {
 }
 ```
 
-Forgetting to call `super` is an easy mistake to make in JavaScript, but TypeScript will tell you when it's necessary.
+忘记调用 `super` 是 JavaScript 中很容易犯的错误，但 TypeScript 会在必要时告诉您。
+### 方法
 
-### Methods
 
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions'>Method definitions</a><br/>
-   </p>
-</blockquote>
-
-A function property on a class is called a _method_.
-Methods can use all the same type annotations as functions and constructors:
-
+类的函数属性称为 _方法_。
+方法可以使用所有与函数和构造函数相同的类型注释：
 ```ts twoslash
 class Point {
   x = 10;
@@ -202,11 +178,10 @@ class Point {
 }
 ```
 
-Other than the standard type annotations, TypeScript doesn't add anything else new to methods.
+除了标准的类型注释，TypeScript 没有向方法中添加任何其他新内容。
 
-Note that inside a method body, it is still mandatory to access fields and other methods via `this.`.
-An unqualified name in a method body will always refer to something in the enclosing scope:
-
+请注意，在方法体内，仍然必须通过 `this.`访问字段和其他方法。
+方法主体中的非限定名称将始终引用封闭范围内的内容：
 ```ts twoslash
 // @errors: 2322
 let x: number = 0;
@@ -237,17 +212,16 @@ class C {
 }
 ```
 
-> Note that a field-backed get/set pair with no extra logic is very rarely useful in JavaScript.
-> It's fine to expose public fields if you don't need to add additional logic during the get/set operations.
+> 请注意，没有额外逻辑的字段支持的 get/set 对在 JavaScript 中很少有用。
+> 如果您不需要在 get/set 操作期间添加额外的逻辑，那么公开公共字段是可以的。
 
-TypeScript has some special inference rules for accessors:
+TypeScript 对访问器有一些特殊的推理规则：
 
-- If `get` exists but no `set`, the property is automatically `readonly`
-- If the type of the setter parameter is not specified, it is inferred from the return type of the getter
-- Getters and setters must have the same [Member Visibility](#member-visibility)
+- 如果 `get` 存在但没有 `set`，该属性自动为 `readonly`
+- 如果未指定setter参数的类型，则根据getter的返回类型推断
+- Getters and setters  必须具有相同可见的成员
 
-Since [TypeScript 4.3](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/), it is possible to have accessors with different types for getting and setting.
-
+自 [TypeScript 4.3](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/) 起，可以使用不同类型的访问器来获取和设置。
 ```ts twoslash
 class Thing {
   _size = 0;
@@ -271,10 +245,9 @@ class Thing {
 }
 ```
 
-### Index Signatures
+### 索引签名
 
-Classes can declare index signatures; these work the same as [Index Signatures for other object types](/docs/handbook/2/objects.html#index-signatures):
-
+类可以声明索引签名类似对象类型的索引签名：
 ```ts twoslash
 class MyClass {
   [s: string]: boolean | ((s: string) => boolean);
@@ -285,18 +258,14 @@ class MyClass {
 }
 ```
 
-Because the index signature type needs to also capture the types of methods, it's not easy to usefully use these types.
-Generally it's better to store indexed data in another place instead of on the class instance itself.
+因为索引签名类型还需要捕获方法的类型，所以要有效地使用这些类型并不容易。
+通常最好将索引数据存储在另一个地方而不是类实例本身。
 
-## Class Heritage
 
-Like other languages with object-oriented features, classes in JavaScript can inherit from base classes.
+### 接口实现`implements`
 
-### `implements` Clauses
-
-You can use an `implements` clause to check that a class satisfies a particular `interface`.
-An error will be issued if a class fails to correctly implement it:
-
+您可以使用 `implements` 子句来检查类是否满足特定的 `interface`。
+如果类未能正确实现它，将发出错误：
 ```ts twoslash
 // @errors: 2420
 interface Pingable {
@@ -316,14 +285,13 @@ class Ball implements Pingable {
 }
 ```
 
-Classes may also implement multiple interfaces, e.g. `class C implements A, B {`.
+类也可以实现多个接口，例如 `C 类实现 A，B {`。
 
-#### Cautions
+#### 注意事项
 
-It's important to understand that an `implements` clause is only a check that the class can be treated as the interface type.
-It doesn't change the type of the class or its methods _at all_.
-A common source of error is to assume that an `implements` clause will change the class type - it doesn't!
-
+重要的是要理解 `implements` 子句只是检查该类是否可以被视为接口类型。
+它根本不改变类的类型或其方法。
+一个常见的错误来源是假设 `implements` 子句会改变类类型 - 它不会！
 ```ts twoslash
 // @errors: 7006
 interface Checkable {
@@ -339,11 +307,10 @@ class NameChecker implements Checkable {
 }
 ```
 
-In this example, we perhaps expected that `s`'s type would be influenced by the `name: string` parameter of `check`.
-It is not - `implements` clauses don't change how the class body is checked or its type inferred.
+在这个例子中，我们可能期望 `s` 的类型会受到 `check` 的 `name: string` 参数的影响。
+它不是 - `implements` 子句不会改变类主体的检查方式或其类型的推断方式。
 
-Similarly, implementing an interface with an optional property doesn't create that property:
-
+同样，实现带有可选属性的接口不会创建该属性：
 ```ts twoslash
 // @errors: 2339
 interface A {
@@ -357,17 +324,11 @@ const c = new C();
 c.y = 10;
 ```
 
-### `extends` Clauses
+### 类的继承`extends`
 
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends'>extends keyword (MDN)</a><br/>
-   </p>
-</blockquote>
 
-Classes may `extend` from a base class.
-A derived class has all the properties and methods of its base class, and also define additional members.
-
+类可以从基类`extend`。
+派生类具有其基类的所有属性和方法，还定义了额外的成员。
 ```ts twoslash
 class Animal {
   move() {
@@ -390,22 +351,15 @@ d.move();
 d.woof(3);
 ```
 
-#### Overriding Methods
+#### 方法重写
 
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super'>super keyword (MDN)</a><br/>
-   </p>
-</blockquote>
 
-A derived class can also override a base class field or property.
-You can use the `super.` syntax to access base class methods.
-Note that because JavaScript classes are a simple lookup object, there is no notion of a "super field".
+派生类也可以覆盖基类的字段或属性。
+您可以使用 `super.` 语法来访问基类方法。
 
-TypeScript enforces that a derived class is always a subtype of its base class.
+TypeScript 强制派生类始终是其基类的子类型。
 
-For example, here's a legal way to override a method:
-
+例如，这是一种覆盖方法的合法方法：
 ```ts twoslash
 class Base {
   greet() {
@@ -428,9 +382,8 @@ d.greet();
 d.greet("reader");
 ```
 
-It's important that a derived class follow its base class contract.
-Remember that it's very common (and always legal!) to refer to a derived class instance through a base class reference:
-
+派生类遵循其基类契约很重要。
+请记住，通过基类引用来引用派生类实例是很常见的（而且总是合法的！）：
 ```ts twoslash
 class Base {
   greet() {
@@ -463,8 +416,7 @@ class Derived extends Base {
 }
 ```
 
-If we compiled this code despite the error, this sample would then crash:
-
+如果我们不顾错误地编译这段代码，那么这个示例就会崩溃：
 ```ts twoslash
 declare class Base {
   greet(): void;
@@ -476,10 +428,9 @@ const b: Base = new Derived();
 b.greet();
 ```
 
-#### Type-only Field Declarations
+####  仅类型字段声明
 
-When `target >= ES2022` or [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) is `true`, class fields are initialized after the parent class constructor completes, overwriting any value set by the parent class. This can be a problem when you only want to re-declare a more accurate type for an inherited field. To handle these cases, you can write `declare` to indicate to TypeScript that there should be no runtime effect for this field declaration.
-
+当 `target >= ES2022` 或 `useDefineForClassFields` 为 `true` 时，类字段在父类构造函数完成后初始化，覆盖父类设置的任何值。 当您只想为继承的字段重新声明更准确的类型时，这可能会成为问题。 要处理这些情况，您可以编写 `declare` 以向 TypeScript 指示此字段声明不应有运行时影响。
 ```ts twoslash
 interface Animal {
   dateOfBirth: any;
@@ -506,11 +457,10 @@ class DogHouse extends AnimalHouse {
 }
 ```
 
-#### Initialization Order
+####  初始化顺序
 
-The order that JavaScript classes initialize can be surprising in some cases.
-Let's consider this code:
-
+在某些情况下，JavaScript 类初始化的顺序可能会令人惊讶。
+让我们考虑一下这段代码：
 ```ts twoslash
 class Base {
   name = "base";
@@ -527,31 +477,29 @@ class Derived extends Base {
 const d = new Derived();
 ```
 
-What happened here?
+这里发生了什么？
 
-The order of class initialization, as defined by JavaScript, is:
+JavaScript 定义的类初始化顺序是：
 
-- The base class fields are initialized
-- The base class constructor runs
-- The derived class fields are initialized
-- The derived class constructor runs
+- 初始化基类字段
+- 基类构造函数运行
+- 派生类字段被初始化
+- 派生类构造函数运行
 
-This means that the base class constructor saw its own value for `name` during its own constructor, because the derived class field initializations hadn't run yet.
+这意味着基类构造函数在其自己的构造函数中看到了它自己的 name 值，因为派生类字段初始化尚未运行。
+#### 继承内置类型
 
-#### Inheriting Built-in Types
+> 注意：如果你不打算继承内置类型，如 `Array`、`Error`、`Map` 等，或者您的编译目标明确设置为 `ES6`/`ES2015` 或更高版本，您 可以跳过这一部分
 
-> Note: If you don't plan to inherit from built-in types like `Array`, `Error`, `Map`, etc. or your compilation target is explicitly set to `ES6`/`ES2015` or above, you may skip this section
+在 ES2015 中，返回对象的构造函数隐式地将 this 的值替换为 `super(...)` 的任何调用者。
+生成的构造函数代码有必要捕获 `super(...)` 的任何潜在返回值并将其替换为 `this`。
 
-In ES2015, constructors which return an object implicitly substitute the value of `this` for any callers of `super(...)`.
-It is necessary for generated constructor code to capture any potential return value of `super(...)` and replace it with `this`.
+因此，子类化 `Error`、`Array` 和其他类可能不再按预期工作。
+这是因为 `Error`、`Array` 等构造函数使用 ECMAScript 6 的 `new.target` 来调整原型链；
+但是，在 ECMAScript 5 中调用构造函数时无法确保  `new.target` 的值。
+默认情况下，其他下层编译器通常具有相同的限制。
 
-As a result, subclassing `Error`, `Array`, and others may no longer work as expected.
-This is due to the fact that constructor functions for `Error`, `Array`, and the like use ECMAScript 6's `new.target` to adjust the prototype chain;
-however, there is no way to ensure a value for `new.target` when invoking a constructor in ECMAScript 5.
-Other downlevel compilers generally have the same limitation by default.
-
-For a subclass like the following:
-
+对于像下面这样的子类：
 ```ts twoslash
 class MsgError extends Error {
   constructor(m: string) {
@@ -563,13 +511,12 @@ class MsgError extends Error {
 }
 ```
 
-you may find that:
+你可能会发现：
 
-- methods may be `undefined` on objects returned by constructing these subclasses, so calling `sayHello` will result in an error.
-- `instanceof` will be broken between instances of the subclass and their instances, so `(new MsgError()) instanceof MsgError` will return `false`.
+- 构造这些子类返回的对象上的方法可能是“未定义的”，因此调用“sayHello”将导致错误。
+- `instanceof` 将在子类的实例及其实例之间中断，因此 `(new MsgError()) instanceof MsgError` 将返回 `false`。
 
-As a recommendation, you can manually adjust the prototype immediately after any `super(...)` calls.
-
+作为建议，您可以在任何 `super(...)` 调用后立即手动调整原型。
 ```ts twoslash
 class MsgError extends Error {
   constructor(m: string) {
@@ -585,16 +532,14 @@ class MsgError extends Error {
 }
 ```
 
-However, any subclass of `MsgError` will have to manually set the prototype as well.
-For runtimes that don't support [`Object.setPrototypeOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf), you may instead be able to use [`__proto__`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto).
+但是，`MsgError`的任何子类也必须手动设置原型。
+对于不支持 [`Object.setPrototypeOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf) 的运行时，您可以改为 使用 [`__proto__`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)。
 
-Unfortunately, [these workarounds will not work on Internet Explorer 10 and prior](<https://msdn.microsoft.com/en-us/library/s4esdbwz(v=vs.94).aspx>).
-One can manually copy methods from the prototype onto the instance itself (i.e. `MsgError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
+不幸的是，[这些变通办法不适用于 Internet Explorer 10 及更早版本](<https://msdn.microsoft.com/en-us/library/s4esdbwz(v=vs.94).aspx>)。
+可以手动将原型中的方法复制到实例本身（即 `MsgError.prototype` 到 `this`），但原型链本身无法修复。
+## 权限访问符
 
-## Member Visibility
-
-You can use TypeScript to control whether certain methods or properties are visible to code outside the class.
-
+您可以使用 TypeScript 来控制某些方法或属性是否对类外部的代码可见。
 ### `public`
 
 The default visibility of class members is `public`.
@@ -610,11 +555,10 @@ const g = new Greeter();
 g.greet();
 ```
 
-Because `public` is already the default visibility modifier, you don't ever _need_ to write it on a class member, but might choose to do so for style/readability reasons.
-
+因为 `public` 已经是默认的可见性修饰符，所以您永远 _不需要_ 将它写在类成员上，但出于样式/可读性原因可能会选择这样做
 ### `protected`
 
-`protected` members are only visible to subclasses of the class they're declared in.
+`protected` 成员只对声明它们的类的子类可见。
 
 ```ts twoslash
 // @errors: 2445
@@ -639,11 +583,10 @@ g.greet(); // OK
 g.getName();
 ```
 
-#### Exposure of `protected` members
+#### 暴露`protected`成员
 
-Derived classes need to follow their base class contracts, but may choose to expose a subtype of base class with more capabilities.
-This includes making `protected` members `public`:
-
+派生类需要遵循它们的基类契约，但可以选择公开具有更多功能的基类的子类型。
+这包括让`protected`成员成为`public`：
 ```ts twoslash
 class Base {
   protected m = 10;
@@ -656,13 +599,12 @@ const d = new Derived();
 console.log(d.m); // OK
 ```
 
-Note that `Derived` was already able to freely read and write `m`, so this doesn't meaningfully alter the "security" of this situation.
-The main thing to note here is that in the derived class, we need to be careful to repeat the `protected` modifier if this exposure isn't intentional.
+请注意，`Derived` 已经能够自由读写 `m`，因此这不会显着改变这种情况的“安全性”。
+这里要注意的主要事情是，在派生类中，如果这种暴露不是故意的，我们需要小心重复 `protected` 修饰符。
 
-#### Cross-hierarchy `protected` access
+#### 跨层级`protected` 访问
 
-Different OOP languages disagree about whether it's legal to access a `protected` member through a base class reference:
-
+不同的 OOP 语言对于通过基类引用访问“受保护”成员是否合法存在分歧：
 ```ts twoslash
 // @errors: 2446
 class Base {
@@ -681,17 +623,16 @@ class Derived2 extends Base {
 }
 ```
 
-Java, for example, considers this to be legal.
-On the other hand, C# and C++ chose that this code should be illegal.
+例如，Java 认为这是合法的。
+另一方面，C# 和 C++ 选择此代码应该是非法的。
 
-TypeScript sides with C# and C++ here, because accessing `x` in `Derived2` should only be legal from `Derived2`'s subclasses, and `Derived1` isn't one of them.
-Moreover, if accessing `x` through a `Derived1` reference is illegal (which it certainly should be!), then accessing it through a base class reference should never improve the situation.
+TypeScript 在这里支持 C# 和 C++，因为访问 Derived2 中的 x 应该只在 Derived2 的子类中是合法的，而 Derived1 不是其中之一。
+此外，如果通过 `Derived1` 引用访问 `x` 是非法的（这当然应该是！），那么通过基类引用访问它永远不会改善这种情况。
 
-See also [Why Can’t I Access A Protected Member From A Derived Class?](https://blogs.msdn.microsoft.com/ericlippert/2005/11/09/why-cant-i-access-a-protected-member-from-a-derived-class/) which explains more of C#'s reasoning.
-
+另请参阅 [为什么我不能从派生类访问受保护的成员？](https://blogs.msdn.microsoft.com/ericlippert/2005/11/09/why-cant-i-access-a-protected-member-from-a-derived-class/) 解释了更多 C# 的推理。
 ### `private`
 
-`private` is like `protected`, but doesn't allow access to the member even from subclasses:
+`private` 类似于 `protected`, 但不允许从子类访问该成员:
 
 ```ts twoslash
 // @errors: 2341
@@ -717,8 +658,7 @@ class Derived extends Base {
 }
 ```
 
-Because `private` members aren't visible to derived classes, a derived class can't increase its visibility:
-
+因为 `private` 成员对派生类不可见，派生类不能增加它的可见性：
 ```ts twoslash
 // @errors: 2415
 class Base {
@@ -729,13 +669,12 @@ class Derived extends Base {
 }
 ```
 
-#### Cross-instance `private` access
+#### 跨实例`private`访问
 
-Different OOP languages disagree about whether different instances of the same class may access each others' `private` members.
-While languages like Java, C#, C++, Swift, and PHP allow this, Ruby does not.
+不同的 OOP 语言对于同一类的不同实例是否可以访问彼此的“私有”成员存在分歧。
+虽然 Java、C#、C++、Swift 和 PHP 等语言允许这样做，但 Ruby 不允许。
 
-TypeScript does allow cross-instance `private` access:
-
+TypeScript 确实允许跨实例的`private`访问：
 ```ts twoslash
 class A {
   private x = 10;
@@ -747,12 +686,11 @@ class A {
 }
 ```
 
-#### Caveats
+#### 注意事项
 
-Like other aspects of TypeScript's type system, `private` and `protected` [are only enforced during type checking](https://www.typescriptlang.org/play?removeComments=true&target=99&ts=4.3.4#code/PTAEGMBsEMGddAEQPYHNQBMCmVoCcsEAHPASwDdoAXLUAM1K0gwQFdZSA7dAKWkoDK4MkSoByBAGJQJLAwAeAWABQIUH0HDSoiTLKUaoUggAW+DHorUsAOlABJcQlhUy4KpACeoLJzrI8cCwMGxU1ABVPIiwhESpMZEJQTmR4lxFQaQxWMm4IZABbIlIYKlJkTlDlXHgkNFAAbxVQTIAjfABrAEEC5FZOeIBeUAAGAG5mmSw8WAroSFIqb2GAIjMiIk8VieVJ8Ar01ncAgAoASkaAXxVr3dUwGoQAYWpMHBgCYn1rekZmNg4eUi0Vi2icoBWJCsNBWoA6WE8AHcAiEwmBgTEtDovtDaMZQLM6PEoQZbA5wSk0q5SO4vD4-AEghZoJwLGYEIRwNBoqAzFRwCZCFUIlFMXECdSiAhId8YZgclx0PsiiVqOVOAAaUAFLAsxWgKiC35MFigfC0FKgSAVVDTSyk+W5dB4fplHVVR6gF7xJrKFotEk-HXIRE9PoDUDDcaTAPTWaceaLZYQlmoPBbHYx-KcQ7HPDnK43FQqfY5+IMDDISPJLCIuqoc47UsuUCofAME3Vzi1r3URvF5QV5A2STtPDdXqunZDgDaYlHnTDrrEAF0dm28B3mDZg6HJwN1+2-hg57ulwNV2NQGoZbjYfNrYiENBwEFaojFiZQK08C-4fFKTVCozWfTgfFgLkeT5AUqiAA).
+与 TypeScript 类型系统的其他方面一样，`private` 和 `protected` [仅在类型检查期间强制执行](https://tinyurl.com/2kmvwt84)。
 
-This means that JavaScript runtime constructs like `in` or simple property lookup can still access a `private` or `protected` member:
-
+这意味着像 `in` 或简单的属性查找这样的 JavaScript 运行时构造仍然可以访问 `private` 或 `protected` 成员：
 ```ts twoslash
 class MySafe {
   private secretKey = 12345;
@@ -766,8 +704,7 @@ const s = new MySafe();
 console.log(s.secretKey);
 ```
 
-`private` also allows access using bracket notation during type checking. This makes `private`-declared fields potentially easier to access for things like unit tests, with the drawback that these fields are _soft private_ and don't strictly enforce privacy.
-
+`private` 还允许在类型检查期间使用括号表示法进行访问。 这使得 `private` 声明的字段可能更容易访问单元测试之类的东西，缺点是这些字段是_软私有_并且不严格执行隐私。
 ```ts twoslash
 // @errors: 2341
 class MySafe {
@@ -783,8 +720,7 @@ console.log(s.secretKey);
 console.log(s["secretKey"]);
 ```
 
-Unlike TypeScripts's `private`, JavaScript's [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) remain private after compilation and do not provide the previously mentioned escape hatches like bracket notation access, making them _hard private_.
-
+与 TypeScripts 的`private`不同，JavaScript 的[私有字段](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) 在编译后保持私有并且不会 提供前面提到的逃生舱口，如括号表示法访问，使它们 _严格私有_。
 ```ts twoslash
 class Dog {
   #barkAmount = 0;
@@ -805,8 +741,7 @@ class Dog {
 }
 ```
 
-When compiling to ES2021 or less, TypeScript will use WeakMaps in place of `#`.
-
+当编译为 ES2021 或更低版本时，TypeScript 将使用 WeakMaps 代替 `#`
 ```ts twoslash
 // @target: es2015
 // @showEmit
@@ -818,15 +753,8 @@ class Dog {
 }
 ```
 
-If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, WeakMaps, or private fields. Note that these added privacy checks during runtime could affect performance.
-
-## Static Members
-
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static'>Static Members (MDN)</a><br/>
-   </p>
-</blockquote>
+如果您需要保护您的类中的值免受恶意行为者的侵害，您应该使用提供硬性运行时隐私的机制，例如闭包、WeakMaps 或私有字段。 请注意，这些在运行时添加的隐私检查可能会影响性能。
+## 静态成员
 
 Classes may have `static` members.
 These members aren't associated with a particular instance of the class.
@@ -843,8 +771,7 @@ console.log(MyClass.x);
 MyClass.printX();
 ```
 
-Static members can also use the same `public`, `protected`, and `private` visibility modifiers:
-
+静态成员也可以使用相同的 `public`, `protected`,  `private`可见性修饰符：
 ```ts twoslash
 // @errors: 2341
 class MyClass {
@@ -866,12 +793,11 @@ class Derived extends Base {
 }
 ```
 
-### Special Static Names
+### 特殊静态名称
 
-It's generally not safe/possible to overwrite properties from the `Function` prototype.
-Because classes are themselves functions that can be invoked with `new`, certain `static` names can't be used.
-Function properties like `name`, `length`, and `call` aren't valid to define as `static` members:
-
+从`Function`原型覆盖属性通常是不安全/不可能的。
+因为类本身是可以用 `new` 调用的函数，所以不能使用某些 `static` 名称。
+`name`、`length` 和 `call` 等函数属性不能定义为 `static` 成员：
 ```ts twoslash
 // @errors: 2699
 class S {
@@ -879,15 +805,14 @@ class S {
 }
 ```
 
-### Why No Static Classes?
+### 为什么没有静态类？
 
-TypeScript (and JavaScript) don't have a construct called `static class` the same way as, for example, C# does.
+TypeScript（和 JavaScript）没有像 C# 那样的名为“静态类”的结构。
 
-Those constructs _only_ exist because those languages force all data and functions to be inside a class; because that restriction doesn't exist in TypeScript, there's no need for them.
-A class with only a single instance is typically just represented as a normal _object_ in JavaScript/TypeScript.
+这些构造_only_ 存在是因为这些语言强制所有数据和函数都在一个类中； 因为 TypeScript 中不存在该限制，所以不需要它们。
+只有一个实例的类在 JavaScript/TypeScript 中通常只表示为一个普通的_object_。
 
-For example, we don't need a "static class" syntax in TypeScript because a regular object (or even top-level function) will do the job just as well:
-
+例如，我们不需要 TypeScript 中的“静态类”语法，因为常规对象（甚至顶级函数）也可以完成这项工作：
 ```ts twoslash
 // Unnecessary "static" class
 class MyStaticClass {
@@ -903,10 +828,9 @@ const MyHelperObject = {
 };
 ```
 
-## `static` Blocks in Classes
+## 静态块
 
-Static blocks allow you to write a sequence of statements with their own scope that can access private fields within the containing class. This means that we can write initialization code with all the capabilities of writing statements, no leakage of variables, and full access to our class's internals.
-
+静态块允许您编写一系列具有自己范围的语句，这些语句可以访问包含类中的私有字段。 这意味着我们可以编写具有编写语句的所有功能的初始化代码，不会泄漏变量，并且可以完全访问我们类的内部结构。
 ```ts twoslash
 declare function loadLastInstances(): any[]
 // ---cut---
@@ -927,11 +851,10 @@ class Foo {
 }
 ```
 
-## Generic Classes
+## 泛型类
 
-Classes, much like interfaces, can be generic.
-When a generic class is instantiated with `new`, its type parameters are inferred the same way as in a function call:
-
+类，很像接口，可以是通用的。
+当使用 new 实例化泛型类时，其类型参数的推断方式与函数调用中的方式相同：类可以像接口一样使用通用约束和默认值。
 ```ts twoslash
 class Box<Type> {
   contents: Type;
@@ -944,12 +867,10 @@ const b = new Box("hello!");
 //    ^?
 ```
 
-Classes can use generic constraints and defaults the same way as interfaces.
 
-### Type Parameters in Static Members
+### 静态成员中的类型参数
 
-This code isn't legal, and it may not be obvious why:
-
+此代码不合法，原因可能并不明显：
 ```ts twoslash
 // @errors: 2302
 class Box<Type> {
@@ -957,23 +878,15 @@ class Box<Type> {
 }
 ```
 
-Remember that types are always fully erased!
-At runtime, there's only _one_ `Box.defaultValue` property slot.
-This means that setting `Box<string>.defaultValue` (if that were possible) would _also_ change `Box<number>.defaultValue` - not good.
-The `static` members of a generic class can never refer to the class's type parameters.
+请记住，类型总是被完全擦除！
+在运行时，只有 _一个_ `Box.defaultValue` 属性槽。
+这意味着设置 `Box<string>.defaultValue`（如果可能的话）也会改变 `Box<number>.defaultValue` - 不好。
+泛型类的“静态”成员永远不能引用类的类型参数。
+## 类中运行时的 `this`
 
-## `this` at Runtime in Classes
+重要的是要记住 TypeScript 不会改变 JavaScript 的运行时行为，并且 JavaScript 以具有一些特殊的运行时行为而闻名。
 
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this'>this keyword (MDN)</a><br/>
-   </p>
-</blockquote>
-
-It's important to remember that TypeScript doesn't change the runtime behavior of JavaScript, and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
-
-JavaScript's handling of `this` is indeed unusual:
-
+JavaScript 对 `this` 的处理确实不寻常：
 ```ts twoslash
 class MyClass {
   name = "MyClass";
@@ -991,22 +904,15 @@ const obj = {
 console.log(obj.getName());
 ```
 
-Long story short, by default, the value of `this` inside a function depends on _how the function was called_.
-In this example, because the function was called through the `obj` reference, its value of `this` was `obj` rather than the class instance.
+长话短说，默认情况下，函数内部 `this` 的值取决于 _调用函数的方式_。
+在这个例子中，因为函数是通过 `obj` 引用调用的，所以它的 `this` 的值是 `obj` 而不是类实例。
 
-This is rarely what you want to happen!
-TypeScript provides some ways to mitigate or prevent this kind of error.
+这很少是您想发生的事情！
+TypeScript 提供了一些方法来减轻或防止这种错误。
+### 箭头函数
 
-### Arrow Functions
 
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions'>Arrow functions (MDN)</a><br/>
-   </p>
-</blockquote>
-
-If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
-
+如果你有一个经常以失去 this 上下文的方式调用的函数，那么使用箭头函数属性而不是方法定义是有意义的：
 ```ts twoslash
 class MyClass {
   name = "MyClass";
@@ -1020,17 +926,15 @@ const g = c.getName;
 console.log(g());
 ```
 
-This has some trade-offs:
+这有一些权衡：
 
-- The `this` value is guaranteed to be correct at runtime, even for code not checked with TypeScript
-- This will use more memory, because each class instance will have its own copy of each function defined this way
-- You can't use `super.getName` in a derived class, because there's no entry in the prototype chain to fetch the base class method from
+- `this` 值保证在运行时是正确的，即使对于未使用 TypeScript 检查的代码也是如此
+- 这将使用更多的内存，因为每个类实例都会有自己的每个以此方式定义的函数的副本
+- 你不能在派生类中使用 `super.getName`，因为原型链中没有条目可以从中获取基类方法
+### `this` 参数
 
-### `this` parameters
-
-In a method or function definition, an initial parameter named `this` has special meaning in TypeScript.
-These parameters are erased during compilation:
-
+在方法或函数定义中，名为`this`的初始参数在 TypeScript 中具有特殊含义。
+这些参数在编译期间被删除：
 ```ts twoslash
 type SomeType = any;
 // ---cut---
@@ -1047,9 +951,8 @@ function fn(x) {
 }
 ```
 
-TypeScript checks that calling a function with a `this` parameter is done so with a correct context.
-Instead of using an arrow function, we can add a `this` parameter to method definitions to statically enforce that the method is called correctly:
-
+TypeScript 检查调用带有“this”参数的函数是否是在正确的上下文中完成的。
+除了使用箭头函数，我们还可以在方法定义中添加一个 this 参数来静态强制方法被正确调用：
 ```ts twoslash
 // @errors: 2684
 class MyClass {
@@ -1067,17 +970,15 @@ const g = c.getName;
 console.log(g());
 ```
 
-This method makes the opposite trade-offs of the arrow function approach:
+此方法与箭头函数方法进行了相反的权衡：
 
-- JavaScript callers might still use the class method incorrectly without realizing it
-- Only one function per class definition gets allocated, rather than one per class instance
-- Base method definitions can still be called via `super`.
+- JavaScript 调用者可能仍然在没有意识到的情况下错误地使用类方法
+- 每个类定义只分配一个函数，而不是每个类实例分配一个
+- 仍然可以通过 `super` 调用基方法定义。
+## `this` 类型
 
-## `this` Types
-
-In classes, a special type called `this` refers _dynamically_ to the type of the current class.
-Let's see how this is useful:
-
+在类中，一种称为`this`的特殊类型 _动态地_ 引用当前类的类型。
+让我们看看这有什么用：
 <!-- prettier-ignore -->
 ```ts twoslash
 class Box {
@@ -1090,9 +991,8 @@ class Box {
 }
 ```
 
-Here, TypeScript inferred the return type of `set` to be `this`, rather than `Box`.
-Now let's make a subclass of `Box`:
-
+在这里，TypeScript 将 `set` 的返回类型推断为 `this`，而不是 `Box`。
+现在让我们创建 `Box` 的子类：
 ```ts twoslash
 class Box {
   contents: string = "";
@@ -1113,8 +1013,7 @@ const b = a.set("hello");
 //    ^?
 ```
 
-You can also use `this` in a parameter type annotation:
-
+您还可以在参数类型注释中使用 `this`：
 ```ts twoslash
 class Box {
   content: string = "";
@@ -1124,8 +1023,7 @@ class Box {
 }
 ```
 
-This is different from writing `other: Box` -- if you have a derived class, its `sameAs` method will now only accept other instances of that same derived class:
-
+这与写 `other: Box` 不同——如果你有一个派生类，它的 `sameAs` 方法现在将只接受同一个派生类的其他实例：
 ```ts twoslash
 // @errors: 2345
 class Box {
@@ -1144,11 +1042,10 @@ const derived = new DerivedBox();
 derived.sameAs(base);
 ```
 
-### `this`-based type guards
+### `this`基类守卫
 
-You can use `this is Type` in the return position for methods in classes and interfaces.
-When mixed with a type narrowing (e.g. `if` statements) the type of the target object would be narrowed to the specified `Type`.
-
+您可以在类和接口中的方法的返回位置使用`this is Type` 。
+当与类型缩小（例如 `if` 语句）混合使用时，目标对象的类型将缩小为指定的 `Type`。
 <!-- prettier-ignore -->
 ```ts twoslash
 // @strictPropertyInitialization: false
@@ -1193,8 +1090,7 @@ if (fso.isFile()) {
 }
 ```
 
-A common use-case for a this-based type guard is to allow for lazy validation of a particular field. For example, this case removes an `undefined` from the value held inside box when `hasValue` has been verified to be true:
-
+基于 this 的类型保护的一个常见用例是允许对特定字段进行惰性验证。 例如，当 `hasValue`被验证为 true 时，这种情况会从 box 中保存的值中删除一个 `undefined` ：
 ```ts twoslash
 class Box<T> {
   value?: T;
@@ -1216,12 +1112,11 @@ if (box.hasValue()) {
 }
 ```
 
-## Parameter Properties
+## 参数属性
 
-TypeScript offers special syntax for turning a constructor parameter into a class property with the same name and value.
-These are called _parameter properties_ and are created by prefixing a constructor argument with one of the visibility modifiers `public`, `private`, `protected`, or `readonly`.
-The resulting field gets those modifier(s):
-
+TypeScript 提供了将构造函数参数转换为具有相同名称和值的类属性的特殊语法。
+这些称为 _参数属性_，是通过在构造函数参数前加上可见性修饰符`public`, `private`, `protected`,   `readonly`.之一来创建的。
+结果字段获得这些修饰符：
 ```ts twoslash
 // @errors: 2341
 class Params {
@@ -1239,17 +1134,11 @@ console.log(a.x);
 console.log(a.z);
 ```
 
-## Class Expressions
+## 类表达式
 
-<blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class'>Class expressions (MDN)</a><br/>
-   </p>
-</blockquote>
 
-Class expressions are very similar to class declarations.
-The only real difference is that class expressions don't need a name, though we can refer to them via whatever identifier they ended up bound to:
-
+类表达式与类声明非常相似。
+唯一真正的区别是类表达式不需要名称，尽管我们可以通过它们最终绑定到的任何标识符来引用它们：
 ```ts twoslash
 const someClass = class<Type> {
   content: Type;
@@ -1262,18 +1151,17 @@ const m = new someClass("Hello, world");
 //    ^?
 ```
 
-## `abstract` Classes and Members
+## 抽象类和成员
 
-Classes, methods, and fields in TypeScript may be _abstract_.
+TypeScript 中的类、方法和字段可能是_抽象的_。
 
-An _abstract method_ or _abstract field_ is one that hasn't had an implementation provided.
-These members must exist inside an _abstract class_, which cannot be directly instantiated.
+_抽象方法_ 或 _抽象字段_ 是尚未提供实现的方法。
+这些成员必须存在于不能直接实例化的 _抽象类_ 中。
 
-The role of abstract classes is to serve as a base class for subclasses which do implement all the abstract members.
-When a class doesn't have any abstract members, it is said to be _concrete_.
+抽象类的作用是作为实现所有抽象成员的子类的基类。
+当一个类没有任何抽象成员时，它被称 _具体_。
 
-Let's look at an example:
-
+让我们看一个例子：
 ```ts twoslash
 // @errors: 2511
 abstract class Base {
@@ -1287,9 +1175,8 @@ abstract class Base {
 const b = new Base();
 ```
 
-We can't instantiate `Base` with `new` because it's abstract.
-Instead, we need to make a derived class and implement the abstract members:
-
+我们不能用 `new` 实例化 `Base` 因为它是抽象的。
+相反，我们需要创建一个派生类并实现抽象成员：
 ```ts twoslash
 abstract class Base {
   abstract getName(): string;
@@ -1306,8 +1193,7 @@ const d = new Derived();
 d.printName();
 ```
 
-Notice that if we forget to implement the base class's abstract members, we'll get an error:
-
+请注意，如果我们忘记实现基类的抽象成员，则会出现错误：
 ```ts twoslash
 // @errors: 2515
 abstract class Base {
@@ -1320,12 +1206,11 @@ class Derived extends Base {
 }
 ```
 
-### Abstract Construct Signatures
+### 抽象构造签名
 
-Sometimes you want to accept some class constructor function that produces an instance of a class which derives from some abstract class.
+有时你想接受一些类构造函数，它产生一个派生自某个抽象类的类的实例。
 
-For example, you might want to write this code:
-
+例如，您可能想编写以下代码：
 ```ts twoslash
 // @errors: 2511
 abstract class Base {
@@ -1344,9 +1229,8 @@ function greet(ctor: typeof Base) {
 }
 ```
 
-TypeScript is correctly telling you that you're trying to instantiate an abstract class.
-After all, given the definition of `greet`, it's perfectly legal to write this code, which would end up constructing an abstract class:
-
+TypeScript 正确地告诉您您正在尝试实例化一个抽象类。
+毕竟，鉴于 `greet` 的定义，编写这段代码是完全合法的，它最终会构造一个抽象类：
 ```ts twoslash
 declare const greet: any, Base: any;
 // ---cut---
@@ -1354,8 +1238,7 @@ declare const greet: any, Base: any;
 greet(Base);
 ```
 
-Instead, you want to write a function that accepts something with a construct signature:
-
+相反，您想编写一个接受带有构造签名的东西的函数：
 ```ts twoslash
 // @errors: 2345
 abstract class Base {
@@ -1376,14 +1259,13 @@ greet(Derived);
 greet(Base);
 ```
 
-Now TypeScript correctly tells you about which class constructor functions can be invoked - `Derived` can because it's concrete, but `Base` cannot.
+现在 TypeScript 正确地告诉您可以调用哪些类构造函数 - `Derived` 可以，因为它是具体的，但 `Base` 不能。
 
-## Relationships Between Classes
+## 类之间的关系
 
-In most cases, classes in TypeScript are compared structurally, the same as other types.
+在大多数情况下，TypeScript 中的类在结构上进行比较，与其他类型相同。
 
-For example, these two classes can be used in place of each other because they're identical:
-
+例如，这两个类可以代替彼此使用，因为它们是相同的：
 ```ts twoslash
 class Point1 {
   x = 0;
@@ -1399,8 +1281,7 @@ class Point2 {
 const p: Point1 = new Point2();
 ```
 
-Similarly, subtype relationships between classes exist even if there's no explicit inheritance:
-
+同样，即使没有显式继承，类之间的子类型关系也存在：
 ```ts twoslash
 // @strict: false
 class Person {
@@ -1417,13 +1298,10 @@ class Employee {
 // OK
 const p: Person = new Employee();
 ```
-
-This sounds straightforward, but there are a few cases that seem stranger than others.
-
-Empty classes have no members.
-In a structural type system, a type with no members is generally a supertype of anything else.
-So if you write an empty class (don't!), anything can be used in place of it:
-
+这听起来很简单，但有些情况似乎比其他情况更奇怪。
+空类没有成员。
+在结构类型系统中，没有成员的类型通常是其他任何类型的超类型。
+所以如果你写一个空类（不要！），任何东西都可以用来代替它：
 ```ts twoslash
 class Empty {}
 

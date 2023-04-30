@@ -1,37 +1,32 @@
 
-# Understanding Errors
+# 了解错误
 
-Whenever TypeScript finds an error, it tries to explain what went wrong in as much detail as possible.
-Because its type system is structural, this often means providing somewhat lengthy descriptions of where it found a problem.
+每当 TypeScript 发现错误时，它都会尝试尽可能详细地解释问题所在。
+因为它的类型系统是结构化的，所以这通常意味着对它发现问题的位置提供一些冗长的描述。
+## 术语
 
-## Terminology
+您会经常在错误消息中看到一些有助于理解的术语。
+####  可分配
 
-There is some terminology you'll frequently see in error messages that is helpful to understand.
+TypeScript 认为一种类型可分配给另一种类型，前提是一种类型可以接受另一种类型的替代。
 
-#### _assignable to_
+换句话说，`Cat` 可分配给 `Animal` 因为 `Cat` 是 `Animal` 的可接受替代品。
+顾名思义，此关系用于通过检查“t”和“s”的类型来检查赋值“t = s;”的有效性。
+它还用于检查两种类型相互作用的大多数其他地方。
+例如，调用函数时，每个参数的类型必须可分配给参数的声明类型。
 
-TypeScript considers a type _assignable to_ another type if one is an acceptable substitute for the other.
-In other words, a `Cat` is _assignable to_ an `Animal` because a `Cat` is an acceptable substitute for an `Animal`.
+通俗地说，如果您看到`T is not assignable to S`，您可以将其视为 TypeScript 说“_`T` 和 `S` 不兼容”_。
+但是，请注意这是一个定向的关系：`S` 可分配给 `T` 并不意味着 `T` 可分配给 `S`。
+## 例子
 
-As its name implies, this relationship is used to check the validity of an assignment `t = s;` by examining the types of `t` and `s`.
-It's also used to check most other places where two types interact.
-For example, when calling a function, each argument's type must be _assignable to_ parameter's declared type.
+让我们看一些示例错误消息并了解发生了什么。
+### 错误说明
 
-Informally, if you see `T is not assignable to S`, you can think of that as TypeScript saying "_`T` and `S` are not compatible"_.
-However, note that this is a _directional_ relationship: `S` being assignable to `T` does not imply that `T` is assignable to `S`.
+每个错误都以一条前导消息开头，有时后面跟着更多的子消息。
+您可以将每条子消息视为对“为什么？”的回答。 关于它上面的消息的问题。
+让我们通过一些例子来看看它们在实践中是如何工作的。
 
-## Examples
-
-Let's look at some example error messages and understand what's going on.
-
-### Error Elaborations
-
-Each error starts with a leading message, sometimes followed by more sub-messages.
-You can think of each sub-message as answering a "why?" question about the message above it.
-Let's work through some examples to see how they work in practice.
-
-Here's an example that produces an error message longer than the example itself:
-
+下面是一个生成比示例本身更长的错误消息的示例：
 ```ts twoslash
 // @errors: 2322
 let a: { m: number[] };
@@ -39,15 +34,14 @@ let b = { m: [""] };
 a = b;
 ```
 
-TypeScript found an error when checking the last line.
-Its logic for issuing an error follows from its logic for determining if the assignment is OK:
+TypeScript 在检查最后一行时发现错误。
+它发出错误的逻辑遵循其确定分配是否正确的逻辑：
 
-1. Is `b`'s type assignable to `a`'s? No. Why?
-2. Because the type of the `m` property is incompatible. Why?
-3. Because `b`'s `m` property (`string[]`) is not assignable to `a`'s `m` property (`number[]`). Why?
-4. Because one array's element type (`string`) is not assignable to the other (`number`)
-
-### Extra Properties
+1. `b` 的类型可以分配给 `a` 吗？ 没有为什么？
+2. 因为 m 属性的类型不兼容。 为什么？
+3. 因为 `b` 的 `m` 属性（`string[]`）不可分配给 `a` 的 `m` 属性（`number[]`）。 为什么？
+4. 因为一个数组的元素类型（`string`）不能分配给另一个（`number`）
+### 额外属性
 
 ```ts twoslash
 // @errors: 2322
@@ -55,7 +49,7 @@ type A = { m: number };
 const a: A = { m: 10, n: "" };
 ```
 
-### Union Assignments
+### 联合操作
 
 ```ts twoslash
 // @errors: 2322

@@ -592,7 +592,7 @@ type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
 
 We'll circle back to type aliases in just a little bit.
 
-### `Array` 
+### 数组
 
 通用对象类型通常是某种容器类型，其工作独立于它们包含的元素类型。
 数据结构以这种方式工作是非常理想的，这样它们就可以跨不同的数据类型重复使用。
@@ -641,7 +641,7 @@ interface Array<Type> {
 
 现代 JavaScript 还提供了其他通用的数据结构，例如 `Map<K, V>`、`Set<T>` 和 `Promise<T>`。
 这一切的真正含义是，由于 `Map`、`Set` 和 `Promise` 的行为方式，它们可以与任何类型集一起工作。
-### `ReadonlyArray` 
+### 只读数组
 
 `ReadonlyArray` 是一种特殊类型，用于描述不更改的数组。
 ```ts 
@@ -843,7 +843,7 @@ function foo(a: number, b: number, ...args: number[]) {
 
 -->
 
-### `readonly` 元素类型
+### 只读元素类型
 
 关于元组类型的最后一点注意事项——元组类型具有`readonly` 变体，并且可以通过在它们前面添加一个`readonly` 修饰符来指定——就像数组速记语法一样。
 ```ts 

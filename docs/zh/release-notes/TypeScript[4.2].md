@@ -110,7 +110,7 @@ bar = [true, 'some', 'separated', 'text', false];
 唯一的限制是，剩余元素之后不能出现可选元素或其它剩余元素。
 换句话说，一个元组中只允许有一个剩余元素，并且剩余元素之后不能有可选元素。
 
-```ts twoslash
+```ts 
 interface Clown {
     /*...*/
 }
@@ -146,7 +146,7 @@ doStuff('fee', 'fi', 'fo', 'fum', /*shouldCapitalize:*/ true);
 在 JavaScript 中，如果 `in` 运算符的右操作数是非对象类型，那么会产生运行时错误。
 TypeScript 4.2 确保了该错误能够在编译时被捕获。
 
-```ts twoslash
+```ts 
 'foo' in 42;
 // The right-hand side of an 'in' expression must not be a primitive.
 ```
@@ -235,7 +235,7 @@ function processOptions(opts: Options) {
 TypeScript 允许将一个类标记为 _abstract_。
 这相当于告诉 TypeScript 这个类只是用于继承，并且有些成员需要在子类中实现，以便能够真正地创建出实例。
 
-```ts twoslash
+```ts 
 abstract class Shape {
     abstract getArea(): number;
 }
@@ -262,7 +262,7 @@ new Square(42);
 
 为了能够确保一贯的对 `new` 一个 `abstract` 类进行限制，不允许将 `abstract` 类赋值给接收构造签名的值。
 
-```ts twoslash
+```ts 
 abstract class Shape {
     abstract getArea(): number;
 }
@@ -530,7 +530,7 @@ There are various changes, though `Intl` and `ResizeObserver`'s may end up being
 
 When the value of a `yield` expression is captured, but TypeScript can't immediately figure out what type you intend for it to receive (i.e. the `yield` expression isn't contextually typed), TypeScript will now issue an implicit `any` error.
 
-```ts twoslash
+```ts 
 // @errors: 7057
 function* g1() {
     const value = yield 1;

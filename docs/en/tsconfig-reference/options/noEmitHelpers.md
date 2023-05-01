@@ -7,7 +7,7 @@ Instead of importing helpers with [`importHelpers`](#importHelpers), you can pro
 
 For example, using this `async` function in ES5 requires a `await`-like function and `generator`-like function to run:
 
-```ts twoslash
+```ts 
 const getAPI = async (url: string) => {
   // Get API
   return {};
@@ -16,7 +16,7 @@ const getAPI = async (url: string) => {
 
 Which creates quite a lot of JavaScript:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @target: ES5
 const getAPI = async (url: string) => {
@@ -27,7 +27,7 @@ const getAPI = async (url: string) => {
 
 Which can be switched out with your own globals via this flag:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @target: ES5
 // @noEmitHelpers

@@ -20,7 +20,7 @@ In a `.js` file, types can often be inferred. When types can't be inferred, they
 
 JSDoc annotations come before a declaration will be used to set the type of that declaration. For example:
 
-```js twoslash
+```js 
 /** @type {number} */
 var x;
 
@@ -35,7 +35,7 @@ You can find the full list of supported JSDoc patterns [in JSDoc Supported Types
 The last line of the previous code sample would raise an error in TypeScript, but it doesn't by default in a JS project.
 To enable errors in your JavaScript files add: `// @ts-check` to the first line in your `.js` files to have TypeScript raise it as an error.
 
-```js twoslash
+```js 
 // @ts-check
 // @errors: 2322
 /** @type {number} */
@@ -50,7 +50,7 @@ You can skip checking some files by adding a `// @ts-nocheck` comment to files.
 
 TypeScript may offer you errors which you disagree with, in those cases you can ignore errors on specific lines by adding `// @ts-ignore` or `// @ts-expect-error` on the preceding line.
 
-```js twoslash
+```js 
 // @ts-check
 /** @type {number} */
 var x;

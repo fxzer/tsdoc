@@ -6,7 +6,7 @@ TypeScript 全面支持 ES2015 中引入的`class`关键字。
 ## 类成员
 
 这是最基本的类——一个空类：
-```ts twoslash
+```ts 
 class Point {}
 ```
 
@@ -15,7 +15,7 @@ class Point {}
 ### 字段
 
 字段声明在类上创建一个公共可写属性：
-```ts twoslash
+```ts 
 // @strictPropertyInitialization: false
 class Point {
   x: number;
@@ -30,7 +30,7 @@ pt.y = 0;
 与其他位置一样，类型注释是可选的，但如果未指定，则将是隐式的`any`。
 
 字段也可以有初始值设定项； 这些将在实例化类时自动运行：
-```ts twoslash
+```ts 
 class Point {
   x = 0;
   y = 0;
@@ -42,7 +42,7 @@ console.log(`${pt.x}, ${pt.y}`);
 ```
 
 就像 `const`、`let` 和 `var` 一样，类属性的初始值设定项将用于推断其类型：
-```ts twoslash
+```ts 
 // @errors: 2322
 class Point {
   x = 0;
@@ -57,14 +57,14 @@ pt.x = "0";
 
  `strictPropertyInitialization`可控制类字段是否需要在构造函数中初始化。
 
-```ts twoslash
+```ts 
 // @errors: 2564
 class BadGreeter {
   name: string;
 }
 ```
 
-```ts twoslash
+```ts 
 class GoodGreeter {
   name: string;
 
@@ -78,7 +78,7 @@ class GoodGreeter {
 TypeScript 不会分析您从构造函数调用的方法来检测初始化，因为派生类可能会覆盖这些方法并且无法初始化成员。
 
 如果你打算通过构造函数以外的方式明确地初始化一个字段（例如，可能一个外部库正在为你填充你的类的一部分），你可以使用 _明确赋值断言运算符_，`!`：
-```ts twoslash
+```ts 
 class OKGreeter {
   // Not initialized, but no error
   name!: string;
@@ -89,7 +89,7 @@ class OKGreeter {
 
 字段可以以 `readonly` 修饰符为前缀。
 这可以防止对构造函数之外的字段进行赋值。
-```ts twoslash
+```ts 
 // @errors: 2540 2540
 class Greeter {
   readonly name: string = "world";
@@ -113,7 +113,7 @@ g.name = "also not ok";
 
 类构造函数与函数非常相似。
 您可以添加带有类型注释、默认值和重载的参数：
-```ts twoslash
+```ts 
 class Point {
   x: number;
   y: number;
@@ -126,7 +126,7 @@ class Point {
 }
 ```
 
-```ts twoslash
+```ts 
 class Point {
   // Overloads
   constructor(x: number, y: string);
@@ -145,7 +145,7 @@ class Point {
 #### 超级调用
 
 就像在 JavaScript 中一样，如果您有基类，则需要在构造函数主体中调用 `super();` 在使用任何 `this.`成员之前：
-```ts twoslash
+```ts 
 // @errors: 17009
 class Base {
   k = 4;
@@ -166,7 +166,7 @@ class Derived extends Base {
 
 类的函数属性称为 _方法_。
 方法可以使用所有与函数和构造函数相同的类型注释：
-```ts twoslash
+```ts 
 class Point {
   x = 10;
   y = 10;
@@ -182,7 +182,7 @@ class Point {
 
 请注意，在方法体内，仍然必须通过 `this.`访问字段和其他方法。
 方法主体中的非限定名称将始终引用封闭范围内的内容：
-```ts twoslash
+```ts 
 // @errors: 2322
 let x: number = 0;
 
@@ -200,7 +200,7 @@ class C {
 
 Classes can also have _accessors_:
 
-```ts twoslash
+```ts 
 class C {
   _length = 0;
   get length() {
@@ -222,7 +222,7 @@ TypeScript 对访问器有一些特殊的推理规则：
 - Getters and setters  必须具有相同可见的成员
 
 自 [TypeScript 4.3](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/) 起，可以使用不同类型的访问器来获取和设置。
-```ts twoslash
+```ts 
 class Thing {
   _size = 0;
 
@@ -248,7 +248,7 @@ class Thing {
 ### 索引签名
 
 类可以声明索引签名类似对象类型的索引签名：
-```ts twoslash
+```ts 
 class MyClass {
   [s: string]: boolean | ((s: string) => boolean);
 
@@ -266,7 +266,7 @@ class MyClass {
 
 您可以使用 `implements` 子句来检查类是否满足特定的 `interface`。
 如果类未能正确实现它，将发出错误：
-```ts twoslash
+```ts 
 // @errors: 2420
 interface Pingable {
   ping(): void;
@@ -292,7 +292,7 @@ class Ball implements Pingable {
 重要的是要理解 `implements` 子句只是检查该类是否可以被视为接口类型。
 它根本不改变类的类型或其方法。
 一个常见的错误来源是假设 `implements` 子句会改变类类型 - 它不会！
-```ts twoslash
+```ts 
 // @errors: 7006
 interface Checkable {
   check(name: string): boolean;
@@ -311,7 +311,7 @@ class NameChecker implements Checkable {
 它不是 - `implements` 子句不会改变类主体的检查方式或其类型的推断方式。
 
 同样，实现带有可选属性的接口不会创建该属性：
-```ts twoslash
+```ts 
 // @errors: 2339
 interface A {
   x: number;
@@ -329,7 +329,7 @@ c.y = 10;
 
 类可以从基类`extend`。
 派生类具有其基类的所有属性和方法，还定义了额外的成员。
-```ts twoslash
+```ts 
 class Animal {
   move() {
     console.log("Moving along!");
@@ -360,7 +360,7 @@ d.woof(3);
 TypeScript 强制派生类始终是其基类的子类型。
 
 例如，这是一种覆盖方法的合法方法：
-```ts twoslash
+```ts 
 class Base {
   greet() {
     console.log("Hello, world!");
@@ -384,7 +384,7 @@ d.greet("reader");
 
 派生类遵循其基类契约很重要。
 请记住，通过基类引用来引用派生类实例是很常见的（而且总是合法的！）：
-```ts twoslash
+```ts 
 class Base {
   greet() {
     console.log("Hello, world!");
@@ -400,7 +400,7 @@ b.greet();
 
 What if `Derived` didn't follow `Base`'s contract?
 
-```ts twoslash
+```ts 
 // @errors: 2416
 class Base {
   greet() {
@@ -417,7 +417,7 @@ class Derived extends Base {
 ```
 
 如果我们不顾错误地编译这段代码，那么这个示例就会崩溃：
-```ts twoslash
+```ts 
 declare class Base {
   greet(): void;
 }
@@ -431,7 +431,7 @@ b.greet();
 ####  仅类型字段声明
 
 当 `target >= ES2022` 或 `useDefineForClassFields` 为 `true` 时，类字段在父类构造函数完成后初始化，覆盖父类设置的任何值。 当您只想为继承的字段重新声明更准确的类型时，这可能会成为问题。 要处理这些情况，您可以编写 `declare` 以向 TypeScript 指示此字段声明不应有运行时影响。
-```ts twoslash
+```ts 
 interface Animal {
   dateOfBirth: any;
 }
@@ -461,7 +461,7 @@ class DogHouse extends AnimalHouse {
 
 在某些情况下，JavaScript 类初始化的顺序可能会令人惊讶。
 让我们考虑一下这段代码：
-```ts twoslash
+```ts 
 class Base {
   name = "base";
   constructor() {
@@ -500,7 +500,7 @@ JavaScript 定义的类初始化顺序是：
 默认情况下，其他下层编译器通常具有相同的限制。
 
 对于像下面这样的子类：
-```ts twoslash
+```ts 
 class MsgError extends Error {
   constructor(m: string) {
     super(m);
@@ -517,7 +517,7 @@ class MsgError extends Error {
 - `instanceof` 将在子类的实例及其实例之间中断，因此 `(new MsgError()) instanceof MsgError` 将返回 `false`。
 
 作为建议，您可以在任何 `super(...)` 调用后立即手动调整原型。
-```ts twoslash
+```ts 
 class MsgError extends Error {
   constructor(m: string) {
     super(m);
@@ -545,7 +545,7 @@ class MsgError extends Error {
 The default visibility of class members is `public`.
 A `public` member can be accessed anywhere:
 
-```ts twoslash
+```ts 
 class Greeter {
   public greet() {
     console.log("hi!");
@@ -560,7 +560,7 @@ g.greet();
 
 `protected` 成员只对声明它们的类的子类可见。
 
-```ts twoslash
+```ts 
 // @errors: 2445
 class Greeter {
   public greet() {
@@ -587,7 +587,7 @@ g.getName();
 
 派生类需要遵循它们的基类契约，但可以选择公开具有更多功能的基类的子类型。
 这包括让`protected`成员成为`public`：
-```ts twoslash
+```ts 
 class Base {
   protected m = 10;
 }
@@ -605,7 +605,7 @@ console.log(d.m); // OK
 #### 跨层级`protected` 访问
 
 不同的 OOP 语言对于通过基类引用访问“受保护”成员是否合法存在分歧：
-```ts twoslash
+```ts 
 // @errors: 2446
 class Base {
   protected x: number = 1;
@@ -634,7 +634,7 @@ TypeScript 在这里支持 C# 和 C++，因为访问 Derived2 中的 x 应该只
 
 `private` 类似于 `protected`, 但不允许从子类访问该成员:
 
-```ts twoslash
+```ts 
 // @errors: 2341
 class Base {
   private x = 0;
@@ -644,7 +644,7 @@ const b = new Base();
 console.log(b.x);
 ```
 
-```ts twoslash
+```ts 
 // @errors: 2341
 class Base {
   private x = 0;
@@ -659,7 +659,7 @@ class Derived extends Base {
 ```
 
 因为 `private` 成员对派生类不可见，派生类不能增加它的可见性：
-```ts twoslash
+```ts 
 // @errors: 2415
 class Base {
   private x = 0;
@@ -675,7 +675,7 @@ class Derived extends Base {
 虽然 Java、C#、C++、Swift 和 PHP 等语言允许这样做，但 Ruby 不允许。
 
 TypeScript 确实允许跨实例的`private`访问：
-```ts twoslash
+```ts 
 class A {
   private x = 10;
 
@@ -691,7 +691,7 @@ class A {
 与 TypeScript 类型系统的其他方面一样，`private` 和 `protected` [仅在类型检查期间强制执行](https://tinyurl.com/2kmvwt84)。
 
 这意味着像 `in` 或简单的属性查找这样的 JavaScript 运行时构造仍然可以访问 `private` 或 `protected` 成员：
-```ts twoslash
+```ts 
 class MySafe {
   private secretKey = 12345;
 }
@@ -705,7 +705,7 @@ console.log(s.secretKey);
 ```
 
 `private` 还允许在类型检查期间使用括号表示法进行访问。 这使得 `private` 声明的字段可能更容易访问单元测试之类的东西，缺点是这些字段是_软私有_并且不严格执行隐私。
-```ts twoslash
+```ts 
 // @errors: 2341
 class MySafe {
   private secretKey = 12345;
@@ -721,7 +721,7 @@ console.log(s["secretKey"]);
 ```
 
 与 TypeScripts 的`private`不同，JavaScript 的[私有字段](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) 在编译后保持私有并且不会 提供前面提到的逃生舱口，如括号表示法访问，使它们 _严格私有_。
-```ts twoslash
+```ts 
 class Dog {
   #barkAmount = 0;
   personality = "happy";
@@ -730,7 +730,7 @@ class Dog {
 }
 ```
 
-```ts twoslash
+```ts 
 // @target: esnext
 // @showEmit
 class Dog {
@@ -742,7 +742,7 @@ class Dog {
 ```
 
 当编译为 ES2021 或更低版本时，TypeScript 将使用 WeakMaps 代替 `#`
-```ts twoslash
+```ts 
 // @target: es2015
 // @showEmit
 class Dog {
@@ -760,7 +760,7 @@ Classes may have `static` members.
 These members aren't associated with a particular instance of the class.
 They can be accessed through the class constructor object itself:
 
-```ts twoslash
+```ts 
 class MyClass {
   static x = 0;
   static printX() {
@@ -772,7 +772,7 @@ MyClass.printX();
 ```
 
 静态成员也可以使用相同的 `public`, `protected`,  `private`可见性修饰符：
-```ts twoslash
+```ts 
 // @errors: 2341
 class MyClass {
   private static x = 0;
@@ -782,7 +782,7 @@ console.log(MyClass.x);
 
 Static members are also inherited:
 
-```ts twoslash
+```ts 
 class Base {
   static getGreeting() {
     return "Hello world";
@@ -798,7 +798,7 @@ class Derived extends Base {
 从`Function`原型覆盖属性通常是不安全/不可能的。
 因为类本身是可以用 `new` 调用的函数，所以不能使用某些 `static` 名称。
 `name`、`length` 和 `call` 等函数属性不能定义为 `static` 成员：
-```ts twoslash
+```ts 
 // @errors: 2699
 class S {
   static name = "S!";
@@ -813,7 +813,7 @@ TypeScript（和 JavaScript）没有像 C# 那样的名为“静态类”的结�
 只有一个实例的类在 JavaScript/TypeScript 中通常只表示为一个普通的_object_。
 
 例如，我们不需要 TypeScript 中的“静态类”语法，因为常规对象（甚至顶级函数）也可以完成这项工作：
-```ts twoslash
+```ts 
 // Unnecessary "static" class
 class MyStaticClass {
   static doSomething() {}
@@ -831,7 +831,7 @@ const MyHelperObject = {
 ## 静态块
 
 静态块允许您编写一系列具有自己范围的语句，这些语句可以访问包含类中的私有字段。 这意味着我们可以编写具有编写语句的所有功能的初始化代码，不会泄漏变量，并且可以完全访问我们类的内部结构。
-```ts twoslash
+```ts 
 declare function loadLastInstances(): any[]
 // ---cut---
 class Foo {
@@ -855,7 +855,7 @@ class Foo {
 
 类，很像接口，可以是通用的。
 当使用 new 实例化泛型类时，其类型参数的推断方式与函数调用中的方式相同：类可以像接口一样使用通用约束和默认值。
-```ts twoslash
+```ts 
 class Box<Type> {
   contents: Type;
   constructor(value: Type) {
@@ -871,7 +871,7 @@ const b = new Box("hello!");
 ### 静态成员中的类型参数
 
 此代码不合法，原因可能并不明显：
-```ts twoslash
+```ts 
 // @errors: 2302
 class Box<Type> {
   static defaultValue: Type;
@@ -887,7 +887,7 @@ class Box<Type> {
 重要的是要记住 TypeScript 不会改变 JavaScript 的运行时行为，并且 JavaScript 以具有一些特殊的运行时行为而闻名。
 
 JavaScript 对 `this` 的处理确实不寻常：
-```ts twoslash
+```ts 
 class MyClass {
   name = "MyClass";
   getName() {
@@ -913,7 +913,7 @@ TypeScript 提供了一些方法来减轻或防止这种错误。
 
 
 如果你有一个经常以失去 this 上下文的方式调用的函数，那么使用箭头函数属性而不是方法定义是有意义的：
-```ts twoslash
+```ts 
 class MyClass {
   name = "MyClass";
   getName = () => {
@@ -935,7 +935,7 @@ console.log(g());
 
 在方法或函数定义中，名为`this`的初始参数在 TypeScript 中具有特殊含义。
 这些参数在编译期间被删除：
-```ts twoslash
+```ts 
 type SomeType = any;
 // ---cut---
 // TypeScript input with 'this' parameter
@@ -953,7 +953,7 @@ function fn(x) {
 
 TypeScript 检查调用带有“this”参数的函数是否是在正确的上下文中完成的。
 除了使用箭头函数，我们还可以在方法定义中添加一个 this 参数来静态强制方法被正确调用：
-```ts twoslash
+```ts 
 // @errors: 2684
 class MyClass {
   name = "MyClass";
@@ -980,7 +980,7 @@ console.log(g());
 在类中，一种称为`this`的特殊类型 _动态地_ 引用当前类的类型。
 让我们看看这有什么用：
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 class Box {
   contents: string = "";
   set(value: string) {
@@ -993,7 +993,7 @@ class Box {
 
 在这里，TypeScript 将 `set` 的返回类型推断为 `this`，而不是 `Box`。
 现在让我们创建 `Box` 的子类：
-```ts twoslash
+```ts 
 class Box {
   contents: string = "";
   set(value: string) {
@@ -1014,7 +1014,7 @@ const b = a.set("hello");
 ```
 
 您还可以在参数类型注释中使用 `this`：
-```ts twoslash
+```ts 
 class Box {
   content: string = "";
   sameAs(other: this) {
@@ -1024,7 +1024,7 @@ class Box {
 ```
 
 这与写 `other: Box` 不同——如果你有一个派生类，它的 `sameAs` 方法现在将只接受同一个派生类的其他实例：
-```ts twoslash
+```ts 
 // @errors: 2345
 class Box {
   content: string = "";
@@ -1047,7 +1047,7 @@ derived.sameAs(base);
 您可以在类和接口中的方法的返回位置使用`this is Type` 。
 当与类型缩小（例如 `if` 语句）混合使用时，目标对象的类型将缩小为指定的 `Type`。
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @strictPropertyInitialization: false
 class FileSystemObject {
   isFile(): this is FileRep {
@@ -1091,7 +1091,7 @@ if (fso.isFile()) {
 ```
 
 基于 this 的类型保护的一个常见用例是允许对特定字段进行惰性验证。 例如，当 `hasValue`被验证为 true 时，这种情况会从 box 中保存的值中删除一个 `undefined` ：
-```ts twoslash
+```ts 
 class Box<T> {
   value?: T;
 
@@ -1117,7 +1117,7 @@ if (box.hasValue()) {
 TypeScript 提供了将构造函数参数转换为具有相同名称和值的类属性的特殊语法。
 这些称为 _参数属性_，是通过在构造函数参数前加上可见性修饰符`public`, `private`, `protected`,   `readonly`.之一来创建的。
 结果字段获得这些修饰符：
-```ts twoslash
+```ts 
 // @errors: 2341
 class Params {
   constructor(
@@ -1139,7 +1139,7 @@ console.log(a.z);
 
 类表达式与类声明非常相似。
 唯一真正的区别是类表达式不需要名称，尽管我们可以通过它们最终绑定到的任何标识符来引用它们：
-```ts twoslash
+```ts 
 const someClass = class<Type> {
   content: Type;
   constructor(value: Type) {
@@ -1162,7 +1162,7 @@ _抽象方法_ 或 _抽象字段_ 是尚未提供实现的方法。
 当一个类没有任何抽象成员时，它被称 _具体_。
 
 让我们看一个例子：
-```ts twoslash
+```ts 
 // @errors: 2511
 abstract class Base {
   abstract getName(): string;
@@ -1177,7 +1177,7 @@ const b = new Base();
 
 我们不能用 `new` 实例化 `Base` 因为它是抽象的。
 相反，我们需要创建一个派生类并实现抽象成员：
-```ts twoslash
+```ts 
 abstract class Base {
   abstract getName(): string;
   printName() {}
@@ -1194,7 +1194,7 @@ d.printName();
 ```
 
 请注意，如果我们忘记实现基类的抽象成员，则会出现错误：
-```ts twoslash
+```ts 
 // @errors: 2515
 abstract class Base {
   abstract getName(): string;
@@ -1211,7 +1211,7 @@ class Derived extends Base {
 有时你想接受一些类构造函数，它产生一个派生自某个抽象类的类的实例。
 
 例如，您可能想编写以下代码：
-```ts twoslash
+```ts 
 // @errors: 2511
 abstract class Base {
   abstract getName(): string;
@@ -1231,7 +1231,7 @@ function greet(ctor: typeof Base) {
 
 TypeScript 正确地告诉您您正在尝试实例化一个抽象类。
 毕竟，鉴于 `greet` 的定义，编写这段代码是完全合法的，它最终会构造一个抽象类：
-```ts twoslash
+```ts 
 declare const greet: any, Base: any;
 // ---cut---
 // Bad!
@@ -1239,7 +1239,7 @@ greet(Base);
 ```
 
 相反，您想编写一个接受带有构造签名的东西的函数：
-```ts twoslash
+```ts 
 // @errors: 2345
 abstract class Base {
   abstract getName(): string;
@@ -1266,7 +1266,7 @@ greet(Base);
 在大多数情况下，TypeScript 中的类在结构上进行比较，与其他类型相同。
 
 例如，这两个类可以代替彼此使用，因为它们是相同的：
-```ts twoslash
+```ts 
 class Point1 {
   x = 0;
   y = 0;
@@ -1282,7 +1282,7 @@ const p: Point1 = new Point2();
 ```
 
 同样，即使没有显式继承，类之间的子类型关系也存在：
-```ts twoslash
+```ts 
 // @strict: false
 class Person {
   name: string;
@@ -1302,7 +1302,7 @@ const p: Person = new Employee();
 空类没有成员。
 在结构类型系统中，没有成员的类型通常是其他任何类型的超类型。
 所以如果你写一个空类（不要！），任何东西都可以用来代替它：
-```ts twoslash
+```ts 
 class Empty {}
 
 function fn(x: Empty) {

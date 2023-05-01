@@ -7,7 +7,7 @@ Enables experimental support for emitting type metadata for decorators which wor
 
 For example, here is the TypeScript
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 function LogMethod(target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
   console.log(target);
@@ -27,7 +27,7 @@ const demo = new Demo();
 
 With `emitDecoratorMetadata` not set to true (default) the emitted JavaScript is:
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 // @showEmit
 function LogMethod(target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
@@ -48,7 +48,7 @@ const demo = new Demo();
 
 With `emitDecoratorMetadata` set to true the emitted JavaScript is:
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 // @showEmit
 // @emitDecoratorMetadata

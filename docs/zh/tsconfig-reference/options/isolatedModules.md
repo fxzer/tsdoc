@@ -18,7 +18,7 @@ Some examples of code which does not work when `isolatedModules` is enabled.
 
 In TypeScript, you can import a _type_ and then subsequently export it:
 
-```ts twoslash
+```ts 
 // @noErrors
 import { someType, someFunction } from "someModule";
 
@@ -39,7 +39,7 @@ Single-file transpilers don't know whether `someType` produces a value or not, s
 
 If `isolatedModules` is set, all implementation files must be _modules_ (which means it has some form of `import`/`export`). An error occurs if any file isn't a module:
 
-```ts twoslash
+```ts 
 // @errors: 1208
 // @isolatedModules
 function fn() {}
@@ -51,7 +51,7 @@ This restriction doesn't apply to `.d.ts` files.
 
 In TypeScript, when you reference a `const enum` member, the reference is replaced by its actual value in the emitted JavaScript. Changing this TypeScript:
 
-```ts twoslash
+```ts 
 declare const enum Numbers {
   Zero = 0,
   One = 1,
@@ -61,7 +61,7 @@ console.log(Numbers.Zero + Numbers.One);
 
 To this JavaScript:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @removeComments
 declare const enum Numbers {

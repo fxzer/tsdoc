@@ -3,14 +3,14 @@
 
 `keyof` 运算符采用对象类型并生成其键的字符串或数字文字联合。
 下面的类型P是同类型： "x" | "y"：
-```ts twoslash
+```ts 
 type Point = { x: number; y: number };
 type P = keyof Point;
 //   ^?
 ```
 
 如果该类型具有`string`或`number`索引签名，则`keyof`将返回这些类型：
-```ts twoslash
+```ts 
 type Arrayish = { [n: number]: unknown };
 type A = keyof Arrayish;
 //   ^?

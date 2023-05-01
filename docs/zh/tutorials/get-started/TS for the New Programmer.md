@@ -53,7 +53,7 @@ TypeScript 在执行前检查程序是否有错误，并根据_类型的值_进�
 例如，上面的最后一个示例由于 `obj` 的_type_而出错。
 这是 TypeScript 发现的错误：
 
-```ts twoslash
+```ts 
 // @errors: 2551
 const obj = { width: 10, height: 15 };
 const area = obj.width * obj.heigth;
@@ -69,7 +69,7 @@ TypeScript 是一种语言，是 JavaScript 的_超集_：因此 JS 语法是合
 语法是指我们编写文本以形成程序的方式。
 例如，这段代码有一个_syntax_错误，因为它缺少一个`)`：
 
-```ts twoslash
+```ts 
 // @errors: 1005
 let a = (4
 ```
@@ -89,7 +89,7 @@ console.log(4 / []);
 
 这个语法上合法的程序记录了`Infinity`。
 但是，TypeScript 将数字除以数组视为无意义的操作，并且会发出错误：
-```ts twoslash
+```ts 
 // @errors: 2363
 console.log(4 / []);
 ```

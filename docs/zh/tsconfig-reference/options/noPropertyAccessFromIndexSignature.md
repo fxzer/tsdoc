@@ -7,7 +7,7 @@ This setting ensures consistency between accessing a field via the "dot" (`obj.k
 
 Without this flag, TypeScript will allow you to use the dot syntax to access fields which are not defined:
 
-```ts twoslash
+```ts 
 // @errors: 4111
 declare function getSettings(): GameSettings;
 // ---cut---
@@ -35,7 +35,7 @@ settings.username;
 
 Turning the flag on will raise an error because the unknown field uses dot syntax instead of indexed syntax.
 
-```ts twoslash
+```ts 
 // @errors: 4111
 // @noPropertyAccessFromIndexSignature
 declare function getSettings(): GameSettings;

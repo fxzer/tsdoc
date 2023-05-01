@@ -5,7 +5,7 @@ oneline: "Check that the arguments for `bind`, `call`, and `apply` methods match
 
 When set, TypeScript will check that the built-in methods of functions `call`, `bind`, and `apply` are invoked with correct argument for the underlying function:
 
-```ts twoslash
+```ts 
 // @strictBindCallApply: true
 // @errors: 2345
 
@@ -21,7 +21,7 @@ const n2 = fn.call(undefined, false);
 
 Otherwise, these functions accept any arguments and will return `any`:
 
-```ts twoslash
+```ts 
 // @strictBindCallApply: false
 
 // With strictBindCallApply off

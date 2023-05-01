@@ -7,7 +7,7 @@ In some cases where no type annotations are present, TypeScript will fall back t
 
 This can cause some errors to be missed, for example:
 
-```ts twoslash
+```ts 
 // @noImplicitAny: false
 function fn(s) {
   // No error?
@@ -18,7 +18,7 @@ fn(42);
 
 Turning on `noImplicitAny` however TypeScript will issue an error whenever it would have inferred `any`:
 
-```ts twoslash
+```ts 
 // @errors: 7006
 function fn(s) {
   console.log(s.subtr(3));

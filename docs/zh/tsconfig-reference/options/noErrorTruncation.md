@@ -7,7 +7,7 @@ Do not truncate error messages.
 
 With `false`, the default.
 
-```ts twoslash
+```ts 
 // @errors: 2322 2454
 var x: {
   propertyWithAnExceedinglyLongName1: string;
@@ -26,7 +26,7 @@ var s: string = x;
 
 With `true`
 
-```ts twoslash
+```ts 
 // @errors: 2322 2454
 // @noErrorTruncation: true
 var x: {

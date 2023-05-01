@@ -9,7 +9,7 @@ There are three sets of literal types available in TypeScript today: strings, nu
 When you declare a variable via `var` or `let`, you are telling the compiler that there is the chance that this variable will change its contents.
 In contrast, using `const` to declare a variable will inform TypeScript that this object will never change.
 
-```ts twoslash
+```ts 
 // We're making a guarantee that this variable
 // helloWorld will never change, by using const.
 
@@ -27,7 +27,7 @@ The process of going from an infinite number of potential cases (there is an inf
 In practice string literal types combine nicely with union types, type guards, and type aliases.
 You can use these features together to get enum-like behavior with strings.
 
-```ts twoslash
+```ts 
 // @errors: 2345
 type Easing = "ease-in" | "ease-out" | "ease-in-out";
 
@@ -70,7 +70,7 @@ function createElement(tagName: string): Element {
 
 TypeScript also has numeric literal types, which act the same as the string literals above.
 
-```ts twoslash
+```ts 
 function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 {
   return (Math.floor(Math.random() * 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6;
 }
@@ -80,7 +80,7 @@ const result = rollDice();
 
 A common case for their use is for describing config values:
 
-```ts twoslash
+```ts 
 /** Creates a map centered at loc/lat */
 declare function setupMap(config: MapConfig): void;
 // ---cut---
@@ -97,7 +97,7 @@ setupMap({ lng: -73.935242, lat: 40.73061, tileSize: 16 });
 
 TypeScript also has boolean literal types. You might use these to constrain object values whose properties are interrelated.
 
-```ts twoslash
+```ts 
 interface ValidationSuccess {
   isValid: true;
   reason: null;

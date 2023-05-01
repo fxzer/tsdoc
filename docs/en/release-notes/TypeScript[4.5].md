@@ -86,7 +86,7 @@ TypeScript 4.5 now can narrow values that have template string types, and also r
 
 As an example, the following used to fail, but now successfully type-checks in TypeScript 4.5.
 
-```ts twoslash
+```ts 
 export interface Success {
     type: `${string}Success`;
     body: string;

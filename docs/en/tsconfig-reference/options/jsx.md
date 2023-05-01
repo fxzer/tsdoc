@@ -22,7 +22,7 @@ export const HelloWorld = () => <h1>Hello world</h1>;
 
 Default: `"react"`
 
-```tsx twoslash
+```tsx 
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {
@@ -36,7 +36,7 @@ export const HelloWorld = () => <h1>Hello world</h1>;
 
 Preserve: `"preserve"`
 
-```tsx twoslash
+```tsx 
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {
@@ -51,7 +51,7 @@ export const HelloWorld = () => <h1>Hello world</h1>;
 
 React Native: `"react-native"`
 
-```tsx twoslash
+```tsx 
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {
@@ -66,7 +66,7 @@ export const HelloWorld = () => <h1>Hello world</h1>;
 
 React 17 transform: `"react-jsx"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
 
-```tsx twoslash
+```tsx 
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {
@@ -81,7 +81,7 @@ export const HelloWorld = () => <h1>Hello world</h1>;
 
 React 17 dev transform: `"react-jsxdev"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
 
-```tsx twoslash
+```tsx 
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {

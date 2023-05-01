@@ -21,7 +21,7 @@ JavaScript 规范声明任何没有`export` 或顶级 `await` 的 JavaScript 文
 在脚本文件中，变量和类型被声明为在共享的全局范围内，并且假设您将使用  `outFile` 编译器选项将多个输入文件连接到一个输出文件中， 或者在您的 HTML 中使用多个 `<script>` 标签来加载这些文件（以正确的顺序！）。
 
 如果您有一个当前没有任何 `import` 或 `export` 的文件，但您希望将其视为一个模块，请添加以下行：
-```ts twoslash
+```ts 
 export {};
 ```
 
@@ -44,7 +44,7 @@ export {};
 
 A file can declare a main export via `export default`:
 
-```ts twoslash
+```ts 
 // @filename: hello.ts
 export default function helloWorld() {
   console.log("Hello, world!");
@@ -52,7 +52,7 @@ export default function helloWorld() {
 ```
 
 然后通过以下方式导入：
-```ts twoslash
+```ts 
 // @filename: hello.ts
 export default function helloWorld() {
   console.log("Hello, world!");
@@ -64,7 +64,7 @@ helloWorld();
 ```
 
 除了默认导出之外，您还可以通过省略 `default` 来通过 `export` 导出多个变量和函数：
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 export let squareTwo = 1.41;
@@ -79,7 +79,7 @@ export function absolute(num: number) {
 ```
 
 这些可以通过 `import` 语法在另一个文件中使用：
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 export let squareTwo = 1.41;
@@ -101,7 +101,7 @@ const absPhi = absolute(phi);
 ###  额外的导入语法
 
 可以使用类似 `import {old as new}`的格式重命名导入：
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 // @filename: app.ts
@@ -113,7 +113,7 @@ console.log(π);
 ```
 
 您可以将上述语法混合并匹配到单个`import`中：
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export const pi = 3.14;
 export default class RandomNumberGenerator {}
@@ -129,7 +129,7 @@ console.log(π);
 ```
 
 您可以获取所有导出的对象，并使用`* as name`将它们放入单个命名空间中：
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 export let squareTwo = 1.41;
@@ -149,7 +149,7 @@ const positivePhi = math.absolute(math.phi);
 ```
 
 您可以导入一个文件，_不_ 通过 `import "./file"` 将任何变量包含到您当前的模块中：
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 // ---cut---
@@ -163,7 +163,7 @@ console.log("3.14");
 #### TypeScript的 特定模块语法
 
 可以使用与 JavaScript 值相同的语法导出和导入类型：
-```ts twoslash
+```ts 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 
@@ -182,7 +182,7 @@ TypeScript 使用两个概念扩展了  `import` 语法，用于声明类型的�
 
 Which is an import statement which can _only_ import types:
 
-```ts twoslash
+```ts 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
@@ -201,7 +201,7 @@ const name = createCatName();
 ######  内联导入
 
 TypeScript 4.5 还允许单独的导入以 `type` 为前缀，以指示导入的引用是一种类型：
-```ts twoslash
+```ts 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
@@ -218,7 +218,7 @@ const name = createCatName();
 #### 具有 CommonJS 行为的 ES 模块语法
 
 TypeScript 具有 ES 模块语法，它 _直接_ 关联到 CommonJS 和 AMD `require`。 使用 ES 模块的导入 _在大多数情况下_ 与这些环境中的 `require` 相同，但此语法可确保您的 TypeScript 文件与 CommonJS 输出一一对应：
-```ts twoslash
+```ts 
 /// <reference types="node" />
 // @module: commonjs
 // ---cut---
@@ -233,7 +233,7 @@ CommonJS 是 npm 上大多数模块的交付格式。即使您使用上面的 ES
 #### 导出
 
 通过在名为`module`的全局变量上设置 `exports` 属性来导出标识符。
-```ts twoslash
+```ts 
 /// <reference types="node" />
 // ---cut---
 function absolute(num: number) {
@@ -250,7 +250,7 @@ module.exports = {
 ```
 
 然后可以通过 `require` 语句导入这些文件：
-```ts twoslash
+```ts 
 // @module: commonjs
 // @filename: maths.ts
 /// <reference types="node" />
@@ -273,7 +273,7 @@ maths.pi;
 ```
 
 或者，您可以使用 JavaScript 中的解构功能稍微简化一下：
-```ts twoslash
+```ts 
 // @module: commonjs
 // @filename: maths.ts
 /// <reference types="node" />
@@ -325,7 +325,7 @@ Node 策略复制了 Node.js 在 CommonJS 模式下的工作方式，并附加�
 在运行时，模块加载器负责在执行模块之前定位并执行模块的所有依赖项。
 
 例如，这是一个使用 ES 模块语法的 TypeScript 文件，展示了  `module`  的几个不同选项：
-```ts twoslash
+```ts 
 // @filename: constants.ts
 export const valueOfPi = 3.142;
 // @filename: index.ts
@@ -337,7 +337,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `ES2020`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: es2020
 // @noErrors
@@ -348,7 +348,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `CommonJS`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: commonjs
 // @noErrors
@@ -359,7 +359,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `UMD`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: umd
 // @noErrors

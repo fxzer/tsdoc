@@ -6,7 +6,7 @@
 JavaScript 程序没有什么不同，但考虑到值可以很容易地自省这一事实，这些决定也基于输入的类型。
 _条件类型_ 有助于描述输入和输出类型之间的关系。
 
-```ts twoslash
+```ts 
 interface Animal {
   live(): void;
 }
@@ -22,7 +22,7 @@ type Example2 = RegExp extends Animal ? number : string;
 ```
 
 条件类型的形式看起来有点像 JavaScript 中的条件表达式（`condition ? trueExpression : falseExpression`）：
-```ts twoslash
+```ts 
 type SomeType = any;
 type OtherType = any;
 type TrueType = any;
@@ -38,7 +38,7 @@ type Stuff =
 但条件类型的强大之处在于将它们与泛型一起使用。
 
 例如，让我们采用以下`createLabel` 函数：
-```ts twoslash
+```ts 
 interface IdLabel {
   id: number /* some fields */;
 }
@@ -61,7 +61,7 @@ createLabel 的这些重载描述了一个 JavaScript 函数，该函数根据�
 
 相反，我们可以将该逻辑编码为条件类型：
 
-```ts twoslash
+```ts 
 interface IdLabel {
   id: number /* some fields */;
 }
@@ -75,7 +75,7 @@ type NameOrId<T extends number | string> = T extends number
 ```
 
 然后我们可以使用该条件类型将我们的重载简化为没有重载的单个函数。
-```ts twoslash
+```ts 
 interface IdLabel {
   id: number /* some fields */;
 }
@@ -107,14 +107,14 @@ let c = createLabel(Math.random() ? "hello" : 42);
 
 例如，让我们采取以下内容：
 
-```ts twoslash
+```ts 
 // @errors: 2536
 type MessageOf<T> = T["message"];
 ```
 
 在此示例中，TypeScript 出错是因为不知道`T`具有名为`message`的属性。
 我们可以约束 `T`，TypeScript 将不再报错：
-```ts twoslash
+```ts 
 type MessageOf<T extends { message: unknown }> = T["message"];
 
 interface Email {
@@ -127,7 +127,7 @@ type EmailMessageContents = MessageOf<Email>;
 
 但是，如果我们希望`MessageOf` 采用任何类型，并且在`message` 属性不可用时默认为 `never`之类的东西怎么办？
 我们可以通过移出约束并引入条件类型来做到这一点：
-```ts twoslash
+```ts 
 type MessageOf<T> = T extends { message: unknown } ? T["message"] : never;
 
 interface Email {
@@ -148,7 +148,7 @@ type DogMessageContents = MessageOf<Dog>;
 在 true 分支中，TypeScript 知道 `T` _will_ 有一个 `message` 属性。
 
 作为另一个示例，我们还可以编写一个名为`Flatten`的类型，将数组类型展平为它们的元素类型，但除此之外别管它们：
-```ts twoslash
+```ts 
 type Flatten<T> = T extends any[] ? T[number] : T;
 
 // Extracts out the element type.
@@ -170,7 +170,7 @@ type Num = Flatten<number>;
 
 条件类型为我们提供了一种方法，可以使用 `infer` 关键字从我们在 true 分支中比较的类型进行推断。
 例如，我们可以推断出 `Flatten` 中的元素类型，而不是使用索引访问类型“手动”取出它：
-```ts twoslash
+```ts 
 type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
 
@@ -180,7 +180,7 @@ type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 我们可以使用 `infer` 关键字编写一些有用的辅助类型别名。
 例如，对于简单的情况，我们可以从函数类型中提取返回类型：
 
-```ts twoslash
+```ts 
 type GetReturnType<Type> = Type extends (...args: never[]) => infer Return
   ? Return
   : never;
@@ -196,7 +196,7 @@ type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
 ```
 
 当从具有多个调用签名的类型（例如重载函数的类型）推断时，推断是从 _last_ 签名进行的（这大概是最宽松的包罗万象的情况）。 不可能根据参数类型列表执行重载决策。
-```ts twoslash
+```ts 
 declare function stringOrNum(x: string): number;
 declare function stringOrNum(x: number): string;
 declare function stringOrNum(x: string | number): string | number;
@@ -209,12 +209,12 @@ type T1 = ReturnType<typeof stringOrNum>;
 
 当条件类型作用于泛型类型时，它们在给定联合类型时变为 _distributive_。
 例如，采用以下内容：
-```ts twoslash
+```ts 
 type ToArray<Type> = Type extends any ? Type[] : never;
 ```
 
 如果我们将联合类型插入到`ToArray`中，则条件类型将应用于该联合的每个成员。
-```ts twoslash
+```ts 
 type ToArray<Type> = Type extends any ? Type[] : never;
 
 type StrArrOrNumArr = ToArray<string | number>;
@@ -222,7 +222,7 @@ type StrArrOrNumArr = ToArray<string | number>;
 ```
 
 这里发生的是 `StrArrOrNumArr` 分布在：
-```ts twoslash
+```ts 
 type StrArrOrNumArr =
   // ---cut---
   string | number;
@@ -230,7 +230,7 @@ type StrArrOrNumArr =
 
 并将联合的每个成员类型映射到有效的：
 
-```ts twoslash
+```ts 
 type ToArray<Type> = Type extends any ? Type[] : never;
 type StrArrOrNumArr =
   // ---cut---
@@ -239,7 +239,7 @@ type StrArrOrNumArr =
 
 which leaves us with:
 
-```ts twoslash
+```ts 
 type StrArrOrNumArr =
   // ---cut---
   string[] | number[];
@@ -247,7 +247,7 @@ type StrArrOrNumArr =
 
 通常，分配性是所需的行为。
 为避免这种行为，您可以用方括号将 `extends` 关键字的每一侧括起来。
-```ts twoslash
+```ts 
 type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
 
 // 'StrArrOrNumArr' is no longer a union.

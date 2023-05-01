@@ -5,14 +5,14 @@ oneline: "Allow JavaScript files to be a part of your program. Use the `checkJS`
 
 Allow JavaScript files to be imported inside your project, instead of just `.ts` and `.tsx` files. For example, this JS file:
 
-```js twoslash
+```js 
 // @filename: card.js
 export const defaultCardDeck = "Heart";
 ```
 
 When imported into a TypeScript file will raise an error:
 
-```ts twoslash
+```ts 
 // @errors: 2307
 // @filename: card.js
 module.exports.defaultCardDeck = "Heart";
@@ -25,7 +25,7 @@ console.log(defaultCardDeck);
 
 Imports fine with `allowJs` enabled:
 
-```ts twoslash
+```ts 
 // @filename: card.js
 module.exports.defaultCardDeck = "Heart";
 // ---cut---

@@ -3,7 +3,7 @@ When you don't want to repeat yourself, sometimes a type needs to be based on an
 
 Mapped types build on the syntax for index signatures, which are used to declare the types of properties which have not been declared ahead of time:
 
-```ts twoslash
+```ts 
 type Horse = {};
 // ---cut---
 type OnlyBoolsAndHorses = {
@@ -18,7 +18,7 @@ const conforms: OnlyBoolsAndHorses = {
 
 A mapped type is a generic type which uses a union of `PropertyKey`s (frequently created [via a `keyof`](/docs/handbook/2/indexed-access-types.html)) to iterate through keys to create a type:
 
-```ts twoslash
+```ts 
 type OptionsFlags<Type> = {
   [Property in keyof Type]: boolean;
 };
@@ -26,7 +26,7 @@ type OptionsFlags<Type> = {
 
 In this example, `OptionsFlags` will take all the properties from the type `Type` and change their values to be a boolean.
 
-```ts twoslash
+```ts 
 type OptionsFlags<Type> = {
   [Property in keyof Type]: boolean;
 };
@@ -46,7 +46,7 @@ There are two additional modifiers which can be applied during mapping: `readonl
 
 You can remove or add these modifiers by prefixing with `-` or `+`. If you don't add a prefix, then `+` is assumed.
 
-```ts twoslash
+```ts 
 // Removes 'readonly' attributes from a type's properties
 type CreateMutable<Type> = {
   -readonly [Property in keyof Type]: Type[Property];
@@ -61,7 +61,7 @@ type UnlockedAccount = CreateMutable<LockedAccount>;
 //   ^?
 ```
 
-```ts twoslash
+```ts 
 // Removes 'optional' attributes from a type's properties
 type Concrete<Type> = {
   [Property in keyof Type]-?: Type[Property];
@@ -89,7 +89,7 @@ type MappedTypeWithNewProperties<Type> = {
 
 You can leverage features like [template literal types](/docs/handbook/2/template-literal-types.html) to create new property names from prior ones:
 
-```ts twoslash
+```ts 
 type Getters<Type> = {
     [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property]
 };
@@ -106,7 +106,7 @@ type LazyPerson = Getters<Person>;
 
 You can filter out keys by producing `never` via a conditional type:
 
-```ts twoslash
+```ts 
 // Remove the 'kind' property
 type RemoveKindField<Type> = {
     [Property in keyof Type as Exclude<Property, "kind">]: Type[Property]
@@ -123,7 +123,7 @@ type KindlessCircle = RemoveKindField<Circle>;
 
 You can map over arbitrary unions, not just unions of `string | number | symbol`, but unions of any type:
 
-```ts twoslash
+```ts 
 type EventConfig<Events extends { kind: string }> = {
     [E in Events as E["kind"]]: (event: E) => void;
 }
@@ -139,7 +139,7 @@ type Config = EventConfig<SquareEvent | CircleEvent>
 
 Mapped types work well with other features in this type manipulation section, for example here is [a mapped type using a conditional type](/docs/handbook/2/conditional-types.html) which returns either a `true` or `false` depending on whether an object has the property `pii` set to the literal `true`:
 
-```ts twoslash
+```ts 
 type ExtractPII<Type> = {
   [Property in keyof Type]: Type[Property] extends { pii: true } ? true : false;
 };

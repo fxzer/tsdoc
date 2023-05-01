@@ -12,7 +12,7 @@ TypeScript 与 JavaScript 有着不同寻常的关系。 TypeScript 提供了 Ja
 TypeScript 了解 JavaScript 语言，并会在许多情况下为您生成类型。
 例如，在创建变量并将其分配给特定值时，TypeScript 将使用该值作为其类型。
 
-```ts twoslash
+```ts 
 let helloWorld = "Hello World";
 //  ^?
 ```
@@ -28,7 +28,7 @@ let helloWorld = "Hello World";
 
 例如，要创建一个包含 `name: string` and `id: number` 的推断类型的对象，您可以这样写：
 
-```ts twoslash
+```ts 
 const user = {
   name: "Hayes",
   id: 0,
@@ -36,7 +36,7 @@ const user = {
 ```
 
 您可以使用 `interface` 声明明确描述此对象的形状：
-```ts twoslash
+```ts 
 interface User {
   name: string;
   id: number;
@@ -44,7 +44,7 @@ interface User {
 ```
 
 然后，您可以通过在变量声明后使用类似 `: TypeName` 的语法来声明 JavaScript 对象符合新的 `interface` 的形状：
-```ts twoslash
+```ts 
 interface User {
   name: string;
   id: number;
@@ -58,7 +58,7 @@ const user: User = {
 
 如果你提供的对象与你提供的接口不匹配，TypeScript 会警告你：
 
-```ts twoslash
+```ts 
 // @errors: 2322
 interface User {
   name: string;
@@ -73,7 +73,7 @@ const user: User = {
 
 由于 JavaScript 支持类和面向对象编程，因此 TypeScript 也支持。 您可以对类使用接口声明：
 
-```ts twoslash
+```ts 
 interface User {
   name: string;
   id: number;
@@ -94,7 +94,7 @@ const user: User = new UserAccount("Murphy", 1);
 
 您可以使用接口来注释参数并将值返回给函数：
 
-```ts twoslash
+```ts 
 // @noErrors
 interface User {
   name: string;
@@ -121,20 +121,20 @@ JavaScript 中已经有一小部分原始类型可用：`boolean`、`bigint`、`
 ### 联合类型
 
 使用联合，您可以声明一个类型可以是多种类型之一。 例如，您可以将 `boolean` 类型描述为 `true` 或 `false`：
-```ts twoslash
+```ts 
 type MyBool = true | false;
 ```
 
 如果将鼠标悬停在上面的`MyBool`上，您会看到它被归类为 `boolean`。 这是结构类型系统的一个属性。 更多内容请见下文。
 
-```ts twoslash
+```ts 
 type WindowStates = "open" | "closed" | "minimized";
 type LockStates = "locked" | "unlocked";
 type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 ```
 
 联合也提供了一种处理不同类型的方法。 例如，您可能有一个接受`array` 和 `string`:的函数：
-```ts twoslash
+```ts 
 function getLength(obj: string | string[]) {
   return obj.length;
 }
@@ -154,7 +154,7 @@ To learn the type of a variable, use `typeof`:
 例如，您可以根据传递给函数的是字符串还是数组来使函数返回不同的值：
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 function wrapInArray(obj: string | string[]) {
   if (typeof obj === "string") {
     return [obj];
@@ -176,7 +176,7 @@ type ObjectWithNameArray = Array<{ name: string }>;
 
 您可以声明自己的使用泛型的类型：
 
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Backpack<Type> {
   add: (obj: Type) => void;
@@ -199,7 +199,7 @@ backpack.add(23);
 TypeScript 的核心原则之一是类型检查侧重于值具有的 _shape_。 这有时被称为 "duck typing" 或 "structural typing"。
 
 在结构类型系统中，如果两个对象具有相同的形状，则认为它们属于同一类型。
-```ts twoslash
+```ts 
 interface Point {
   x: number;
   y: number;
@@ -217,7 +217,7 @@ logPoint(point);
 `point` 变量永远不会声明为 `Point` 类型。 但是，TypeScript 在类型检查中将 `point` 的形状与 `Point` 的形状进行比较。 它们具有相同的形状，因此代码通过。
 
 形状匹配只需要匹配对象字段的一个子集。
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Point {
   x: number;
@@ -239,7 +239,7 @@ logPoint(color);
 ```
 
 类和对象如何符合形状之间没有区别：
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Point {
   x: number;

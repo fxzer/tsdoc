@@ -7,7 +7,7 @@ When working with classes which use inheritance, it's possible for a sub-class t
 
 For example, imagine you are modeling a music album syncing system:
 
-```ts twoslash
+```ts 
 class Album {
   download() {
     // Default behavior
@@ -23,7 +23,7 @@ class SharedAlbum extends Album {
 
 Then when you add support for machine-learning generated playlists, you refactor the `Album` class to have a 'setup' function instead:
 
-```ts twoslash
+```ts 
 class Album {
   setup() {
     // Default behavior
@@ -49,7 +49,7 @@ Using `noImplicitOverride` you can ensure that the sub-classes never go out of s
 
 The following example has `noImplicitOverride` enabled, and you can see the error received when `override` is missing:
 
-```ts twoslash
+```ts 
 // @noImplicitOverride
 // @errors: 4114
 class Album {

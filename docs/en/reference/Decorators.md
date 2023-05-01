@@ -65,7 +65,7 @@ function color(value: string) {
 
 Multiple decorators can be applied to a declaration, for example on a single line:
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 // @noErrors
 function f() {}
@@ -76,7 +76,7 @@ function g() {}
 
 On multiple lines:
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 // @noErrors
 function f() {}
@@ -97,7 +97,7 @@ As such, the following steps are performed when evaluating multiple decorators o
 If we were to use [decorator factories](#decorator-factories), we can observe this evaluation order with the following example:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @experimentalDecorators
 function first() {
   console.log("first(): factory evaluated");
@@ -153,7 +153,7 @@ If the class decorator returns a value, it will replace the class declaration wi
 
 The following is an example of a class decorator (`@sealed`) applied to a `BugReport` class:
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 function sealed(constructor: Function) {
   Object.seal(constructor);
@@ -185,7 +185,7 @@ When `@sealed` is executed, it will seal both the constructor and its prototype,
 Next we have an example of how to override the constructor to set new defaults.
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @errors: 2339
 // @experimentalDecorators
 function reportableClassDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
@@ -235,7 +235,7 @@ If the method decorator returns a value, it will be used as the _Property Descri
 The following is an example of a method decorator (`@enumerable`) applied to a method on the `Greeter` class:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @experimentalDecorators
 function enumerable(value: boolean) {
   return function (target: any,propertyKey: string,descriptor: PropertyDescriptor) {
@@ -259,7 +259,7 @@ class Greeter {
 We can define the `@enumerable` decorator using the following function declaration:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 function enumerable(value: boolean) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     descriptor.enumerable = value;
@@ -294,7 +294,7 @@ If the accessor decorator returns a value, it will be used as the _Property Desc
 
 The following is an example of an accessor decorator (`@configurable`) applied to a member of the `Point` class:
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 function configurable(value: boolean) {
   return function (
@@ -411,7 +411,7 @@ The return value of the parameter decorator is ignored.
 The following is an example of a parameter decorator (`@required`) applied to parameter of a member of the `BugReport` class:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @experimentalDecorators
 function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<any>) {}
 function required(target: Object, propertyKey: string | symbol, parameterIndex: number) {}
@@ -438,7 +438,7 @@ class BugReport {
 We can then define the `@required` and `@validate` decorators using the following function declarations:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @experimentalDecorators
 // @emitDecoratorMetadata
 import "reflect-metadata";
@@ -511,7 +511,7 @@ When enabled, as long as the `reflect-metadata` library has been imported, addit
 We can see this in action in the following example:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @emitDecoratorMetadata
 // @experimentalDecorators
 // @strictPropertyInitialization: false

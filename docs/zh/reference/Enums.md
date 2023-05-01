@@ -10,7 +10,7 @@ TypeScript 提供基于数字和字符串的枚举。
 我们将首先从数字枚举开始，如果您来自其他语言，可能会更熟悉它。
 可以使用 `enum` 关键字定义枚举。
 
-```ts twoslash
+```ts 
 enum Direction {
   Up = 1,
   Down,
@@ -25,7 +25,7 @@ enum Direction {
 
 如果我们想的话，完全可以省略初始值：
 
-```ts twoslash
+```ts 
 enum Direction {
   Up,
   Down,
@@ -39,7 +39,7 @@ enum Direction {
 
 使用枚举很简单：只需将任何成员作为枚举本身的属性访问，并使用枚举名称声明类型：
 
-```ts twoslash
+```ts 
 enum UserResponse {
   No = 0,
   Yes = 1,
@@ -55,7 +55,7 @@ respond("Princess Caroline", UserResponse.Yes);
 数字枚举可以与 **计算和常量成员** 混用。
 简而言之，没有初始值的枚举要么需要放在最前面，要么必须放在初始化为数字常量或其他常量枚举成员的数字枚举之后。
 换句话说，以下是不允许的：
-```ts twoslash
+```ts 
 // @errors: 1061
 const getSomeValue = () => 23;
 // ---cut---
@@ -70,7 +70,7 @@ enum E {
 字符串枚举是类似的概念，但在运行时有一些细微的差异，如下所述的文档所示。
 在字符串枚举中，每个成员必须使用字符串字面量或另一个字符串枚举成员进行常量初始化。
 
-```ts twoslash
+```ts 
 enum Direction {
   Up = "UP",
   Down = "DOWN",
@@ -86,7 +86,7 @@ enum Direction {
 
 从技术上讲，枚举可以与字符串和数字成员混合使用，但不清楚为什么要这样做：
 
-```ts twoslash
+```ts 
 enum BooleanLikeHeterogeneousEnum {
   No = 0,
   Yes = "YES",
@@ -101,7 +101,7 @@ enum BooleanLikeHeterogeneousEnum {
 
 - 它是枚举中的第一个成员，并且没有初始化器，在这种情况下，它被分配了值 `0`：
 
-  ```ts twoslash
+  ```ts 
   // E.X is constant:
   enum E {
     X,
@@ -110,7 +110,7 @@ enum BooleanLikeHeterogeneousEnum {
 
 - 它没有初始值设定项，前面的枚举成员是一个 _numeric_ 常量。
    在这种情况下，当前枚举成员的值将是前一个枚举成员的值加一。
-  ```ts twoslash
+  ```ts 
   // All enum members in 'E1' and 'E2' are constant.
 
   enum E1 {
@@ -140,7 +140,7 @@ enum BooleanLikeHeterogeneousEnum {
 
 In all other cases enum member is considered computed.
 
-```ts twoslash
+```ts 
 enum FileAccess {
   // constant members
   None,
@@ -168,7 +168,7 @@ enum FileAccess {
 
 第一个要点是，枚举成员也成为了类型！例如，我们可以声明某些变量只能赋枚举成员的值：
 
-```ts twoslash
+```ts 
 // @errors: 2322
 enum ShapeKind {
   Circle,
@@ -196,7 +196,7 @@ let c: Circle = {
 由于此，TypeScript 可以捕获我们可能会错误比较值的 bug。
 例如：
 
-```ts twoslash
+```ts 
 // @errors: 2367
 enum E {
   Foo,
@@ -218,7 +218,7 @@ function f(x: E) {
 
 枚举是在运行时存在的真实对象。例如，下面的枚举：
 
-```ts twoslash
+```ts 
 enum E {
   X,
   Y,
@@ -229,7 +229,7 @@ enum E {
 枚举是在运行时存在的真正的对象。
 例如，下面的枚举：
 
-```ts twoslash
+```ts 
 enum E {
   X,
   Y,
@@ -248,7 +248,7 @@ f(E);
 
 虽然枚举是在运行时存在的真正对象，但 `keyof` 关键字的工作方式与您可能期望的典型对象不同。而是使用 `keyof typeof` 获取表示所有枚举键的字符串的类型。
 
-```ts twoslash
+```ts 
 enum LogLevel {
   ERROR,
   WARN,
@@ -277,7 +277,7 @@ printImportant("ERROR", "This is a message");
 
 除了为成员创建属性名称的对象之外，数值枚举成员还会获得从枚举值到枚举名称的反向映射。例如，在此示例中：
 
-```ts twoslash
+```ts 
 enum Enum {
   A,
 }
@@ -288,7 +288,7 @@ let nameOfA = Enum[a]; // "A"
 
 TypeScript编译成以下JavaScript代码：
 
-```ts twoslash
+```ts 
 // @showEmit
 enum Enum {
   A,
@@ -307,7 +307,7 @@ let nameOfA = Enum[a]; // "A"
 但有时要求更加严格。
 为了避免支付额外的生成代码成本和访问枚举值时的额外间接性，可以使用`const`枚举。
 使用`const`修饰符来定义`const`枚举：
-```ts twoslash
+```ts 
 const enum Enum {
   A = 1,
   B = A * 2,
@@ -318,7 +318,7 @@ const enum Enum {
 常量枚举成员会在使用处被内联。
 这是因为常量枚举不能有计算成员。
 
-```ts twoslash
+```ts 
 const enum Direction {
   Up,
   Down,
@@ -336,7 +336,7 @@ let directions = [
 
 in generated code will become
 
-```ts twoslash
+```ts 
 // @showEmit
 const enum Direction {
   Up,
@@ -378,7 +378,7 @@ B. 通过使用 [`preserveConstEnums`](/tsconfig#preserveConstEnums) 来去除�
 
 环境枚举用于描述已经存在的枚举类型的形状。
 
-```ts twoslash
+```ts 
 declare enum Enum {
   A = 1,
   B,
@@ -392,7 +392,7 @@ declare enum Enum {
 
 在现代的 TypeScript 中，如果一个带有 as const 的对象能够满足需求，那么你可能就不需要使用枚举了。
 
-```ts twoslash
+```ts 
 const enum EDirection {
   Up,
   Down,

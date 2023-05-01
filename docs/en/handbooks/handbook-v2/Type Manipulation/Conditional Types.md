@@ -3,7 +3,7 @@ At the heart of most useful programs, we have to make decisions based on input.
 JavaScript programs are no different, but given the fact that values can be easily introspected, those decisions are also based on the types of the inputs.
 _Conditional types_ help describe the relation between the types of inputs and outputs.
 
-```ts twoslash
+```ts 
 interface Animal {
   live(): void;
 }
@@ -20,7 +20,7 @@ type Example2 = RegExp extends Animal ? number : string;
 
 Conditional types take a form that looks a little like conditional expressions (`condition ? trueExpression : falseExpression`) in JavaScript:
 
-```ts twoslash
+```ts 
 type SomeType = any;
 type OtherType = any;
 type TrueType = any;
@@ -37,7 +37,7 @@ But the power of conditional types comes from using them with generics.
 
 For example, let's take the following `createLabel` function:
 
-```ts twoslash
+```ts 
 interface IdLabel {
   id: number /* some fields */;
 }
@@ -60,7 +60,7 @@ These overloads for createLabel describe a single JavaScript function that makes
 
 Instead, we can encode that logic in a conditional type:
 
-```ts twoslash
+```ts 
 interface IdLabel {
   id: number /* some fields */;
 }
@@ -75,7 +75,7 @@ type NameOrId<T extends number | string> = T extends number
 
 We can then use that conditional type to simplify our overloads down to a single function with no overloads.
 
-```ts twoslash
+```ts 
 interface IdLabel {
   id: number /* some fields */;
 }
@@ -107,7 +107,7 @@ Just like with narrowing with type guards can give us a more specific type, the 
 
 For example, let's take the following:
 
-```ts twoslash
+```ts 
 // @errors: 2536
 type MessageOf<T> = T["message"];
 ```
@@ -115,7 +115,7 @@ type MessageOf<T> = T["message"];
 In this example, TypeScript errors because `T` isn't known to have a property called `message`.
 We could constrain `T`, and TypeScript would no longer complain:
 
-```ts twoslash
+```ts 
 type MessageOf<T extends { message: unknown }> = T["message"];
 
 interface Email {
@@ -129,7 +129,7 @@ type EmailMessageContents = MessageOf<Email>;
 However, what if we wanted `MessageOf` to take any type, and default to something like `never` if a `message` property isn't available?
 We can do this by moving the constraint out and introducing a conditional type:
 
-```ts twoslash
+```ts 
 type MessageOf<T> = T extends { message: unknown } ? T["message"] : never;
 
 interface Email {
@@ -151,7 +151,7 @@ Within the true branch, TypeScript knows that `T` _will_ have a `message` proper
 
 As another example, we could also write a type called `Flatten` that flattens array types to their element types, but leaves them alone otherwise:
 
-```ts twoslash
+```ts 
 type Flatten<T> = T extends any[] ? T[number] : T;
 
 // Extracts out the element type.
@@ -174,7 +174,7 @@ This ends up being such a common operation that conditional types make it easier
 Conditional types provide us with a way to infer from types we compare against in the true branch using the `infer` keyword.
 For example, we could have inferred the element type in `Flatten` instead of fetching it out "manually" with an indexed access type:
 
-```ts twoslash
+```ts 
 type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
 
@@ -184,7 +184,7 @@ This frees us from having to think about how to dig through and probing apart th
 We can write some useful helper type aliases using the `infer` keyword.
 For example, for simple cases, we can extract the return type out from function types:
 
-```ts twoslash
+```ts 
 type GetReturnType<Type> = Type extends (...args: never[]) => infer Return
   ? Return
   : never;
@@ -201,7 +201,7 @@ type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
 
 When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the _last_ signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
 
-```ts twoslash
+```ts 
 declare function stringOrNum(x: string): number;
 declare function stringOrNum(x: number): string;
 declare function stringOrNum(x: string | number): string | number;
@@ -215,13 +215,13 @@ type T1 = ReturnType<typeof stringOrNum>;
 When conditional types act on a generic type, they become _distributive_ when given a union type.
 For example, take the following:
 
-```ts twoslash
+```ts 
 type ToArray<Type> = Type extends any ? Type[] : never;
 ```
 
 If we plug a union type into `ToArray`, then the conditional type will be applied to each member of that union.
 
-```ts twoslash
+```ts 
 type ToArray<Type> = Type extends any ? Type[] : never;
 
 type StrArrOrNumArr = ToArray<string | number>;
@@ -230,7 +230,7 @@ type StrArrOrNumArr = ToArray<string | number>;
 
 What happens here is that `StrArrOrNumArr ` distributes on:
 
-```ts twoslash
+```ts 
 type StrArrOrNumArr =
   // ---cut---
   string | number;
@@ -238,7 +238,7 @@ type StrArrOrNumArr =
 
 and maps over each member type of the union, to what is effectively:
 
-```ts twoslash
+```ts 
 type ToArray<Type> = Type extends any ? Type[] : never;
 type StrArrOrNumArr =
   // ---cut---
@@ -247,7 +247,7 @@ type StrArrOrNumArr =
 
 which leaves us with:
 
-```ts twoslash
+```ts 
 type StrArrOrNumArr =
   // ---cut---
   string[] | number[];
@@ -256,7 +256,7 @@ type StrArrOrNumArr =
 Typically, distributivity is the desired behavior.
 To avoid that behavior, you can surround each side of the `extends` keyword with square brackets.
 
-```ts twoslash
+```ts 
 type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
 
 // 'StrArrOrNumArr' is no longer a union.

@@ -4,7 +4,7 @@
 
 使用字符串字面量类型能够表示仅接受特定字符串参数的函数和 API。
 
-```ts twoslash
+```ts 
 function setVerticalAlignment(location: 'top' | 'middle' | 'bottom') {
     // ...
 }
@@ -40,7 +40,7 @@ type Options = {
 它的语法与[JavaScript 中的模版字面量](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)的语法是一致的，但是是用在表示类型的位置上。
 当将其与具体类型结合使用时，它会将字符串拼接并产生一个新的字符串字面量类型。
 
-```ts twoslash
+```ts 
 type World = 'world';
 
 type Greeting = `hello ${World}`;
@@ -51,7 +51,7 @@ type Greeting = `hello ${World}`;
 如果在替换的位置上使用了联合类型会怎么样呢？
 它将生成由各个联合类型成员所表示的字符串字面量类型的联合。
 
-```ts twoslash
+```ts 
 type Color = 'red' | 'blue';
 type Quantity = 'one' | 'two';
 
@@ -64,7 +64,7 @@ type SeussFish = `${Quantity | Color} fish`;
 例如，有些 UI 组件库提供了指定垂直和水平对齐的 API，通常会使用类似于`"bottom-right"`的字符串来同时指定。
 在垂直对齐的选项`"top"`，`"middle"`和`"bottom"`，以及水平对齐的选项`"left"`，`"center"`和`"right"`之间，共有 9 种可能的字符串，前者选项之一与后者选项之一之间使用短横线连接。
 
-```ts twoslash
+```ts 
 type VerticalAlignment = 'top' | 'middle' | 'bottom';
 type HorizontalAlignment = 'left' | 'center' | 'right';
 
@@ -115,7 +115,7 @@ declare function makeWatchedObject<T>(obj: T): T & PropEventSource<T>;
 
 这样做的话，如果传入了错误的属性会产生一个错误！
 
-```ts twoslash
+```ts 
 type PropEventSource<T> = {
     on(eventName: `${string & keyof T}Changed`, callback: () => void): void;
 };
@@ -136,7 +136,7 @@ person.on('frstNameChanged', () => {});
 我们还可以在模版字面量上做一些其它的事情：可以从替换的位置来*推断*类型。
 我们将上面的例子改写成泛型，由`eventName`字符串来推断关联的属性名。
 
-```ts twoslash
+```ts 
 type PropEventSource<T> = {
     on<K extends string & keyof T>(
         eventName: `${K}Changed`,
@@ -175,7 +175,7 @@ person.on('ageChanged', (newAge) => {
 类型推断可以用不同的方式组合，常见的是解构字符串，再使用其它方式重新构造它们。
 实际上，为了便于修改字符串字面量类型，我们引入了一些新的工具类型来修改字符大小写。
 
-```ts twoslash
+```ts 
 type EnthusiasticGreeting<T extends string> = `${Uppercase<T>}`;
 
 type HELLO = EnthusiasticGreeting<'hello'>;
@@ -230,7 +230,7 @@ type MappedTypeWithNewKeys<T> = {
 
 通过`as`语句，你可以利用例如模版字面量类型，并基于原属性名来轻松地创建新属性名。
 
-```ts twoslash
+```ts 
 type Getters<T> = {
     [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];
 };
@@ -252,7 +252,7 @@ type LazyPerson = Getters<Person>;
 此外，你可以巧用`never`类型来过滤掉某些键。
 也就是说，在某些情况下你不必使用`Omit`工具类型。
 
-```ts twoslash
+```ts 
 // 删除 'kind' 属性
 type RemoveKindField<T> = {
     [K in keyof T as Exclude<K, 'kind'>]: T[K];
@@ -337,7 +337,7 @@ declare function customThen<T, U>(
 TypeScript 支持一个叫做*索引签名*的功能。
 索引签名用于告诉类型系统，用户可以访问任意名称的属性。
 
-```ts twoslash
+```ts 
 interface Options {
     path: string;
     permissions: number;
@@ -368,7 +368,7 @@ function checkOptions(opts: Options) {
 例如在上例中，`opts.yadda`的类型为`string | number | undefined`，而不是`string | number`。
 如果需要访问那个属性，你可以先检查属性是否存在或者使用非空断言运算符（`!`后缀字符）。
 
-```ts twoslash
+```ts 
 // @noUncheckedIndexedAccess
 interface Options {
     path: string;
@@ -399,7 +399,7 @@ function checkOptions(opts: Options) {
 
 使用`--noUncheckedIndexedAccess`的一个结果是，通过索引访问数组元素时也会进行严格类型检查，就算是在遍历检查过边界的数组时。
 
-```ts twoslash
+```ts 
 // @noUncheckedIndexedAccess
 function screamLines(strs: string[]) {
     // 下面会有问题
@@ -411,7 +411,7 @@ function screamLines(strs: string[]) {
 
 如果你不需要使用索引，那么可以使用`for`-`of`循环或`forEach`来遍历。
 
-```ts twoslash
+```ts 
 // @noUncheckedIndexedAccess
 function screamLines(strs: string[]) {
     // 可以正常工作

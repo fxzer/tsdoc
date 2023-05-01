@@ -5,7 +5,7 @@ oneline: "Suppress [`noImplicitAny`](#noImplicitAny) errors when indexing object
 
 Turning `suppressImplicitAnyIndexErrors` on suppresses reporting the error about implicit anys when indexing into objects, as shown in the following example:
 
-```ts twoslash
+```ts 
 // @noImplicitAny: true
 // @suppressImplicitAnyIndexErrors: false
 // @strict: true
@@ -16,7 +16,7 @@ console.log(obj["foo"]);
 
 Using `suppressImplicitAnyIndexErrors` is quite a drastic approach. It is recommended to use a `@ts-ignore` comment instead:
 
-```ts twoslash
+```ts 
 // @noImplicitAny: true
 // @strict: true
 const obj = { x: 10 };

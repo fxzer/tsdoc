@@ -98,7 +98,7 @@ Node.js 支持两个扩展名来帮助处理这个问题：`.mjs` 和 `.cjs`。`
 
 Node.js 允许 ES 模块导入 CommonJS 模块，就像它们是带有默认导出的 ES 模块一样。
 
-```ts twoslash
+```ts 
 // @module: nodenext
 // @filename: helper.cts
 export function helper() {
@@ -114,7 +114,7 @@ foo.helper();
 
 在某些情况下，Node.js 还从 CommonJS 模块中合成命名导出，这可能更方便。在这些情况下，ES 模块可以使用“命名空间式”导入（即 `import * as foo from "..."`），或使用命名导入（即 `import { helper } from "..."`）。
 
-```ts twoslash
+```ts 
 // @module: nodenext
 // @filename: helper.cts
 export function helper() {
@@ -139,7 +139,7 @@ import foo = require("foo");
 
 在一个CommonJS模块中，这只是一个`require()`调用，而在ES模块中，它导入[`createRequire`](https://nodejs.org/api/module.html#module_module_createrequire_filename) 来实现同样的功能。这将使代码在不支持`require()`的运行时，如浏览器中，不太可移植，但通常用于交互操作。因此，您可以使用以下语法编写上面的示例：
 
-```ts twoslash
+```ts 
 // @module: nodenext
 // @filename: helper.cts
 export function helper() {

@@ -16,7 +16,7 @@ const HelloWorld = () => <div>Hello</div>;
 
 With `jsxFactory: "h"` looks like:
 
-```tsx twoslash
+```tsx 
 // @showEmit
 // @showEmittedFile: index.js
 // @jsxFactory: h
@@ -31,7 +31,7 @@ const HelloWorld = () => <div>Hello</div>;
 
 This option can be used on a per-file basis too similar to [Babel's `/** @jsx h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#custom).
 
-```tsx twoslash
+```tsx 
 /** @jsx h */
 import { h } from "preact";
 

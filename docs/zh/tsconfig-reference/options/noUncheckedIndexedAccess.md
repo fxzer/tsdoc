@@ -5,7 +5,7 @@ oneline: "Add `undefined` to a type when accessed using an index."
 
 TypeScript has a way to describe objects which have unknown keys but known values on an object, via index signatures.
 
-```ts twoslash
+```ts 
 interface EnvironmentVars {
   NAME: string;
   OS: string;
@@ -29,7 +29,7 @@ const nodeEnv = env.NODE_ENV;
 
 Turning on `noUncheckedIndexedAccess` will add `undefined` to any un-declared field in the type.
 
-```ts twoslash
+```ts 
 interface EnvironmentVars {
   NAME: string;
   OS: string;

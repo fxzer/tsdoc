@@ -4,7 +4,7 @@ Template literal types build on [string literal types](/docs/handbook/2/everyday
 They have the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but are used in type positions.
 When used with concrete literal types, a template literal produces a new string literal type by concatenating the contents.
 
-```ts twoslash
+```ts 
 type World = "world";
 
 type Greeting = `hello ${World}`;
@@ -13,7 +13,7 @@ type Greeting = `hello ${World}`;
 
 When a union is used in the interpolated position, the type is the set of every possible string literal that could be represented by each union member:
 
-```ts twoslash
+```ts 
 type EmailLocaleIDs = "welcome_email" | "email_heading";
 type FooterLocaleIDs = "footer_title" | "footer_sendoff";
 
@@ -23,7 +23,7 @@ type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
 
 For each interpolated position in the template literal, the unions are cross multiplied:
 
-```ts twoslash
+```ts 
 type EmailLocaleIDs = "welcome_email" | "email_heading";
 type FooterLocaleIDs = "footer_title" | "footer_sendoff";
 // ---cut---
@@ -45,7 +45,7 @@ called `on()` to a passed object.  In JavaScript, its call might look like:
 `makeWatchedObject(baseObject)`. We can imagine the base object as looking
 like:
 
-```ts twoslash
+```ts 
 // @noErrors
 const passedObject = {
   firstName: "Saoirse",
@@ -64,7 +64,7 @@ The `callBack` function, when called:
 
 The naive function signature of `on()` might thus be: `on(eventName: string, callBack: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we'd like to document in our code. Template Literal types let us bring these constraints into our code.
 
-```ts twoslash
+```ts 
 // @noErrors
 declare function makeWatchedObject(obj: any): any;
 // ---cut---
@@ -83,7 +83,7 @@ person.on("firstNameChanged", (newValue) => {
 
 Notice that `on` listens on the event `"firstNameChanged"`, not just `"firstName"`. Our naive specification of `on()` could be made more robust if we were to ensure that the set of eligible event names was constrained by the union of attribute names in the watched object with "Changed" added at the end. While we are comfortable with doing such a calculation in JavaScript i.e. ``Object.keys(passedObject).map(x => `${x}Changed`)``, template literals _inside the type system_ provide a similar approach to string manipulation:
 
-```ts twoslash
+```ts 
 type PropEventSource<Type> = {
     on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
 };
@@ -95,7 +95,7 @@ declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type
 
 With this, we can build something that errors when given the wrong property:
 
-```ts twoslash
+```ts 
 // @errors: 2345
 type PropEventSource<Type> = {
     on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
@@ -131,7 +131,7 @@ The key insight that makes this possible is this: we can use a function with a g
    callback function is of the same type
 
 
-```ts twoslash
+```ts 
 type PropEventSource<Type> = {
     on<Key extends string & keyof Type>
         (eventName: `${Key}Changed`, callback: (newValue: Type[Key]) => void ): void;
@@ -177,7 +177,7 @@ Converts each character in the string to the uppercase version.
 
 ##### Example
 
-```ts twoslash
+```ts 
 type Greeting = "Hello, world"
 type ShoutyGreeting = Uppercase<Greeting>
 //   ^?
@@ -193,7 +193,7 @@ Converts each character in the string to the lowercase equivalent.
 
 ##### Example
 
-```ts twoslash
+```ts 
 type Greeting = "Hello, world"
 type QuietGreeting = Lowercase<Greeting>
 //   ^?
@@ -209,7 +209,7 @@ Converts the first character in the string to an uppercase equivalent.
 
 ##### Example
 
-```ts twoslash
+```ts 
 type LowercaseGreeting = "hello, world";
 type Greeting = Capitalize<LowercaseGreeting>;
 //   ^?
@@ -221,7 +221,7 @@ Converts the first character in the string to a lowercase equivalent.
 
 ##### Example
 
-```ts twoslash
+```ts 
 type UppercaseGreeting = "HELLO WORLD";
 type UncomfortableGreeting = Uncapitalize<UppercaseGreeting>;
 //   ^?

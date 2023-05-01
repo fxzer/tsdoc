@@ -9,7 +9,7 @@ Changing `module` affects [`moduleResolution`](#moduleResolution) which [also ha
 
 Here's some example output for this file:
 
-```ts twoslash
+```ts 
 // @filename: constants.ts
 export const valueOfPi = 3.142;
 // ---cut---
@@ -21,7 +21,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `CommonJS`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: commonjs
 // @noErrors
@@ -32,7 +32,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `UMD`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: umd
 // @noErrors
@@ -43,7 +43,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `AMD`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: amd
 // @noErrors
@@ -54,7 +54,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `System`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: system
 // @noErrors
@@ -65,7 +65,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `ESNext`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: esnext
 // @noErrors
@@ -76,7 +76,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `ES2020`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: es2020
 // @noErrors
@@ -87,7 +87,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `ES2015`/`ES6`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: es2015
 // @noErrors
@@ -104,7 +104,7 @@ Available from 4.7+, the `node16` and `nodenext` modes integrate with Node's [na
 
 #### `None`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: none
 // @noErrors

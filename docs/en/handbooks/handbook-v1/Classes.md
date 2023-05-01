@@ -7,7 +7,7 @@ In TypeScript, we allow developers to use these techniques now, and compile them
 
 Let's take a look at a simple class-based example:
 
-```ts twoslash
+```ts 
 class Greeter {
   greeting: string;
 
@@ -39,7 +39,7 @@ One of the most fundamental patterns in class-based programming is being able to
 
 Let's take a look at an example:
 
-```ts twoslash
+```ts 
 class Animal {
   move(distanceInMeters: number = 0) {
     console.log(`Animal moved ${distanceInMeters}m.`);
@@ -66,7 +66,7 @@ Because `Dog` extends the functionality from `Animal`, we were able to create an
 
 Let's now look at a more complex example.
 
-```ts twoslash
+```ts 
 class Animal {
   name: string;
   constructor(theName: string) {
@@ -133,7 +133,7 @@ In TypeScript, each member is `public` by default.
 You may still mark a member `public` explicitly.
 We could have written the `Animal` class from the previous section in the following way:
 
-```ts twoslash
+```ts 
 class Animal {
   public name: string;
 
@@ -151,7 +151,7 @@ class Animal {
 
 With TypeScript 3.8, TypeScript supports the new JavaScript syntax for private fields:
 
-```ts twoslash
+```ts 
 // @errors: 18013
 class Animal {
   #name: string;
@@ -170,7 +170,7 @@ Right now, the best documentation for these private fields is in the TypeScript 
 
 TypeScript also has its own way to declare a member as being marked `private`, it cannot be accessed from outside of its containing class. For example:
 
-```ts twoslash
+```ts 
 // @errors: 2341
 class Animal {
   private name: string;
@@ -192,7 +192,7 @@ The same applies to `protected` members.
 
 Let's look at an example to better see how this plays out in practice:
 
-```ts twoslash
+```ts 
 // @errors: 2322
 class Animal {
   private name: string;
@@ -233,7 +233,7 @@ Even though `Employee` also has a `private` member called `name`, it's not the o
 
 The `protected` modifier acts much like the `private` modifier with the exception that members declared `protected` can also be accessed within deriving classes. For example,
 
-```ts twoslash
+```ts 
 // @errors: 2445
 class Person {
   protected name: string;
@@ -265,7 +265,7 @@ Notice that while we can't use `name` from outside of `Person`, we can still use
 A constructor may also be marked `protected`.
 This means that the class cannot be instantiated outside of its containing class, but can be extended. For example,
 
-```ts twoslash
+```ts 
 // @errors: 2674
 class Person {
   protected name: string;
@@ -297,7 +297,7 @@ let john = new Person("John");
 You can make properties readonly by using the `readonly` keyword.
 Readonly properties must be initialized at their declaration or in the constructor.
 
-```ts twoslash
+```ts 
 // @errors: 2540
 class Octopus {
   readonly name: string;
@@ -318,7 +318,7 @@ In our last example, we had to declare a readonly member `name` and a constructo
 _Parameter properties_ let you create and initialize a member in one place.
 Here's a further revision of the previous `Octopus` class using a parameter property:
 
-```ts twoslash
+```ts 
 class Octopus {
   readonly numberOfLegs: number = 8;
   constructor(readonly name: string) {}
@@ -342,7 +342,7 @@ This gives you a way of having finer-grained control over how a member is access
 Let's convert a simple class to use `get` and `set`.
 First, let's start with an example without getters and setters.
 
-```ts twoslash
+```ts 
 // @strict: false
 class Employee {
   fullName: string;
@@ -362,7 +362,7 @@ In this version, we add a setter that checks the length of the `newName` to make
 
 To preserve existing functionality, we also add a simple getter that retrieves `fullName` unmodified.
 
-```ts twoslash
+```ts 
 // @strict: false
 const fullNameMaxLength = 10;
 
@@ -407,7 +407,7 @@ In this example, we use `static` on the origin, as it's a general value for all 
 Each instance accesses this value through prepending the name of the class.
 Similarly to prepending `this.` in front of instance accesses, here we prepend `Grid.` in front of static accesses.
 
-```ts twoslash
+```ts 
 class Grid {
   static origin = { x: 0, y: 0 };
 
@@ -434,7 +434,7 @@ They may not be instantiated directly.
 Unlike an interface, an abstract class may contain implementation details for its members.
 The `abstract` keyword is used to define abstract classes as well as abstract methods within an abstract class.
 
-```ts twoslash
+```ts 
 abstract class Animal {
   abstract makeSound(): void;
 
@@ -449,7 +449,7 @@ Abstract methods share a similar syntax to interface methods.
 Both define the signature of a method without including a method body.
 However, abstract methods must include the `abstract` keyword and may optionally include access modifiers.
 
-```ts twoslash
+```ts 
 // @errors: 2511 2339
 abstract class Department {
   constructor(public name: string) {}
@@ -490,7 +490,7 @@ department.generateReports(); // error: department is not of type AccountingDepa
 When you declare a class in TypeScript, you are actually creating multiple declarations at the same time.
 The first is the type of the _instance_ of the class.
 
-```ts twoslash
+```ts 
 class Greeter {
   greeting: string;
 
@@ -515,7 +515,7 @@ We're also creating another value that we call the _constructor function_.
 This is the function that is called when we `new` up instances of the class.
 To see what this looks like in practice, let's take a look at the JavaScript created by the above example:
 
-```ts twoslash
+```ts 
 // @strict: false
 let Greeter = (function () {
   function Greeter(message) {
@@ -541,7 +541,7 @@ Another way to think of each class is that there is an _instance_ side and a _st
 
 Let's modify the example a bit to show this difference:
 
-```ts twoslash
+```ts 
 // @strict: false
 class Greeter {
   static standardGreeting = "Hello, there";
@@ -588,7 +588,7 @@ It is also good to mention that changing static property is frowned upon, here `
 As we said in the previous section, a class declaration creates two things: a type representing instances of the class and a constructor function.
 Because classes create types, you can use them in the same places you would be able to use interfaces.
 
-```ts twoslash
+```ts 
 // @strict: false
 class Point {
   x: number;

@@ -10,14 +10,14 @@ Requires either [`sourceMap`](#sourceMap) or [`inlineSourceMap`](#inlineSourceMa
 
 For example, with this TypeScript:
 
-```ts twoslash
+```ts 
 const helloWorld = "hi";
 console.log(helloWorld);
 ```
 
 By default converts to this JavaScript:
 
-```ts twoslash
+```ts 
 // @showEmit
 const helloWorld = "hi";
 console.log(helloWorld);
@@ -27,7 +27,7 @@ Then enable building it with `inlineSources` and [`inlineSourceMap`](#inlineSour
 a source-map for the file.
 Note that the end is different from the example in [`inlineSourceMap`](#inlineSourceMap) because the source-map now contains the original source code also.
 
-```ts twoslash
+```ts 
 // @inlineSources
 // @inlineSourceMap
 // @showEmit

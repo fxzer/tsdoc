@@ -61,7 +61,7 @@ TypeScript checks a program for errors before execution, and does so based on th
 For example, the last example above has an error because of the _type_ of `obj`.
 Here's the error TypeScript found:
 
-```ts twoslash
+```ts 
 // @errors: 2551
 const obj = { width: 10, height: 15 };
 const area = obj.width * obj.heigth;
@@ -77,7 +77,7 @@ TypeScript is a language that is a _superset_ of JavaScript: JS syntax is theref
 Syntax refers to the way we write text to form a program.
 For example, this code has a _syntax_ error because it's missing a `)`:
 
-```ts twoslash
+```ts 
 // @errors: 1005
 let a = (4
 ```
@@ -99,7 +99,7 @@ console.log(4 / []);
 This syntactically-legal program logs `Infinity`.
 TypeScript, though, considers division of number by an array to be a nonsensical operation, and will issue an error:
 
-```ts twoslash
+```ts 
 // @errors: 2363
 console.log(4 / []);
 ```

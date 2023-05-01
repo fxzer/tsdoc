@@ -13,7 +13,7 @@ Instead of having to convince TypeScript of a variable's type whenever we use it
 
 For example, we can write something like
 
-```ts twoslash
+```ts 
 function foo(arg: unknown) {
   if (typeof arg === "string") {
     console.log(arg.toUpperCase());
@@ -53,7 +53,7 @@ If that type guard operates on a `const`, a `readonly` property, or an un-modifi
 Different sorts of type guard conditions are preserved - not just `typeof` checks.
 For example, checks on discriminated unions work like a charm.
 
-```ts twoslash
+```ts 
 type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "square"; sideLength: number };
@@ -72,7 +72,7 @@ function area(shape: Shape): number {
 
 Analysis on discriminants in 4.4 also goes a little bit deeper - we can now extract out discriminants and TypeScript can narrow the original object.
 
-```ts twoslash
+```ts 
 type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "square"; sideLength: number };
@@ -93,7 +93,7 @@ function area(shape: Shape): number {
 
 As another example, here's a function that checks whether two of its inputs have contents.
 
-```ts twoslash
+```ts 
 function doSomeChecks(
   inputA: string | undefined,
   inputB: string | undefined,
@@ -116,7 +116,7 @@ One neat feature here is that this analysis works transitively.
 TypeScript will hop through constants to understand what sorts of checks you've already performed.
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 function f(x: string | number | boolean) {
   const isString = typeof x === "string";
   const isNumber = typeof x === "number";
@@ -144,7 +144,7 @@ This allows us to use these objects as dictionary-like types, where we can use s
 For example, we can write a type with an index signature that takes `string` keys and maps to `boolean` values.
 If we try to assign anything other than a `boolean` value, we'll get an error.
 
-```ts twoslash
+```ts 
 // @errors: 2322 2375
 interface BooleanDictionary {
   [key: string]: boolean;
@@ -191,7 +191,7 @@ TypeScript 4.4 addresses these limitations, and allows index signatures for `sym
 
 For example, TypeScript now allows us to declare a type that can be keyed on arbitrary `symbol`s.
 
-```ts twoslash
+```ts 
 // @errors: 2322 2375
 interface Colors {
   [sym: symbol]: number;
@@ -292,7 +292,7 @@ however, for some, manually specifying `: unknown` on every `catch` clause was a
 That's why TypeScript 4.4 introduces a new flag called [`useUnknownInCatchVariables`](/tsconfig#useUnknownInCatchVariables).
 This flag changes the default type of `catch` clause variables from `any` to `unknown`.
 
-```ts twoslash
+```ts 
 // @errors: 2571 18046
 declare function executeSomeThirdPartyCode(): void;
 // ---cut---
@@ -324,7 +324,7 @@ Property 'stack' does not exist on type 'unknown'.
 In cases where we don't want to deal with an `unknown` variable in a `catch` clause, we can always add an explicit `: any` annotation so that we can opt _out_ of stricter types.
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 declare function executeSomeThirdPartyCode(): void;
 // ---cut---
 try {
@@ -375,7 +375,7 @@ In the case of our `Person` example, this could potentially lead to runtime erro
 
 In TypeScript 4.4, the new flag [`exactOptionalPropertyTypes`](/tsconfig#exactOptionalPropertyTypes) specifies that optional property types should be interpreted exactly as written, meaning that `| undefined` is not added to the type:
 
-```ts twoslash
+```ts 
 // @exactOptionalPropertyTypes
 // @errors: 2322 2375
 interface Person {
@@ -400,7 +400,7 @@ For more information, you can [take a look at the implementing pull request here
 
 TypeScript 4.4 brings support for [`static` blocks in classes](https://github.com/tc39/proposal-class-static-block#ecmascript-class-static-initialization-blocks), an upcoming ECMAScript feature that can help you write more-complex initialization code for static members.
 
-```ts twoslash
+```ts 
 declare function someCondition(): boolean
 // ---cut---
 class Foo {
@@ -418,7 +418,7 @@ class Foo {
 These static blocks allow you to write a sequence of statements with their own scope that can access private fields within the containing class.
 That means that we can write initialization code with all the capabilities of writing statements, no leakage of variables, and full access to our class's internals.
 
-```ts twoslash
+```ts 
 declare function loadLastInstances(): any[]
 // ---cut---
 class Foo {
@@ -442,7 +442,7 @@ Without `static` blocks, writing the code above was possible, but often involved
 
 Note that a class can have multiple `static` blocks, and they're run in the same order in which they're written.
 
-```ts twoslash
+```ts 
 // Prints:
 //    1
 //    2

@@ -17,6 +17,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     },
     outline: {
       label: 'On this page',
+      level: [2, 3],
     },
     docFooter: {
       prev: 'Prev Page',

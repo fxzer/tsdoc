@@ -20,7 +20,7 @@ Setting the value to `undefined` will allow most JavaScript runtime checks for t
 
 `exactOptionalPropertyTypes` makes TypeScript truly enforce the definition provided as an optional property:
 
-```ts twoslash
+```ts 
 // @exactOptionalPropertyTypes
 // @errors: 2322 2412
 interface UserDefaults {

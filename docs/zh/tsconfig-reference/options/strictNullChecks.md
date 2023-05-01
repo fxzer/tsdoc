@@ -11,7 +11,7 @@ When `strictNullChecks` is `true`, `null` and `undefined` have their own distinc
 For example with this TypeScript code, `users.find` has no guarantee that it will actually find a user, but you can
 write code as though it will:
 
-```ts twoslash
+```ts 
 // @strictNullChecks: false
 // @target: ES2015
 declare const loggedInUsername: string;
@@ -27,7 +27,7 @@ console.log(loggedInUser.age);
 
 Setting `strictNullChecks` to `true` will raise an error that you have not made a guarantee that the `loggedInUser` exists before trying to use it.
 
-```ts twoslash
+```ts 
 // @errors: 2339 2532 18048
 // @target: ES2020
 // @strictNullChecks

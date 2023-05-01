@@ -14,7 +14,7 @@ export const helloWorldPTBR = "Olá Mundo";
 
 When `removeComments` is set to `true`:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @removeComments: true
 /** The translation of 'Hello world' into Portuguese */
@@ -23,7 +23,7 @@ export const helloWorldPTBR = "Olá Mundo";
 
 Without setting `removeComments` or having it as `false`:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @removeComments: false
 /** The translation of 'Hello world' into Portuguese */

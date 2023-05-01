@@ -13,7 +13,7 @@ ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (
 
 With this TypeScript code:
 
-```ts twoslash
+```ts 
 const str = "Hello!";
 for (const s of str) {
   console.log(s);
@@ -22,7 +22,7 @@ for (const s of str) {
 
 Without `downlevelIteration` enabled, a `for / of` loop on any object is downleveled to a traditional `for` loop:
 
-```ts twoslash
+```ts 
 // @target: ES5
 // @showEmit
 const str = "Hello!";
@@ -38,7 +38,7 @@ See [this blog post by Jonathan New](https://blog.jonnew.com/posts/poo-dot-lengt
 When `downlevelIteration` is enabled, TypeScript will use a helper function that checks for a `Symbol.iterator` implementation (either native or polyfill).
 If this implementation is missing, you'll fall back to index-based iteration.
 
-```ts twoslash
+```ts 
 // @target: ES5
 // @downlevelIteration
 // @showEmit
@@ -50,7 +50,7 @@ for (const s of str) {
 
 You can use [tslib](https://www.npmjs.com/package/tslib) via [`importHelpers`](#importHelpers) to reduce the amount of inline JavaScript too:
 
-```ts twoslash
+```ts 
 // @target: ES5
 // @downlevelIteration
 // @importHelpers

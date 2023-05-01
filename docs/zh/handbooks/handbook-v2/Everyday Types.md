@@ -7,7 +7,7 @@
 
 我们将从回顾您在编写 JavaScript 或 TypeScript 代码时可能遇到的最基本和最常见的类型开始。
 这些稍后将形成更复杂类型的核心构建块。
-## 原生类型: `string`, `number`, and `boolean`
+## 原始类型: `string`, `number`, and `boolean`
 
 JavaScript 具有三个非常常用的[原生类型](https://developer.mozilla.org/zh-CN/docs/Glossary/Primitive)：`string`、`number` 和`boolean`。
 每个在 TypeScript 中都有相应的类型。
@@ -31,7 +31,7 @@ JavaScript 具有三个非常常用的[原生类型](https://developer.mozilla.o
 TypeScript 还有一种特殊类型，`any`，只要您不希望特定值导致类型检查错误，就可以使用它。
 
 当一个值是`any`类型时，您可以访问它的任何属性（它又是`any`类型），像调用函数一样调用它，将它赋值给（或从）任何类型的值，或者 几乎任何其他语法上合法的东西：
-```ts twoslash
+```ts 
 let obj: any = { x: 0 };
 // 以下代码行都不会抛出编译器错误。
 // 使用 `any` 禁用所有进一步的类型检查，并且假定
@@ -53,7 +53,7 @@ const n: number = obj;
 ## 变量类型注解
 
 当您使用 `const`、`var` 或 `let` 声明变量时，您可以选择添加类型注释以显式指定变量的类型：
-```ts twoslash
+```ts 
 let myName: string = "Alice";
 //        ^^^^^^^^ Type annotation
 ```
@@ -64,7 +64,7 @@ let myName: string = "Alice";
 但是，在大多数情况下，这不是必需的。
 只要有可能，TypeScript 就会尝试自动_推断_代码中的类型。
 例如，变量的类型是根据其初始值设定项的类型推断的：
-```ts twoslash
+```ts 
 // No type annotation needed -- 'myName' inferred as type 'string'
 let myName = "Alice";
 ```
@@ -80,7 +80,7 @@ TypeScript 允许您指定函数的输入值和输出值的类型。
 
 当你声明一个函数时，你可以在每个参数后面加上类型注解来声明函数接受什么类型的参数。
 参数类型注释位于参数名称之后：
-```ts twoslash
+```ts 
 // Parameter type annotation
 function greet(name: string) {
   //                 ^^^^^^^^
@@ -89,7 +89,7 @@ function greet(name: string) {
 ```
 
 当参数具有类型注释时，将检查该函数的参数：
-```ts twoslash
+```ts 
 // @errors: 2345
 declare function greet(name: string): void;
 // ---cut---
@@ -103,7 +103,7 @@ greet(42);
 
 您还可以添加返回类型注释。
 返回类型注释出现在参数列表之后：
-```ts twoslash
+```ts 
 function getFavoriteNumber(): number {
   //                        ^^^^^^^^
   return 26;
@@ -122,7 +122,7 @@ Here's an example:
 当函数出现在 TypeScript 可以确定将如何调用它的地方时，该函数的参数会自动指定类型。
 
 这是一个例子：
-```ts twoslash
+```ts 
 // @errors: 2551
 // No type annotations here, but TypeScript can spot the bug
 const names = ["Alice", "Bob", "Eve"];
@@ -153,7 +153,7 @@ names.forEach((s) => {
 要定义对象类型，我们只需列出其属性及其类型。
 
 例如，这是一个接受点状对象的函数：
-```ts twoslash
+```ts 
 // The parameter's type annotation is an object type
 function printCoord(pt: { x: number; y: number }) {
   //                      ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -173,7 +173,7 @@ printCoord({ x: 3, y: 7 });
 
 对象类型还可以指定它们的部分或全部属性是_可选的_。
 为此，请在属性名称后添加一个 `?` ：
-```ts twoslash
+```ts 
 function printName(obj: { first: string; last?: string }) {
   // ...
 }
@@ -184,7 +184,7 @@ printName({ first: "Alice", last: "Alisson" });
 
 在 JavaScript 中，如果您访问一个不存在的属性，您将得到值`undefined`而不是运行时错误。
 因此，当您 _读取_ 可选属性时，您必须在使用它之前检查`undefined`。
-```ts twoslash
+```ts 
 // @errors: 18048
 function printName(obj: { first: string; last?: string }) {
   // Error - might crash if 'obj.last' wasn't provided!
@@ -211,7 +211,7 @@ TypeScript 的类型系统允许您使用各种运算符从现有类型构建新
 我们将这些类型中的每一种称为工会的 _成员_。
 
 让我们编写一个可以对字符串或数字进行操作的函数：
-```ts twoslash
+```ts 
 // @errors: 2345
 function printId(id: number | string) {
   console.log("Your ID is: " + id);
@@ -231,7 +231,7 @@ printId({ myID: 22342 });
 
 TypeScript 将只允许一个对联合体的每个成员有效的操作。
 例如，如果你有联合`string | number`，您不能使用仅适用于 `string` 的方法：
-```ts twoslash
+```ts 
 // @errors: 2339
 function printId(id: number | string) {
   console.log(id.toUpperCase());
@@ -242,7 +242,7 @@ function printId(id: number | string) {
 当 TypeScript 可以根据代码结构为值推断出更具体的类型时，就会发生 _Narrowing_。
 
 例如，TypeScript 知道只有 `string` 值才会有 `typeof` 值 `"string"`：
-```ts twoslash
+```ts 
 function printId(id: number | string) {
   if (typeof id === "string") {
     // In this branch, id is of type 'string'
@@ -256,7 +256,7 @@ function printId(id: number | string) {
 
 另一个例子是使用像这样的函数 `Array.isArray`:
 
-```ts twoslash
+```ts 
 function welcomePeople(x: string[] | string) {
   if (Array.isArray(x)) {
     // Here: 'x' is 'string[]'
@@ -273,7 +273,7 @@ function welcomePeople(x: string[] | string) {
 例如，数组和字符串都有一个 `slice` 方法。
 如果联合中的每个成员都有一个共同的属性，您可以使用该属性而无需缩小：
 
-```ts twoslash
+```ts 
 // Return type is inferred as number[] | string
 function getFirstThree(x: number[] | string) {
   return x.slice(0, 3);
@@ -295,7 +295,7 @@ _类型别名_  --- 任何名称的类型。
 类型别名的语法是：
 
 
-```ts twoslash
+```ts 
 type Point = {
   x: number;
   y: number;
@@ -312,14 +312,14 @@ printCoord({ x: 100, y: 100 });
 
 实际上，您可以使用类型别名为任何类型命名，而不仅仅是对象类型。
 例如，一个类型别名可以命名一个联合类型：
-```ts twoslash
+```ts 
 type ID = number | string;
 ```
 
 请注意，别名只是别名——您不能使用类型别名来创建同一类型的不同/不同“版本”。
 当您使用别名时，就像您编写了别名类型一样。
 换句话说，这段代码可能 _看起来_ 是非法的，但根据 TypeScript 是可以的，因为这两种类型都是同一类型的别名：
-```ts twoslash
+```ts 
 declare function getInput(): string;
 declare function sanitize(str: string): string;
 // ---cut---
@@ -339,7 +339,7 @@ userInput = "new input";
 ## 接口
 
 _接口声明_ 是另一种命名对象类型的方法：
-```ts twoslash
+```ts 
 interface Point {
   x: number;
   y: number;
@@ -440,14 +440,14 @@ type Window = {
 例如，如果您正在使用 `document.getElementById`，TypeScript 只知道这将返回几种 `HTMLElement`，但您可能知道您的页面将始终有一个带有给定 ID 的 `HTMLCanvasElement`。
 
 在这种情况下，您可以使用 _类型断言_ 来指定更具体的类型：
-```ts twoslash
+```ts 
 const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
 ```
 
 与类型注释一样，类型断言会被编译器删除，不会影响代码的运行时行为。
 
 您还可以使用尖括号语法（除非代码在 `.tsx` 文件中），这是等效的：
-```ts twoslash
+```ts 
 const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
 ```
 
@@ -456,14 +456,14 @@ const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
 
 TypeScript 只允许转换为类型的 _更具体_ 或 _不具体_ 版本的类型断言。
 此规则可防止“不可能”的强制转换，例如：
-```ts twoslash
+```ts 
 // @errors: 2352
 const x = "hello" as number;
 ```
 
 有时此规则可能过于保守，并且会禁止可能有效的更复杂的强制转换。
 如果发生这种情况，您可以使用两个断言，首先是“any”（或“unknown”，我们将在后面介绍），然后是所需的类型：
-```ts twoslash
+```ts 
 declare const expr: any;
 type T = { a: 1; b: 2; c: 3 };
 // ---cut---
@@ -475,7 +475,7 @@ const a = (expr as any) as T;
 除了一般类型 `string` 和 `number` 之外，我们还可以在类型位置引用具体 `string` 和 `number`类型值。
 
 考虑这一点的一种方法是考虑 JavaScript 如何以不同的方式来声明变量。 `var` 和 `let` 都允许更改变量中保存的内容，而 `const` 则不允许。 这反映在 TypeScript 如何为文字创建类型上。
-```ts twoslash
+```ts 
 let changingString = "Hello World";
 changingString = "Olá Mundo";
 // Because `changingString` can represent any possible string, that
@@ -491,7 +491,7 @@ constantString;
 ```
 
 就其本身而言，文字类型不是很有价值：
-```ts twoslash
+```ts 
 // @errors: 2322
 let x: "hello" = "hello";
 // OK
@@ -503,7 +503,7 @@ x = "howdy";
 拥有一个只能有一个值的变量并没有多大用处！
 
 但是通过将文字组合成联合类型，您可以表达一个更有用的概念——例如，只接受一组特定已知值的函数：
-```ts twoslash
+```ts 
 // @errors: 2345
 function printText(s: string, alignment: "left" | "right" | "center") {
   // ...
@@ -513,14 +513,14 @@ printText("G'day, mate", "centre");
 ```
 
 数字文字类型的工作方式相同：
-```ts twoslash
+```ts 
 function compare(a: string, b: string): -1 | 0 | 1 {
   return a === b ? 0 : a > b ? 1 : -1;
 }
 ```
 
 当然，您可以将这些与非文字类型结合起来：
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Options {
   width: number;
@@ -540,7 +540,7 @@ configure("automatic");
 
 当您使用对象初始化变量时，TypeScript 假定该对象的属性稍后可能会更改值。
 例如，如果您编写如下代码：
-```ts twoslash
+```ts 
 declare const someCondition: boolean;
 // ---cut---
 const obj = { counter: 0 };
@@ -553,7 +553,7 @@ TypeScript 不会假设将 `1` 分配给之前有`0`的字段是错误的。
 另一种方式是 `obj.counter` 必须具有 `number` 类型，并且不是 `0`，因为类型用于确定读写行为。
 
 这同样适用于字符串：
-```ts twoslash
+```ts 
 // @errors: 2345
 declare function handleRequest(url: string, method: "GET" | "POST"): void;
 // ---cut---
@@ -566,7 +566,7 @@ handleRequest(req.url, req.method);
 有两种方法可以解决这个问题。
 
 1. 您可以通过在任一位置添加类型断言来更改推断：
-   ```ts twoslash
+   ```ts 
    declare function handleRequest(url: string, method: "GET" | "POST"): void;
    // ---cut---
    // Change 1:
@@ -580,7 +580,7 @@ handleRequest(req.url, req.method);
     更改 2 表示“由于其他原因，我知道 `req.method` 的值为 `"GET"`"。
 
 2. 你可以使用 `as const` 将整个对象转换为类型字面量：
-   ```ts twoslash
+   ```ts 
    declare function handleRequest(url: string, method: "GET" | "POST"): void;
    // ---cut---
    const req = { url: "https://example.com", method: "GET" } as const;
@@ -604,7 +604,7 @@ TypeScript 有两个对应的同名的类型。 这些类型的检查行为方�
 
 开启空值检查配置项`strictNullChecks`，会对变量进行 `null` 或 `undefined` 检查 。
 就像在使用可选属性之前检查 `undefined` 一样，我们可以使用 _narrowing_ 来检查可能为 `null` 的值：
-```ts twoslash
+```ts 
 function doSomething(x: string | null) {
   if (x === null) {
     // do nothing
@@ -618,7 +618,7 @@ function doSomething(x: string | null) {
 
 TypeScript 还有一种特殊的语法，可以在不进行任何显式检查的情况下从类型中删除`null` 和 `undefined`。
 在任何表达式后写 `!` 实际上是一种类型断言，即值不是 `null` 或 `undefined`：
-```ts twoslash
+```ts 
 function liveDangerously(x?: number | null) {
   // No error
   console.log(x!.toFixed());
@@ -630,7 +630,7 @@ function liveDangerously(x?: number | null) {
 #### `bigint`
 
 从 ES2020 开始，JavaScript 中有一个原语用于非常大的整数，`BigInt`：
-```ts twoslash
+```ts 
 // @target: es2020
 
 // Creating a bigint via the BigInt function
@@ -644,7 +644,7 @@ const anotherHundred: bigint = 100n;
 #### `symbol`
 
 JavaScript原始类型，用于通过函数 `Symbol()`创建全局唯一引用：
-```ts twoslash
+```ts 
 // @errors: 2367
 const firstName = Symbol("name");
 const secondName = Symbol("name");

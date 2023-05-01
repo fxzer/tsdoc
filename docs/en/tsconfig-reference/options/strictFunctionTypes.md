@@ -7,7 +7,7 @@ When enabled, this flag causes functions parameters to be checked more correctly
 
 Here's a basic example with `strictFunctionTypes` off:
 
-```ts twoslash
+```ts 
 // @strictFunctionTypes: false
 function fn(x: string) {
   console.log("Hello, " + x.toLowerCase());
@@ -23,7 +23,7 @@ func(10);
 
 With `strictFunctionTypes` _on_, the error is correctly detected:
 
-```ts twoslash
+```ts 
 // @errors: 2322
 function fn(x: string) {
   console.log("Hello, " + x.toLowerCase());
@@ -38,7 +38,7 @@ let func: StringOrNumberFunc = fn;
 During development of this feature, we discovered a large number of inherently unsafe class hierarchies, including some in the DOM.
 Because of this, the setting only applies to functions written in _function_ syntax, not to those in _method_ syntax:
 
-```ts twoslash
+```ts 
 type Methodish = {
   func(x: string | number): void;
 };

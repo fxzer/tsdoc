@@ -11,7 +11,7 @@ In JavaScript, it's pretty common for APIs to convert values that are passed in 
 This often happens with getters and setters too.
 For example, let's imagine we've got a class with a setter that always converts a value into a `number` before saving it in a private field.
 
-```js twoslash
+```js 
 class Thing {
   #size = 0;
 
@@ -52,7 +52,7 @@ If we really want to model APIs that convert values, previous versions of TypeSc
 
 That's why TypeScript 4.3 allows you to specify types for reading and writing to properties.
 
-```ts twoslash
+```ts 
 class Thing {
   #size = 0;
 
@@ -77,7 +77,7 @@ class Thing {
 In the above example, our `set` accessor takes a broader set of types (`string`s, `boolean`s, and `number`s), but our `get` accessor always guarantees it will be a `number`.
 Now we can finally assign other types to these properties with no errors!
 
-```ts twoslash
+```ts 
 class Thing {
   #size = 0;
 
@@ -225,7 +225,7 @@ class SpecializedComponent extends SomeComponent {
 
 When a method is marked with `override`, TypeScript will always make sure that a method with the same name exists in a the base class.
 
-```ts twoslash
+```ts 
 // @noImplicitOverride
 // @errors: 4113
 class SomeComponent {

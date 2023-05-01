@@ -68,7 +68,7 @@ TypeScript 4.0带来了两项基础改动，还伴随着类型推断的改善，
 
 例如，我们可以像下面这样给`tail`函数添加类型，避免了“重载的折磨”。
 
-```ts twoslash
+```ts 
 function tail<T extends any[]>(arr: readonly [any, ...T]) {
   const [_ignored, ...rest] = arr;
   return rest;
@@ -86,7 +86,7 @@ const r2 = tail([...myTuple, ...myArray] as const);
 
 第二个改动是，剩余元素可以出现在元组中的任意位置上 - 不只是末尾位置！
 
-```ts twoslash
+```ts 
 type Strings = [string, string];
 type Numbers = [number, number];
 
@@ -104,7 +104,7 @@ type StrStrNumNumBool = [...Strings, ...Numbers, boolean];
 
 注意，如果展开一个长度未知的类型，那么后面的所有元素都将被纳入到剩余元素类型。
 
-```ts twoslash
+```ts 
 type Strings = [string, string];
 type Numbers = number[];
 
@@ -114,7 +114,7 @@ type Unbounded = [...Strings, ...Numbers, boolean];
 
 结合使用这两种行为，我们能够为`concat`函数编写一个良好的类型签名：
 
-```ts twoslash
+```ts 
 type Arr = readonly any[];
 
 function concat<T extends Arr, U extends Arr>(arr1: T, arr2: U): [...T, ...U] {
@@ -137,7 +137,7 @@ function partialCall(f, ...headArgs) {
 
 TypeScript 4.0改进了剩余参数和剩余元组元素的类型推断，因此我们可以为这种使用场景添加类型。
 
-```ts twoslash
+```ts 
 type Arr = readonly unknown[];
 
 function partialCall<T extends Arr, U extends Arr, R>(
@@ -150,7 +150,7 @@ function partialCall<T extends Arr, U extends Arr, R>(
 
 此例中，`partialCall`知道能够接受哪些初始参数，并返回一个函数，它能够正确地选择接受或拒绝额外的参数。
 
-```ts twoslash
+```ts 
 // @errors: 2345 2554 2554 2345
 type Arr = readonly unknown[];
 
@@ -212,7 +212,7 @@ function foo(arg0: string, arg1: number): void {
 
 对于`foo`函数的任意调用者：
 
-```ts twoslash
+```ts 
 function foo(arg0: string, arg1: number): void {
   // ...
 }
@@ -242,7 +242,7 @@ type Foo = [first: number, second?: string, ...rest: any[]];
 在使用标签元组时有一些规则要遵守。
 其一是，如果一个元组元素使用了标签，那么所有元组元素必须都使用标签。
 
-```ts twoslash
+```ts 
 type Bar = [first: string, number];
 // Tuple members must all have names or all not have names.(5084)
 ```
@@ -250,7 +250,7 @@ type Bar = [first: string, number];
 元组标签名不影响解构变量名，它们不必相同。
 元组标签仅用于文档和工具目的。
 
-```ts twoslash
+```ts 
 function foo(x: [first: string, second: number]) {
     // ...
 
@@ -274,7 +274,7 @@ function foo(x: [first: string, second: number]) {
 
 在TypeScript 4.0中，当启用了`noImplicitAny`时，编译器能够根据基于控制流的分析来确定类中属性的类型
 
-```ts twoslash
+```ts 
 class Square {
   // 在旧版本中，以下两个属性均为any类型
   area; // number
@@ -289,7 +289,7 @@ class Square {
 
 如果没有在构造函数中的所有代码执行路径上为实例成员进行赋值，那么该属性会被认为可能为`undefined`类型。
 
-```ts twoslash
+```ts 
 class Square {
   sideLength; // number | undefined
 
@@ -309,7 +309,7 @@ class Square {
 
 如果你清楚地知道属性类型（例如，类中存在类似于`initialize`的初始化方法），你仍需要明确地使用类型注解来指定类型，以及需要使用确切赋值断言（`!`）如果你启用了`strictPropertyInitialization`模式。
 
-```ts twoslash
+```ts 
 class Square {
   // 确切赋值断言
   //        v
@@ -414,7 +414,7 @@ if (!obj.prop) {
 
 [尝试运行这个例子](https://www.typescriptlang.org/play?ts=Nightly#code/MYewdgzgLgBCBGArGBeGBvAsAKBnmA5gKawAOATiKQBQCUGO+TMokIANkQHTsgHUAiYlChFyMABYBDCDHIBXMANoBuHI2Z4A9FpgAlIqXZTgRGAFsiAQg2byJeeTAwAslKgSu5KWAAmIczoYAB4YAAYuAFY1XHwAXwAaWxgIEhgKKmoAfQA3KXYALhh4EA4iH3osWM1WCDKePkFUkTFJGTlFZRimOJw4mJwAM0VgKABLcBhB0qCqplr63n4BcjGCCVgIMd8zIjz2eXciXy7k+yhHZygFIhje7BwFzgblgBUJMdlwM3yAdykAJ6yBSQGAeMzNUTkU7YBCILgZUioOBIBGUJEAHwxUxmqnU2Ce3CWgnenzgYDMACo6pZxpYIJSOqDwSkSFCYXC0VQYFi0NMQHQVEA)来查看与 _始终_执行赋值间的差别。
 
-```ts twoslash
+```ts 
 const obj = {
     get prop() {
         console.log("getter has run");
@@ -449,7 +449,7 @@ obj.prop ||= foo();
 在TypeScript的早期版本中，`catch`语句中的捕获变量总为`any`类型。
 这意味着你可以在捕获变量上执行任意的操作。
 
-```ts twoslash
+```ts 
 try {
   // Do some work
 } catch (x) {
@@ -467,7 +467,7 @@ try {
 TypeScript 4.0允许将`catch`语句中的捕获变量类型声明为`unknown`类型。
 `unknown`类型比`any`类型更加安全，因为它要求在使用之前必须进行类型检查。
 
-```ts twoslash
+```ts 
 try {
   // ...
 } catch (e: unknown) {
@@ -511,7 +511,7 @@ try {
 如果针对每个文件具有不同的JSX工厂，你可以使用新的`/** @jsxFrag */`编译指令注释。
 示例：
 
-```tsx twoslash
+```tsx 
 // 注意：这些编译指令注释必须使用JSDoc风格，否则不起作用
 
 /** @jsx h */
@@ -528,7 +528,7 @@ export const Header = (
 
 上述代码会转换为如下的JavaScript
 
-```tsx twoslash
+```tsx 
 // 注意：这些编译指令注释必须使用JSDoc风格，否则不起作用
 
 /** @jsx h */

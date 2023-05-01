@@ -8,7 +8,7 @@ of your application at runtime by emitting the enum value instead of a reference
 
 For example with this TypeScript:
 
-```ts twoslash
+```ts 
 const enum Album {
   JimmyEatWorldFutures = 1,
   TubRingZooHypothesis = 2,
@@ -24,7 +24,7 @@ if (selectedAlbum === Album.JimmyEatWorldFutures) {
 The default `const enum` behavior is to convert any `Album.Something` to the corresponding number literal, and to remove a reference
 to the enum from the JavaScript completely.
 
-```ts twoslash
+```ts 
 // @showEmit
 const enum Album {
   JimmyEatWorldFutures = 1,
@@ -40,7 +40,7 @@ if (selectedAlbum === Album.JimmyEatWorldFutures) {
 
 With `preserveConstEnums` set to `true`, the `enum` exists at runtime and the numbers are still emitted.
 
-```ts twoslash
+```ts 
 // @preserveConstEnums: true
 // @showEmit
 const enum Album {

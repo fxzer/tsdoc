@@ -11,7 +11,7 @@ When:
 
 Labels are very rare in JavaScript and typically indicate an attempt to write an object literal:
 
-```ts twoslash
+```ts 
 // @errors: 7028
 // @allowUnusedLabels: false
 function verifyAge(age: number) {

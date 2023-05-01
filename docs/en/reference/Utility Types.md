@@ -16,7 +16,7 @@ unwrap `Promise`s.
 
 ##### Example
 
-```ts twoslash
+```ts 
 type A = Awaited<Promise<string>>;
 //   ^?
 
@@ -40,7 +40,7 @@ Constructs a type with all properties of `Type` set to optional. This utility wi
 
 ##### Example
 
-```ts twoslash
+```ts 
 interface Todo {
   title: string;
   description: string;
@@ -73,7 +73,7 @@ Constructs a type consisting of all properties of `Type` set to required. The op
 
 ##### Example
 
-```ts twoslash
+```ts 
 // @errors: 2741
 interface Props {
   a?: number;
@@ -98,7 +98,7 @@ Constructs a type with all properties of `Type` set to `readonly`, meaning the p
 
 ##### Example
 
-```ts twoslash
+```ts 
 // @errors: 2540
 interface Todo {
   title: string;
@@ -132,7 +132,7 @@ Constructs an object type whose property keys are `Keys` and whose property valu
 
 ##### Example
 
-```ts twoslash
+```ts 
 interface CatInfo {
   age: number;
   breed: string;
@@ -163,7 +163,7 @@ Constructs a type by picking the set of properties `Keys` (string literal or uni
 
 ##### Example
 
-```ts twoslash
+```ts 
 interface Todo {
   title: string;
   description: string;
@@ -194,7 +194,7 @@ Constructs a type by picking all properties from `Type` and then removing `Keys`
 
 ##### Example
 
-```ts twoslash
+```ts 
 interface Todo {
   title: string;
   description: string;
@@ -237,7 +237,7 @@ Constructs a type by excluding from `UnionType` all union members that are assig
 
 ##### Example
 
-```ts twoslash
+```ts 
 type T0 = Exclude<"a" | "b" | "c", "a">;
 //    ^?
 type T1 = Exclude<"a" | "b" | "c", "a" | "b">;
@@ -259,7 +259,7 @@ Constructs a type by extracting from `Type` all union members that are assignabl
 
 ##### Example
 
-```ts twoslash
+```ts 
 type T0 = Extract<"a" | "b" | "c", "a" | "f">;
 //    ^?
 type T1 = Extract<string | number | (() => void), Function>;
@@ -279,7 +279,7 @@ Constructs a type by excluding `null` and `undefined` from `Type`.
 
 ##### Example
 
-```ts twoslash
+```ts 
 type T0 = NonNullable<string | number | undefined>;
 //    ^?
 type T1 = NonNullable<string[] | null | undefined>;
@@ -299,7 +299,7 @@ Constructs a tuple type from the types used in the parameters of a function type
 
 ##### Example
 
-```ts twoslash
+```ts 
 // @errors: 2344
 declare function f1(arg: { a: number; b: string }): void;
 
@@ -334,7 +334,7 @@ Constructs a tuple or array type from the types of a constructor function type. 
 
 ##### Example
 
-```ts twoslash
+```ts 
 // @errors: 2344
 // @strict: false
 type T0 = ConstructorParameters<ErrorConstructor>;
@@ -363,7 +363,7 @@ Constructs a type consisting of the return type of function `Type`.
 
 ##### Example
 
-```ts twoslash
+```ts 
 // @errors: 2344 2344
 declare function f1(): { a: number; b: string };
 
@@ -400,7 +400,7 @@ Constructs a type consisting of the instance type of a constructor function in `
 
 ##### Example
 
-```ts twoslash
+```ts 
 // @errors: 2344 2344
 // @strict: false
 class C {
@@ -433,7 +433,7 @@ Extracts the type of the [this](/handbooks/handbook-v1/Functions#this-parameters
 
 ##### Example
 
-```ts twoslash
+```ts 
 function toHex(this: Number) {
   return this.toString(16);
 }
@@ -456,7 +456,7 @@ Removes the [`this`](/docs/handbook/functions.html#this-parameters) parameter fr
 
 ##### Example
 
-```ts twoslash
+```ts 
 function toHex(this: Number) {
   return this.toString(16);
 }
@@ -479,7 +479,7 @@ This utility does not return a transformed type. Instead, it serves as a marker 
 
 ##### Example
 
-```ts twoslash
+```ts 
 // @noImplicitThis: false
 type ObjectDescriptor<D, M> = {
   data?: D;

@@ -5,7 +5,7 @@
 这些类型从何而来？
 ## 什么是类型声明？
 假设你写了一些这样的代码：
-```ts twoslash
+```ts 
 // @errors: 2339
 const k = Math.max(5, 6);
 const j = Math.mix(7, 8);
@@ -73,6 +73,6 @@ TypeScript 会自动在 `node_modules/@types` 下查找类型定义，因此无�
 
 如果您想在不编写声明文件的情况下消除有关特定模块的警告，您还可以通过在项目的 .d.ts 文件中放置一个空声明来快速将该模块声明为类型 any 。
 例如，如果你想使用一个名为“some-untyped-module”但没有定义的模块，你可以这样写：
-```ts twoslash
+```ts 
 declare module "some-untyped-module";
 ```

@@ -75,7 +75,7 @@ JavaScript 只真正提供了_dynamic_ 类型——运行代码看看会发生�
 这就是像 TypeScript 这样的静态类型检查器所做的。
  _静态类型系统_ 描述了我们运行程序时我们的价值观的形状和行为。
 像 TypeScript 这样的类型检查器使用该信息并告诉我们什么时候事情可能会偏离轨道。
-```ts twoslash
+```ts 
 // @errors: 2349
 const message = "hello!";
 
@@ -103,7 +103,7 @@ user.location; // returns undefined
 
 最终，静态类型系统必须调用哪些代码应该在其系统中标记为错误，即使它是不会立即抛出错误的“有效”JavaScript。
 在 TypeScript 中，以下代码会产生有关未定义 `location`的错误：
-```ts twoslash
+```ts 
 // @errors: 2339
 const user = {
   name: "Daniel",
@@ -119,7 +119,7 @@ For example: typos,
 TypeScript 捕获了 _很多_ 合法的错误。
 
 例如：错别字，
-```ts twoslash
+```ts 
 // @noErrors
 const announcement = "Hello World!";
 
@@ -133,7 +133,7 @@ announcement.toLocaleLowerCase();
 
 uncalled functions,
 
-```ts twoslash
+```ts 
 // @noUnusedLocals
 // @errors: 2365
 function flipCoin() {
@@ -144,7 +144,7 @@ function flipCoin() {
 
 or basic logic errors.
 
-```ts twoslash
+```ts 
 // @errors: 2367
 const value = Math.random() < 0.5 ? "a" : "b";
 if (value !== "a") {
@@ -165,7 +165,7 @@ if (value !== "a") {
 这意味着 TypeScript 也可以用于编辑代码，核心类型检查器可以在您在编辑器中键入时提供错误消息和代码完成。
 这是人们在谈论 TypeScript 中的工具时经常提到的部分内容。
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @noErrors
 // @esModuleInterop
 import express from "express";
@@ -196,7 +196,7 @@ npm install -g typescript
 
 现在让我们转到一个空文件夹并尝试编写我们的第一个 TypeScript 程序：`hello.ts`：  
 
-```ts twoslash
+```ts 
 // Greets the world.
 console.log("Hello world!");
 ```
@@ -224,7 +224,7 @@ console.log("Hello world!");
 
 如果我们 _确实_ 引入了类型检查错误怎么办？
 让我们重写`hello.ts`：
-```ts twoslash
+```ts 
 // @noErrors
 // This is an industrial-grade general-purpose greeter function:
 function greet(person, date) {
@@ -269,7 +269,7 @@ tsc --noEmitOnError hello.ts
 到目前为止，我们还没有告诉 TypeScript `person` 或 `date` 是什么。
 让我们编辑代码以告诉 TypeScript `person` 是一个 `string`，而 `date` 应该是一个 `Date` 对象。
 我们还将在 `date` 上使用 `toDateString()` 方法。
-```ts twoslash
+```ts 
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -280,7 +280,7 @@ function greet(person: string, date: Date) {
 
 有了这个，TypeScript 可以告诉我们 `greet` 可能被错误调用的其他情况。
 例如...
-```ts twoslash
+```ts 
 // @errors: 2345
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
@@ -296,7 +296,7 @@ TypeScript 在我们的第二个参数上报告了错误，但为什么呢？
 另一方面，用 `new Date()` 构造一个 `Date` 实际上符合我们预期的结果。
 
 无论如何，我们可以快速修复错误：
-```ts twoslash {4}
+```ts  {4}
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -306,7 +306,7 @@ greet("Maddison", new Date());
 
 请记住，我们不必总是编写显式类型注释。
 在许多情况下，TypeScript 甚至可以为我们 _推断_（或“弄清楚”）类型，即使我们忽略它们也是如此。
-```ts twoslash
+```ts 
 let msg = "hello there!";
 //  ^?
 ```
@@ -318,7 +318,7 @@ let msg = "hello there!";
 ## 擦除类型
 
 让我们看看当我们用`tsc` 编译上面的函数  `greet` 输出 JavaScript 时会发生什么：
-```ts twoslash
+```ts 
 // @showEmit
 // @target: es5
 function greet(person: string, date: Date) {

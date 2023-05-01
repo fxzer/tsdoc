@@ -74,7 +74,7 @@ TypeScript 提供了许多机制来以集合论的方式处理类型，如果您
 在 TypeScript 中，对象_不_属于单一的确切类型。
 例如，如果我们构造一个满足接口的对象，我们可以在需要该接口的地方使用该对象，即使两者之间没有声明关系。
 
-```ts twoslash
+```ts 
 interface Pointlike {
   x: number;
   y: number;
@@ -117,7 +117,7 @@ OOP 程序员经常对结构类型的两个特定方面感到惊讶。
 
 首先是 _empty type_ 似乎出乎意料：
 
-```ts twoslash
+```ts 
 class Empty {}
 
 function fn(arg: Empty) {

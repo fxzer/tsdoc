@@ -56,7 +56,7 @@ yarn workspace tsconfig-reference run generate-json
 yarn workspace tsconfig-reference run generate-markdown
 ```
 
-You can validate any codeblocks which use twoslash via the script:
+You can validate any codeblocks which use  via the script:
 
 ```sh
 yarn workspace tsconfig-reference run test
@@ -68,4 +68,4 @@ yarn workspace tsconfig-reference run lint
 yarn workspace tsconfig-reference run lint resolveJson
 ```
 
-You can debug twoslash by setting the environment var `DEBUG="*"` in all of these too.
+You can debug  by setting the environment var `DEBUG="*"` in all of these too.

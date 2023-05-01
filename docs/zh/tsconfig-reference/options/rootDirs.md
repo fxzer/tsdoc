@@ -57,7 +57,7 @@ work via those relative paths at runtime.
 This technique lets you generate types ahead of time for the non-code source files. Imports then work naturally based off the source file's location.
 For example `./src/index.ts` can import the file `./src/css/main.css` and TypeScript will be aware of the bundler's behavior for that filetype via the corresponding generated declaration file.
 
-```ts twoslash
+```ts 
 // @filename: main.css.d.ts
 export const appClass = "mainClassF3EC2";
 // ---cut---

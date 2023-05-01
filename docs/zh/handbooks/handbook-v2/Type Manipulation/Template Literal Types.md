@@ -211,7 +211,7 @@ type Greeting = Capitalize<LowercaseGreeting>;
 
 ##### 例子
 
-```ts twoslash
+```ts 
 type UppercaseGreeting = 'HELLO WORLD';
 type UncomfortableGreeting = Uncapitalize<UppercaseGreeting>;
 //   "hELLO WORLD"

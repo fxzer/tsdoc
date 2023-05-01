@@ -27,7 +27,7 @@ TypeScript 认为一种类型可分配给另一种类型，前提是一种类型
 让我们通过一些例子来看看它们在实践中是如何工作的。
 
 下面是一个生成比示例本身更长的错误消息的示例：
-```ts twoslash
+```ts 
 // @errors: 2322
 let a: { m: number[] };
 let b = { m: [""] };
@@ -43,7 +43,7 @@ TypeScript 在检查最后一行时发现错误。
 4. 因为一个数组的元素类型（`string`）不能分配给另一个（`number`）
 ### 额外属性
 
-```ts twoslash
+```ts 
 // @errors: 2322
 type A = { m: number };
 const a: A = { m: 10, n: "" };
@@ -51,7 +51,7 @@ const a: A = { m: 10, n: "" };
 
 ### 联合操作
 
-```ts twoslash
+```ts 
 // @errors: 2322
 type Thing = "none" | { name: string };
 

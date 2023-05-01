@@ -5,7 +5,7 @@ oneline: "Disable strict checking of generic signatures in function types."
 
 TypeScript will unify type parameters when comparing two generic functions.
 
-```ts twoslash
+```ts 
 // @errors: 2322
 
 type A = <T, U>(x: T, y: U) => [T, U];

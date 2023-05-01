@@ -9,7 +9,7 @@ Intersection and Union types are one of the ways in which you can compose types.
 Occasionally, you'll run into a library that expects a parameter to be either a `number` or a `string`.
 For instance, take the following function:
 
-```ts twoslash
+```ts 
 /**
  * Takes a string and adds "padding" to the left.
  * If 'padding' is a string, then 'padding' is appended to the left side.
@@ -31,7 +31,7 @@ padLeft("Hello world", 4); // returns "    Hello world"
 The problem with `padLeft` in the above example is that its `padding` parameter is typed as `any`.
 That means that we can call it with an argument that's neither a `number` nor a `string`, but TypeScript will be okay with it.
 
-```ts twoslash
+```ts 
 declare function padLeft(value: string, padding: any): string;
 // ---cut---
 // passes at compile time, fails at runtime.
@@ -46,7 +46,7 @@ This new approach also wouldn't help if we were just trying to use a function th
 
 Instead of `any`, we can use a _union type_ for the `padding` parameter:
 
-```ts twoslash
+```ts 
 // @errors: 2345
 /**
  * Takes a string and adds "padding" to the left.
@@ -67,7 +67,7 @@ We use the vertical bar (`|`) to separate each type, so `number | string | boole
 
 If we have a value that is a union type, we can only access members that are common to all types in the union.
 
-```ts twoslash
+```ts 
 // @errors: 2339
 
 interface Bird {
@@ -199,7 +199,7 @@ With `state` as a literal type, you can compare the value of `state` to the equi
 
 In this case, you can use a `switch` statement to narrow down which type is represented at runtime:
 
-```ts twoslash
+```ts 
 // @errors: 2339
 type NetworkLoadingState = {
   state: "loading";
@@ -252,7 +252,7 @@ function logger(state: NetworkState): string {
 We would like the compiler to tell us when we don't cover all variants of the discriminated union.
 For example, if we add `NetworkFromCachedState` to `NetworkState`, we need to update `logger` as well:
 
-```ts twoslash
+```ts 
 // @errors: 2366
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
@@ -292,7 +292,7 @@ function logger(s: NetworkState) {
 There are two ways to do this.
 The first is to turn on [`strictNullChecks`](/tsconfig#strictNullChecks) and specify a return type:
 
-```ts twoslash
+```ts 
 // @errors: 2366
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
@@ -324,7 +324,7 @@ However, this method is quite subtle and, besides, [`strictNullChecks`](/tsconfi
 
 The second method uses the `never` type that the compiler uses to check for exhaustiveness:
 
-```ts twoslash
+```ts 
 // @errors: 2345
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
@@ -369,7 +369,7 @@ That means an object of this type will have all members of all three types.
 
 For example, if you had networking requests with consistent error handling then you could separate out the error handling into its own type which is merged with types which correspond to a single response type.
 
-```ts twoslash
+```ts 
 interface ErrorHandling {
   success: boolean;
   error?: { message: string };

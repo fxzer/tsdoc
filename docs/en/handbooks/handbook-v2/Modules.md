@@ -25,7 +25,7 @@ Inside a script file variables and types are declared to be in the shared global
 
 If you have a file that doesn't currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
 
-```ts twoslash
+```ts 
 export {};
 ```
 
@@ -50,7 +50,7 @@ There are three main things to consider when writing module-based code in TypeSc
 
 A file can declare a main export via `export default`:
 
-```ts twoslash
+```ts 
 // @filename: hello.ts
 export default function helloWorld() {
   console.log("Hello, world!");
@@ -59,7 +59,7 @@ export default function helloWorld() {
 
 This is then imported via:
 
-```ts twoslash
+```ts 
 // @filename: hello.ts
 export default function helloWorld() {
   console.log("Hello, world!");
@@ -72,7 +72,7 @@ helloWorld();
 
 In addition to the default export, you can have more than one export of variables and functions via the `export` by omitting `default`:
 
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 export let squareTwo = 1.41;
@@ -88,7 +88,7 @@ export function absolute(num: number) {
 
 These can be used in another file via the `import` syntax:
 
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 export let squareTwo = 1.41;
@@ -111,7 +111,7 @@ const absPhi = absolute(phi);
 
 An import can be renamed using a format like `import {old as new}`:
 
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 // @filename: app.ts
@@ -124,7 +124,7 @@ console.log(π);
 
 You can mix and match the above syntax into a single `import`:
 
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export const pi = 3.14;
 export default class RandomNumberGenerator {}
@@ -141,7 +141,7 @@ console.log(π);
 
 You can take all of the exported objects and put them into a single namespace using `* as name`:
 
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 export let squareTwo = 1.41;
@@ -162,7 +162,7 @@ const positivePhi = math.absolute(math.phi);
 
 You can import a file and _not_ include any variables into your current module via `import "./file"`:
 
-```ts twoslash
+```ts 
 // @filename: maths.ts
 export var pi = 3.14;
 // ---cut---
@@ -178,7 +178,7 @@ In this case, the `import` does nothing. However, all of the code in `maths.ts` 
 
 Types can be exported and imported using the same syntax as JavaScript values:
 
-```ts twoslash
+```ts 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 
@@ -198,7 +198,7 @@ TypeScript has extended the `import` syntax with two concepts for declaring an i
 
 Which is an import statement which can _only_ import types:
 
-```ts twoslash
+```ts 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
@@ -218,7 +218,7 @@ const name = createCatName();
 
 TypeScript 4.5 also allows for individual imports to be prefixed with `type` to indicate that the imported reference is a type:
 
-```ts twoslash
+```ts 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
@@ -237,7 +237,7 @@ Together these allow a non-TypeScript transpiler like Babel, swc or esbuild to k
 
 TypeScript has ES Module syntax which _directly_ correlates to a CommonJS and AMD `require`. Imports using ES Module are _for most cases_ the same as the `require` from those environments, but this syntax ensures you have a 1 to 1 match in your TypeScript file with the CommonJS output:
 
-```ts twoslash
+```ts 
 /// <reference types="node" />
 // @module: commonjs
 // ---cut---
@@ -255,7 +255,7 @@ CommonJS is the format which most modules on npm are delivered in. Even if you a
 
 Identifiers are exported via setting the `exports` property on a global called `module`.
 
-```ts twoslash
+```ts 
 /// <reference types="node" />
 // ---cut---
 function absolute(num: number) {
@@ -273,7 +273,7 @@ module.exports = {
 
 Then these files can be imported via a `require` statement:
 
-```ts twoslash
+```ts 
 // @module: commonjs
 // @filename: maths.ts
 /// <reference types="node" />
@@ -297,7 +297,7 @@ maths.pi;
 
 Or you can simplify a bit using the destructuring feature in JavaScript:
 
-```ts twoslash
+```ts 
 // @module: commonjs
 // @filename: maths.ts
 /// <reference types="node" />
@@ -348,7 +348,7 @@ At runtime the module loader is responsible for locating and executing all depen
 
 For example, here is a TypeScript file using ES Modules syntax, showcasing a few different options for [`module`](/tsconfig#module):
 
-```ts twoslash
+```ts 
 // @filename: constants.ts
 export const valueOfPi = 3.142;
 // @filename: index.ts
@@ -360,7 +360,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `ES2020`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: es2020
 // @noErrors
@@ -371,7 +371,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `CommonJS`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: commonjs
 // @noErrors
@@ -382,7 +382,7 @@ export const twoPi = valueOfPi * 2;
 
 #### `UMD`
 
-```ts twoslash
+```ts 
 // @showEmit
 // @module: umd
 // @noErrors

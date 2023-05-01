@@ -33,7 +33,7 @@ const HelloWorld = () => (
 
 Would look like:
 
-```tsx twoslash
+```tsx 
 // @showEmit
 // @showEmittedFile: index.js
 // @jsxFactory: h
@@ -55,7 +55,7 @@ This option can be used on a per-file basis too similar to [Babel's `/* @jsxFrag
 
 For example:
 
-```tsx twoslash
+```tsx 
 /** @jsx h */
 /** @jsxFrag Fragment */
 

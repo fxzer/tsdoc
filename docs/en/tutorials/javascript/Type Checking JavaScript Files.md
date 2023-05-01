@@ -16,7 +16,7 @@ The type of a property is the type given in the constructor, unless it's not def
 In that case, the type is the union of the types of all the right-hand values in these assignments.
 Properties defined in the constructor are always assumed to exist, whereas ones defined just in methods, getters, or setters are considered optional.
 
-```js twoslash
+```js 
 // @checkJs
 // @errors: 2322
 class C {
@@ -39,7 +39,7 @@ If properties are never set in the class body, they are considered unknown.
 If your class has properties that are only read from, add and then annotate a declaration in the constructor with JSDoc to specify the type.
 You don't even have to give a value if it will be initialized later:
 
-```js twoslash
+```js 
 // @checkJs
 // @errors: 2322
 class C {
@@ -62,7 +62,7 @@ Before ES2015, JavaScript used constructor functions instead of classes.
 The compiler supports this pattern and understands constructor functions as equivalent to ES2015 classes.
 The property inference rules described above work exactly the same way.
 
-```js twoslash
+```js 
 // @checkJs
 // @errors: 2683 2322
 function C() {
@@ -99,14 +99,14 @@ Most combinations of assignments and declarations are supported.
 Classes are namespaces in `.js` files.
 This can be used to nest classes, for example:
 
-```js twoslash
+```js 
 class C {}
 C.D = class {};
 ```
 
 And, for pre-ES2015 code, it can be used to simulate static methods:
 
-```js twoslash
+```js 
 function Outer() {
   this.y = 2;
 }
@@ -120,7 +120,7 @@ Outer.Inner();
 
 It can also be used to create simple namespaces:
 
-```js twoslash
+```js 
 var ns = {};
 ns.C = class {};
 ns.func = function () {};
@@ -130,7 +130,7 @@ ns;
 
 Other variants are allowed as well:
 
-```js twoslash
+```js 
 // IIFE
 var ns = (function (n) {
   return n || {};
@@ -153,7 +153,7 @@ No new members can be added that were not specified in the original literal.
 This rule is relaxed in a `.js` file; object literals have an open-ended type (an index signature) that allows adding and looking up properties that were not defined originally.
 For instance:
 
-```js twoslash
+```js 
 var obj = { a: 1 };
 obj.b = 2; // Allowed
 ```
@@ -162,7 +162,7 @@ Object literals behave as if they have an index signature `[x:string]: any` that
 
 Like other special JS checking behaviors, this behavior can be changed by specifying a JSDoc type for the variable. For example:
 
-```js twoslash
+```js 
 // @checkJs
 // @errors: 2339
 /** @type {{a: number}} */
@@ -176,7 +176,7 @@ Any variable, parameter or property that is initialized with null or undefined w
 Any variable, parameter or property that is initialized with [] will have type any[], even if strict null checks is turned on.
 The only exception is for properties that have multiple initializers as described above.
 
-```js twoslash
+```js 
 function Foo(i = null) {
   if (!i) i = 1;
   var j = undefined;
@@ -198,7 +198,7 @@ It is important to note that it is an error to call a function with too many arg
 
 For instance:
 
-```js twoslash
+```js 
 // @checkJs
 // @strict: false
 // @errors: 7006 7006 2554
@@ -214,7 +214,7 @@ bar(1, 2, 3); // Error, too many arguments
 JSDoc annotated functions are excluded from this rule.
 Use JSDoc optional parameter syntax (`[` `]`) to express optionality. e.g.:
 
-```js twoslash
+```js 
 /**
  * @param {string} [somebody] - Somebody's name.
  */
@@ -232,7 +232,7 @@ sayHello();
 
 A function whose body has a reference to the `arguments` reference is implicitly considered to have a var-arg parameter (i.e. `(...arg: any[]) => any`). Use JSDoc var-arg syntax to specify the type of the arguments.
 
-```js twoslash
+```js 
 /** @param {...number} args */
 function sum(/* numbers */) {
   var total = 0;
@@ -281,7 +281,7 @@ class MyComponent extends Component {
 
 An unspecified type argument in JSDoc defaults to any:
 
-```js twoslash
+```js 
 /** @type{Array} */
 var x = [];
 

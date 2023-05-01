@@ -8,7 +8,7 @@ generating a type for the `import` based on the static JSON shape.
 
 TypeScript does not support resolving JSON files by default:
 
-```ts twoslash
+```ts 
 // @errors: 2732
 // @filename: settings.json
 {
@@ -25,7 +25,7 @@ settings.dry === 2;
 
 Enabling the option allows importing JSON, and validating the types in that JSON file.
 
-```ts twoslash
+```ts 
 // @errors: 2367
 // @resolveJsonModule
 // @module: commonjs

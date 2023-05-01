@@ -1,7 +1,7 @@
 
 Imagine we have a function called `padLeft`.
 
-```ts twoslash
+```ts 
 function padLeft(padding: number | string, input: string): string {
   throw new Error("Not implemented yet!");
 }
@@ -11,7 +11,7 @@ If `padding` is a `number`, it will treat that as the number of spaces we want t
 If `padding` is a `string`, it should just prepend `padding` to `input`.
 Let's try to implement the logic for when `padLeft` is passed a `number` for `padding`.
 
-```ts twoslash
+```ts 
 // @errors: 2345
 function padLeft(padding: number | string, input: string) {
   return " ".repeat(padding) + input;
@@ -22,7 +22,7 @@ Uh-oh, we're getting an error on `padding`.
 TypeScript is warning us that adding a `number | string` to a `number` might not give us what we want, and it's right.
 In other words, we haven't explicitly checked if `padding` is a `number` first, nor are we handling the case where it's a `string`, so let's do exactly that.
 
-```ts twoslash
+```ts 
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
     return " ".repeat(padding) + input;
@@ -43,7 +43,7 @@ TypeScript follows possible paths of execution that our programs can take to ana
 It looks at these special checks (called _type guards_) and assignments, and the process of refining types to more specific types than declared is called _narrowing_.
 In many editors we can observe these types as they change, and we'll even do so in our examples.
 
-```ts twoslash
+```ts 
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
     return " ".repeat(padding) + input;
@@ -77,7 +77,7 @@ Because TypeScript encodes how `typeof` operates on different values, it knows a
 For example, notice that in the list above, `typeof` doesn't return the string `null`.
 Check out the following example:
 
-```ts twoslash
+```ts 
 // @errors: 2531 18047
 function printAll(strs: string | string[] | null) {
   if (typeof strs === "object") {
@@ -107,7 +107,7 @@ Truthiness might not be a word you'll find in the dictionary, but it's very much
 In JavaScript, we can use any expression in conditionals, `&&`s, `||`s, `if` statements, Boolean negations (`!`), and more.
 As an example, `if` statements don't expect their condition to always have the type `boolean`.
 
-```ts twoslash
+```ts 
 function getUsersOnlineMessage(numUsersOnline: number) {
   if (numUsersOnline) {
     return `There are ${numUsersOnline} online now!`;
@@ -129,7 +129,7 @@ Values like
 all coerce to `false`, and other values get coerced `true`.
 You can always coerce values to `boolean`s by running them through the `Boolean` function, or by using the shorter double-Boolean negation. (The latter has the advantage that TypeScript infers a narrow literal boolean type `true`, while inferring the first as type `boolean`.)
 
-```ts twoslash
+```ts 
 // both of these result in 'true'
 Boolean("hello"); // type: boolean, value: true
 !!"world"; // type: true,    value: true
@@ -138,7 +138,7 @@ Boolean("hello"); // type: boolean, value: true
 It's fairly popular to leverage this behavior, especially for guarding against values like `null` or `undefined`.
 As an example, let's try using it for our `printAll` function.
 
-```ts twoslash
+```ts 
 function printAll(strs: string | string[] | null) {
   if (strs && typeof strs === "object") {
     for (const s of strs) {
@@ -160,7 +160,7 @@ TypeError: null is not iterable
 Keep in mind though that truthiness checking on primitives can often be error prone.
 As an example, consider a different attempt at writing `printAll`
 
-```ts twoslash {class: "do-not-do-this"}
+```ts  {class: "do-not-do-this"}
 function printAll(strs: string | string[] | null) {
   // !!!!!!!!!!!!!!!!
   //  DON'T DO THIS!
@@ -186,7 +186,7 @@ If you want, you can make sure you handle situations like these with a linter.
 
 One last word on narrowing by truthiness is that Boolean negations with `!` filter out from negated branches.
 
-```ts twoslash
+```ts 
 function multiplyAll(
   values: number[] | undefined,
   factor: number
@@ -204,7 +204,7 @@ function multiplyAll(
 TypeScript also uses `switch` statements and equality checks like `===`, `!==`, `==`, and `!=` to narrow types.
 For example:
 
-```ts twoslash
+```ts 
 function example(x: string | number, y: string | boolean) {
   if (x === y) {
     // We can now call any 'string' method on 'x' or 'y'.
@@ -228,7 +228,7 @@ Checking against specific literal values (as opposed to variables) works also.
 In our section about truthiness narrowing, we wrote a `printAll` function which was error-prone because it accidentally didn't handle empty strings properly.
 Instead we could have done a specific check to block out `null`s, and TypeScript still correctly removes `null` from the type of `strs`.
 
-```ts twoslash
+```ts 
 function printAll(strs: string | string[] | null) {
   if (strs !== null) {
     if (typeof strs === "object") {
@@ -248,7 +248,7 @@ JavaScript's looser equality checks with `==` and `!=` also get narrowed correct
 If you're unfamiliar, checking whether something `== null` actually not only checks whether it is specifically the value `null` - it also checks whether it's potentially `undefined`.
 The same applies to `== undefined`: it checks whether a value is either `null` or `undefined`.
 
-```ts twoslash
+```ts 
 interface Container {
   value: number | null | undefined;
 }
@@ -273,7 +273,7 @@ TypeScript takes this into account as a way to narrow down potential types.
 For example, with the code: `"value" in x`. where `"value"` is a string literal and `x` is a union type.
 The "true" branch narrows `x`'s types which have either an optional or required property `value`, and the "false" branch narrows to types which have an optional or missing property `value`.
 
-```ts twoslash
+```ts 
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 
@@ -289,7 +289,7 @@ function move(animal: Fish | Bird) {
 To reiterate optional properties will exist in both sides for narrowing, for example a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 type Human = { swim?: () => void; fly?: () => void };
@@ -312,7 +312,7 @@ More specifically, in JavaScript `x instanceof Foo` checks whether the _prototyp
 While we won't dive deep here, and you'll see more of this when we get into classes, they can still be useful for most values that can be constructed with `new`.
 As you might have guessed, `instanceof` is also a type guard, and TypeScript narrows in branches guarded by `instanceof`s.
 
-```ts twoslash
+```ts 
 function logValue(x: Date | string) {
   if (x instanceof Date) {
     console.log(x.toUTCString());
@@ -328,7 +328,7 @@ function logValue(x: Date | string) {
 
 As we mentioned earlier, when we assign to any variable, TypeScript looks at the right side of the assignment and narrows the left side appropriately.
 
-```ts twoslash
+```ts 
 let x = Math.random() < 0.5 ? 10 : "hello world!";
 //  ^?
 x = 1;
@@ -347,7 +347,7 @@ This is because the _declared type_ of `x` - the type that `x` started with - is
 
 If we'd assigned a `boolean` to `x`, we'd have seen an error since that wasn't part of the declared type.
 
-```ts twoslash
+```ts 
 // @errors: 2322
 let x = Math.random() < 0.5 ? 10 : "hello world!";
 //  ^?
@@ -367,7 +367,7 @@ Up until this point, we've gone through some basic examples of how TypeScript na
 But there's a bit more going on than just walking up from every variable and looking for type guards in `if`s, `while`s, conditionals, etc.
 For example
 
-```ts twoslash
+```ts 
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
     return " ".repeat(padding) + input;
@@ -383,7 +383,7 @@ As a result, it was able to remove `number` from the type of `padding` (narrowin
 This analysis of code based on reachability is called _control flow analysis_, and TypeScript uses this flow analysis to narrow types as it encounters type guards and assignments.
 When a variable is analyzed, control flow can split off and re-merge over and over again, and that variable can be observed to have a different type at each point.
 
-```ts twoslash
+```ts 
 function example() {
   let x: string | number | boolean;
 
@@ -413,7 +413,7 @@ We've worked with existing JavaScript constructs to handle narrowing so far, how
 
 To define a user-defined type guard, we simply need to define a function whose return type is a _type predicate_:
 
-```ts twoslash
+```ts 
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 declare function getSmallPet(): Fish | Bird;
@@ -428,7 +428,7 @@ A predicate takes the form `parameterName is Type`, where `parameterName` must b
 
 Any time `isFish` is called with some variable, TypeScript will _narrow_ that variable to that specific type if the original type is compatible.
 
-```ts twoslash
+```ts 
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 declare function getSmallPet(): Fish | Bird;
@@ -451,7 +451,7 @@ it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must 
 
 You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
 
-```ts twoslash
+```ts 
 type Fish = { swim: () => void; name: string };
 type Bird = { fly: () => void; name: string };
 declare function getSmallPet(): Fish | Bird;
@@ -483,7 +483,7 @@ Circles keep track of their radiuses and squares keep track of their side length
 We'll use a field called `kind` to tell which shape we're dealing with.
 Here's a first attempt at defining `Shape`.
 
-```ts twoslash
+```ts 
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -494,7 +494,7 @@ interface Shape {
 Notice we're using a union of string literal types: `"circle"` and `"square"` to tell us whether we should treat the shape as a circle or square respectively.
 By using `"circle" | "square"` instead of `string`, we can avoid misspelling issues.
 
-```ts twoslash
+```ts 
 // @errors: 2367
 interface Shape {
   kind: "circle" | "square";
@@ -514,7 +514,7 @@ function handleShape(shape: Shape) {
 We can write a `getArea` function that applies the right logic based on if it's dealing with a circle or square.
 We'll first try dealing with circles.
 
-```ts twoslash
+```ts 
 // @errors: 2532 18048
 interface Shape {
   kind: "circle" | "square";
@@ -533,7 +533,7 @@ function getArea(shape: Shape) {
 Under [`strictNullChecks`](/tsconfig#strictNullChecks) that gives us an error - which is appropriate since `radius` might not be defined.
 But what if we perform the appropriate checks on the `kind` property?
 
-```ts twoslash
+```ts 
 // @errors: 2532 18048
 interface Shape {
   kind: "circle" | "square";
@@ -553,7 +553,7 @@ Hmm, TypeScript still doesn't know what to do here.
 We've hit a point where we know more about our values than the type checker does.
 We could try to use a non-null assertion (a `!` after `shape.radius`) to say that `radius` is definitely present.
 
-```ts twoslash
+```ts 
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -577,7 +577,7 @@ The problem with this encoding of `Shape` is that the type-checker doesn't have 
 We need to communicate what _we_ know to the type checker.
 With that in mind, let's take another swing at defining `Shape`.
 
-```ts twoslash
+```ts 
 interface Circle {
   kind: "circle";
   radius: number;
@@ -595,7 +595,7 @@ Here, we've properly separated `Shape` out into two types with different values 
 
 Let's see what happens here when we try to access the `radius` of a `Shape`.
 
-```ts twoslash
+```ts 
 // @errors: 2339
 interface Circle {
   kind: "circle";
@@ -622,7 +622,7 @@ Both interpretations are correct, but only the union encoding of `Shape` will ca
 
 But what if we tried checking the `kind` property again?
 
-```ts twoslash
+```ts 
 interface Circle {
   kind: "circle";
   radius: number;
@@ -654,7 +654,7 @@ That narrowed `shape` down to the type `Circle`.
 The same checking works with `switch` statements as well.
 Now we can try to write our complete `getArea` without any pesky `!` non-null assertions.
 
-```ts twoslash
+```ts 
 interface Circle {
   kind: "circle";
   radius: number;
@@ -702,7 +702,7 @@ The `never` type is assignable to every type; however, no type is assignable to 
 
 For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will raise when every possible case has not been handled.
 
-```ts twoslash
+```ts 
 interface Circle {
   kind: "circle";
   radius: number;
@@ -730,7 +730,7 @@ function getArea(shape: Shape) {
 
 Adding a new member to the `Shape` union, will cause a TypeScript error:
 
-```ts twoslash
+```ts 
 // @errors: 2322
 interface Circle {
   kind: "circle";

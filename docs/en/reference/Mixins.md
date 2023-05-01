@@ -10,7 +10,7 @@ You can read more about how this pattern works in JavaScript [here](https://just
 
 To get started, we'll need a class which will have the mixins applied on top of:
 
-```ts twoslash
+```ts 
 class Sprite {
   name = "";
   x = 0;
@@ -24,7 +24,7 @@ class Sprite {
 
 Then you need a type and a factory function which returns a class expression extending the base class.
 
-```ts twoslash
+```ts 
 // To get started, we need a type which we'll use to extend
 // other classes from. The main responsibility is to declare
 // that the type being passed in is a class.
@@ -53,7 +53,7 @@ function Scale<TBase extends Constructor>(Base: TBase) {
 
 With these all set up, then you can create a class which represents the base class with mixins applied:
 
-```ts twoslash
+```ts 
 class Sprite {
   name = "";
   x = 0;
@@ -95,7 +95,7 @@ In the above form, the mixin's have no underlying knowledge of the class which c
 
 To model this, we modify the original constructor type to accept a generic argument.
 
-```ts twoslash
+```ts 
 // This was our previous constructor:
 type Constructor = new (...args: any[]) => {};
 // Now we use a generic version which can apply a constraint on
@@ -105,7 +105,7 @@ type GConstructor<T = {}> = new (...args: any[]) => T;
 
 This allows for creating classes which only work with constrained base classes:
 
-```ts twoslash
+```ts 
 type GConstructor<T = {}> = new (...args: any[]) => T;
 class Sprite {
   name = "";
@@ -124,7 +124,7 @@ type Loggable = GConstructor<{ print: () => void }>;
 
 Then you can create mixins which only work when you have a particular base to build on:
 
-```ts twoslash
+```ts 
 type GConstructor<T = {}> = new (...args: any[]) => T;
 class Sprite {
   name = "";
@@ -156,7 +156,7 @@ function Jumpable<TBase extends Positionable>(Base: TBase) {
 
 Previous versions of this document recommended a way to write mixins where you created both the runtime and type hierarchies separately, then merged them at the end:
 
-```ts twoslash
+```ts 
 // @strict: false
 // Each mixin is a traditional ES class
 class Jumpable {
@@ -210,7 +210,7 @@ There are a few cases where you can hit the edges of the native support.
 
 You cannot use decorators to provide mixins via code flow analysis:
 
-```ts twoslash
+```ts 
 // @experimentalDecorators
 // @errors: 2339
 // A decorator function which replicates the mixin pattern:
@@ -245,7 +245,7 @@ The class expression pattern creates singletons, so they can't be mapped at the 
 
 You can work around this by using functions to return your classes which differ based on a generic:
 
-```ts twoslash
+```ts 
 function base<T>() {
   class Base {
     static prop: T;

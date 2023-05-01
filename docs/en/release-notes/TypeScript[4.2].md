@@ -75,7 +75,7 @@ let b: [string, number, boolean] = ["hello", 42, true];
 Over time, TypeScript's tuple types have become more and more sophisticated, since they're also used to model things like parameter lists in JavaScript.
 As a result, they can have optional elements and rest elements, and can even have labels for tooling and readability.
 
-```ts twoslash
+```ts 
 // A tuple that has either one or two strings.
 let c: [string, string?] = ["hello"];
 c = ["hello", "world"];
@@ -98,7 +98,7 @@ In prior versions, TypeScript only allowed `...rest` elements at the very last p
 
 However, now rest elements can occur _anywhere_ within a tuple - with only a few restrictions.
 
-```ts twoslash
+```ts 
 let foo: [...string[], number];
 
 foo = [123];
@@ -115,7 +115,7 @@ bar = [true, "some", "separated", "text", false];
 The only restriction is that a rest element can be placed anywhere in a tuple, so long as it's not followed by another optional element or rest element.
 In other words, only one rest element per tuple, and no optional elements after rest elements.
 
-```ts twoslash
+```ts 
 // @errors: 1265 1266
 interface Clown {
   /*...*/
@@ -131,7 +131,7 @@ let StringsAndMaybeBoolean: [...string[], boolean?];
 
 These non-trailing rest elements can be used to model functions that take any number of leading arguments, followed by a few fixed ones.
 
-```ts twoslash
+```ts 
 declare function doStuff(...args: [...names: string[], shouldCapitalize: boolean]): void;
 
 doStuff(/*shouldCapitalize:*/ false)
@@ -148,7 +148,7 @@ For more details, [see the original pull request](https://github.com/microsoft/T
 In JavaScript, it is a runtime error to use a non-object type on the right side of the `in` operator.
 TypeScript 4.2 ensures this can be caught at design-time.
 
-```ts twoslash
+```ts 
 // @errors: 2361 2322
 "foo" in 42;
 ```
@@ -161,7 +161,7 @@ A big thanks to our external contributor [Jonas Hübotter](https://github.com/jo
 
 Back when TypeScript first introduced index signatures, you could only get properties declared by them with "bracketed" element access syntax like `person["name"]`.
 
-```ts twoslash
+```ts 
 interface SomeType {
   /** This is an index signature. */
   [propName: string]: any;
@@ -175,7 +175,7 @@ function doStuff(value: SomeType) {
 This ended up being cumbersome in situations where we need to work with objects that have arbitrary properties.
 For example, imagine an API where it's common to misspell a property name by adding an extra `s` character at the end.
 
-```ts twoslash
+```ts 
 interface Options {
   /** File patterns to be excluded. */
   exclude?: string[];
@@ -201,7 +201,7 @@ This also made it easier to transition existing JavaScript code over to TypeScri
 
 However, loosening the restriction also meant that misspelling an explicitly declared property became much easier.
 
-```ts twoslash
+```ts 
 interface Options {
   /** File patterns to be excluded. */
   exclude?: string[];
@@ -237,7 +237,7 @@ We'd also like to extend a big thanks to [Wenlu Wang](https://github.com/Kingwl)
 TypeScript allows us to mark a class as _abstract_.
 This tells TypeScript that the class is only meant to be extended from, and that certain members need to be filled in by any subclass to actually create an instance.
 
-```ts twoslash
+```ts 
 // @errors: 2511
 abstract class Shape {
   abstract getArea(): number;
@@ -264,7 +264,7 @@ new Square(42);
 
 To make sure this restriction in `new`-ing up `abstract` classes is consistently applied, you can't assign an `abstract` class to anything that expects a construct signature.
 
-```ts twoslash
+```ts 
 // @errors: 2322
 abstract class Shape {
   abstract getArea(): number;
@@ -279,7 +279,7 @@ let Ctor: new () => HasArea = Shape;
 
 This does the right thing in case we intend to run code like `new Ctor`, but it's overly-restrictive in case we want to write a subclass of `Ctor`.
 
-```ts twoslash
+```ts 
 // @errors: 2345
 abstract class Shape {
   abstract getArea(): number;
@@ -302,7 +302,7 @@ let MyShape = makeSubclassWithArea(Shape);
 
 It also doesn't work well with built-in helper types like `InstanceType`.
 
-```ts twoslash
+```ts 
 // @errors: 2344
 abstract class Shape {
   abstract getArea(): number;
@@ -313,7 +313,7 @@ type MyInstance = InstanceType<typeof Shape>;
 
 That's why TypeScript 4.2 allows you to specify an `abstract` modifier on constructor signatures.
 
-```ts twoslash {5}
+```ts  {5}
 abstract class Shape {
   abstract getArea(): number;
 }
@@ -332,7 +332,7 @@ It doesn't stop you from passing in other classes/constructor functions that are
 This feature allows us to write _mixin factories_ in a way that supports abstract classes.
 For example, in the following code snippet, we're able to use the mixin function `withStyles` with the `abstract` class `SuperClass`.
 
-```ts twoslash
+```ts 
 abstract class SuperClass {
     abstract someMethod(): void;
     badda() {}
@@ -455,7 +455,7 @@ For more details, take a look at [the full change](https://github.com/microsoft/
 
 String index signatures are a way of typing dictionary-like objects, where you want to allow access with arbitrary keys:
 
-```ts twoslash
+```ts 
 const movieWatchCount: { [key: string]: number } = {};
 
 function watchMovie(title: string) {
@@ -466,7 +466,7 @@ function watchMovie(title: string) {
 Of course, for any movie title not yet in the dictionary, `movieWatchCount[title]` will be `undefined` (TypeScript 4.1 added the option [`noUncheckedIndexedAccess`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#checked-indexed-accesses---nouncheckedindexedaccess) to include `undefined` when reading from an index signature like this).
 Even though it's clear that there must be some strings not present in `movieWatchCount`, previous versions of TypeScript treated optional object properties as unassignable to otherwise compatible index signatures, due to the presence of `undefined`.
 
-```ts twoslash
+```ts 
 type WesAndersonWatchCount = {
   "Fantastic Mr. Fox"?: number;
   "The Royal Tenenbaums"?: number;
@@ -485,7 +485,7 @@ const movieWatchCount: { [key: string]: number } = wesAndersonWatchCount;
 
 TypeScript 4.2 allows this assignment. However, it does _not_ allow the assignment of non-optional properties with `undefined` in their types, nor does it allow writing `undefined` to a specific key:
 
-```ts twoslash
+```ts 
 // @errors: 2322
 type BatmanWatchCount = {
   "Batman Begins": number | undefined;
@@ -505,7 +505,7 @@ movieWatchCount["It's the Great Pumpkin, Charlie Brown"] = undefined;
 
 The new rule also does not apply to number index signatures, since they are assumed to be array-like and dense:
 
-```ts twoslash
+```ts 
 // @errors: 2322
 declare let sortOfArrayish: { [key: number]: string };
 declare let numberKeys: { 42?: string };
@@ -535,7 +535,7 @@ There are various changes, though `Intl` and `ResizeObserver`'s may end up being
 
 When the value of a `yield` expression is captured, but TypeScript can't immediately figure out what type you intend for it to receive (i.e. the `yield` expression isn't contextually typed), TypeScript will now issue an implicit `any` error.
 
-```ts twoslash
+```ts 
 // @errors: 7057
 function* g1() {
   const value = yield 1;

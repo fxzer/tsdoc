@@ -21,7 +21,7 @@ export function fn(arr: number[]) {
 
 Turning on [`downlevelIteration`](#downlevelIteration) and `importHelpers` is still false:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @target: ES5
 // @downleveliteration
@@ -32,7 +32,7 @@ export function fn(arr: number[]) {
 
 Then turning on both [`downlevelIteration`](#downlevelIteration) and `importHelpers`:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @target: ES5
 // @downleveliteration

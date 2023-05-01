@@ -19,7 +19,7 @@ When the module **does not** explicitly specify a default export.
 
 For example, without `allowSyntheticDefaultImports` as true:
 
-```ts twoslash
+```ts 
 // @errors: 1259 1192
 // @checkJs
 // @allowJs

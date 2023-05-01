@@ -9,7 +9,7 @@ oneline: TypeScript 4.1 Release Notes
 
 String literal types in TypeScript allow us to model functions and APIs that expect a set of specific strings.
 
-```ts twoslash
+```ts 
 // @errors: 2345
 function setVerticalAlignment(location: "top" | "middle" | "bottom") {
   // ...
@@ -41,7 +41,7 @@ That's why TypeScript 4.1 brings the template literal string type.
 It has the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but is used in type positions.
 When you use it with concrete literal types, it produces a new string literal type by concatenating the contents.
 
-```ts twoslash
+```ts 
 type World = "world";
 
 type Greeting = `hello ${World}`;
@@ -51,7 +51,7 @@ type Greeting = `hello ${World}`;
 What happens when you have unions in substitution positions?
 It produces the set of every possible string literal that could be represented by each union member.
 
-```ts twoslash
+```ts 
 type Color = "red" | "blue";
 type Quantity = "one" | "two";
 
@@ -63,7 +63,7 @@ This can be used beyond cute examples in release notes.
 For example, several libraries for UI components have a way to specify both vertical and horizontal alignment in their APIs, often with both at once using a single string like `"bottom-right"`.
 Between vertically aligning with `"top"`, `"middle"`, and `"bottom"`, and horizontally aligning with `"left"`, `"center"`, and `"right"`, there are 9 possible strings where each of the former strings is connected with each of the latter strings using a dash.
 
-```ts twoslash
+```ts 
 // @errors: 2345
 type VerticalAlignment = "top" | "middle" | "bottom";
 type HorizontalAlignment = "left" | "center" | "right";
@@ -113,7 +113,7 @@ declare function makeWatchedObject<T>(obj: T): T & PropEventSource<T>;
 
 With this, we can build something that errors when we give the wrong property!
 
-```ts twoslash
+```ts 
 // @errors: 2345
 type PropEventSource<T> = {
     on(eventName: `${string & keyof T}Changed`, callback: () => void): void;
@@ -136,7 +136,7 @@ person.on("frstNameChanged", () => {});
 We can also do something special in template literal types: we can _infer_ from substitution positions.
 We can make our last example generic to infer from parts of the `eventName` string to figure out the associated property.
 
-```ts twoslash
+```ts 
 type PropEventSource<T> = {
     on<K extends string & keyof T>
         (eventName: `${K}Changed`, callback: (newValue: T[K]) => void ): void;
@@ -173,7 +173,7 @@ Similarly, when we call with `"ageChanged"`, it finds the type for the property 
 Inference can be combined in different ways, often to deconstruct strings, and reconstruct them in different ways.
 In fact, to help with modifying these string literal types, we've added a few new utility type aliases for modifying casing in letters (i.e. converting to lowercase and uppercase characters).
 
-```ts twoslash
+```ts 
 type EnthusiasticGreeting<T extends string> = `${Uppercase<T>}`
 
 type HELLO = EnthusiasticGreeting<"hello">;
@@ -224,7 +224,7 @@ type MappedTypeWithNewKeys<T> = {
 
 With this new `as` clause, you can leverage features like template literal types to easily create property names based off of old ones.
 
-```ts twoslash
+```ts 
 type Getters<T> = {
     [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K]
 };
@@ -242,7 +242,7 @@ type LazyPerson = Getters<Person>;
 and you can even filter out keys by producing `never`.
 That means you don't have to use an extra `Omit` helper type in some cases.
 
-```ts twoslash
+```ts 
 // Remove the 'kind' property
 type RemoveKindField<T> = {
     [K in keyof T as Exclude<K, "kind">]: T[K]
@@ -315,7 +315,7 @@ See more [at the implementation](https://github.com/microsoft/TypeScript/pull/40
 TypeScript has a feature called _index signatures_.
 These signatures are a way to signal to the type system that users can access arbitrarily-named properties.
 
-```ts twoslash
+```ts 
 interface Options {
   path: string;
   permissions: number;
@@ -346,7 +346,7 @@ Under this new mode, every property access (like `foo.bar`) or indexed access (l
 That means that in our last example, `opts.yadda` will have the type `string | number | undefined` as opposed to just `string | number`.
 If you need to access that property, you'll either have to check for its existence first or use a non-null assertion operator (the postfix `!` character).
 
-```ts twoslash
+```ts 
 // @errors: 2532 18048
 // @noUncheckedIndexedAccess
 interface Options {
@@ -379,7 +379,7 @@ function checkOptions(opts: Options) {
 
 One consequence of using [`noUncheckedIndexedAccess`](/tsconfig#noUncheckedIndexedAccess) is that indexing into an array is also more strictly checked, even in a bounds-checked loop.
 
-```ts twoslash
+```ts 
 // @errors: 2532 18048
 // @noUncheckedIndexedAccess
 function screamLines(strs: string[]) {
@@ -392,7 +392,7 @@ function screamLines(strs: string[]) {
 
 If you don't need the indexes, you can iterate over individual elements by using a `for`-`of` loop or a `forEach` call.
 
-```ts twoslash
+```ts 
 // @noUncheckedIndexedAccess
 function screamLines(strs: string[]) {
   // This works fine

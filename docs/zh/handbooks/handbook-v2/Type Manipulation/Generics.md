@@ -13,14 +13,14 @@
 您可以用与`echo`命令类似的方式来考虑这一点。
 
 如果没有泛型，我们要么必须给身份函数一个特定的类型：
-```ts twoslash
+```ts 
 function identity(arg: number): number {
   return arg;
 }
 ```
 
 或者，我们可以使用`any`类型来描述身份函数：
-```ts twoslash
+```ts 
 function identity(arg: any): any {
   return arg;
 }
@@ -32,7 +32,7 @@ function identity(arg: any): any {
 
 相反，我们需要一种捕获参数类型的方法，这样我们也可以用它来表示返回的内容。
 在这里，我们将使用 _类型变量_，这是一种特殊类型的变量，适用于类型而不是值。
-```ts twoslash
+```ts 
 function identity<Type>(arg: Type): Type {
   return arg;
 }
@@ -49,7 +49,7 @@ function identity<Type>(arg: Type): Type {
 
 一旦我们编写了通用身份函数，我们就可以通过两种方式之一调用它。
 第一种方法是将所有参数（包括类型参数）传递给函数：
-```ts twoslash
+```ts 
 function identity<Type>(arg: Type): Type {
   return arg;
 }
@@ -61,7 +61,7 @@ let output = identity<string>("myString");
 在这里，我们明确地将 `Type` 设置为 `string` 作为函数调用的参数之一，在参数周围使用 `<>` 而不是 `()` 来表示。
 
 第二种方式也许也是最常见的。 这里我们使用 _类型参数推理_ ——也就是说，我们希望编译器根据我们传入的参数类型自动为我们设置 Type 的值：
-```ts twoslash
+```ts 
 function identity<Type>(arg: Type): Type {
   return arg;
 }
@@ -79,7 +79,7 @@ let output = identity("myString");
 
 让我们使用之前的`identity` 函数：
 
-```ts twoslash
+```ts 
 function identity<Type>(arg: Type): Type {
   return arg;
 }
@@ -87,7 +87,7 @@ function identity<Type>(arg: Type): Type {
 
 如果我们还想在每次调用时将参数`arg`的长度记录到控制台怎么办？
 我们可能会忍不住这样写：
-```ts twoslash
+```ts 
 // @errors: 2339
 function loggingIdentity<Type>(arg: Type): Type {
   console.log(arg.length);
@@ -102,7 +102,7 @@ function loggingIdentity<Type>(arg: Type): Type {
 假设我们实际上打算让这个函数在 `Type` 的数组上工作，而不是直接在 `Type` 上工作。 由于我们正在使用数组，因此 `.length` 成员应该可用。
 我们可以像创建其他类型的数组一样描述它：
 
-```ts twoslash {1} 
+```ts  {1} 
 function loggingIdentity<Type>(arg: Type[]): Type[] {
   console.log(arg.length);
   return arg;
@@ -115,7 +115,7 @@ function loggingIdentity<Type>(arg: Type[]): Type[] {
 
 我们也可以这样编写示例：
 
-```ts twoslash {1}
+```ts  {1}
 function loggingIdentity<Type>(arg: Array<Type>): Array<Type> {
   console.log(arg.length); // 数组length属性，所以不再有错误
   return arg;
@@ -132,7 +132,7 @@ In the next section, we'll cover how you can create your own generic types like 
 
 泛型函数的类型与非泛型函数的类型一样，首先列出类型参数，类似于函数声明：
 
-```ts twoslash
+```ts 
 function identity<Type>(arg: Type): Type {
   return arg;
 }
@@ -142,7 +142,7 @@ let myIdentity: <Type>(arg: Type) => Type = identity;
 
 我们也可以为类型中的泛型类型参数使用不同的名称，只要类型变量的数量和类型变量的使用方式一致即可。
 
-```ts twoslash
+```ts 
 function identity<Type>(arg: Type): Type {
   return arg;
 }
@@ -152,7 +152,7 @@ let myIdentity: <Input>(arg: Input) => Input = identity;
 
 我们还可以将泛型类型写成对象字面量类型的调用签名：
 
-```ts twoslash
+```ts 
 function identity<Type>(arg: Type): Type {
   return arg;
 }
@@ -163,7 +163,7 @@ let myIdentity: { <Type>(arg: Type): Type } = identity;
 这导致我们编写了第一个通用接口。
 让我们把前面例子中的对象字面量移到一个接口中：
 
-```ts twoslash
+```ts 
 interface GenericIdentityFn {
   <Type>(arg: Type): Type;
 }
@@ -178,7 +178,7 @@ let myIdentity: GenericIdentityFn = identity;
 在类似的示例中，我们可能希望将通用参数移动为整个接口的参数。
 这让我们看到我们泛型的类型（例如，`Dictionary<string>` 而不仅仅是 `Dictionary`）。
 这使得类型参数对接口的所有其他成员可见。
-```ts twoslash
+```ts 
 interface GenericIdentityFn<Type> {
   (arg: Type): Type;
 }
@@ -201,7 +201,7 @@ let myIdentity: GenericIdentityFn<number> = identity;
 
 泛型类具有与泛型接口相似的形状。
 泛型类在类名后面的尖括号 (`<>`) 中有一个泛型类型参数列表。
-```ts twoslash
+```ts 
 // @strict: false
 class GenericNumber<NumType> {
   zeroValue: NumType;
@@ -217,7 +217,7 @@ myGenericNumber.add = function (x, y) {
 
 这是对 `GenericNumber`  类的直接使用，但您可能已经注意到没有任何限制它只能使用 `number`  类型。
 我们本可以改用 `string` 或更复杂的对象。
-```ts twoslash
+```ts 
 // @strict: false
 class GenericNumber<NumType> {
   zeroValue: NumType;
@@ -243,7 +243,7 @@ console.log(stringNumeric.add(stringNumeric.zeroValue, "test"));
 
 如果您还记得之前的示例，您有时可能想要编写一个适用于一组类型的泛型函数，您 _一些_ 了解这组类型将具有的功能。
 在我们的`loggingIdentity`示例中，我们希望能够访问`arg`的 `.length`属性，但编译器无法证明每个类型都有一个 `.length`属性，所以它警告我们不能做这个假设。
-```ts twoslash
+```ts 
 // @errors: 2339
 function loggingIdentity<Type>(arg: Type): Type {
   console.log(arg.length);
@@ -257,7 +257,7 @@ function loggingIdentity<Type>(arg: Type): Type {
 
 为此，我们将创建一个描述约束的接口。
 在这里，我们将创建一个具有单个 `.length` 属性的接口，然后我们将使用该接口和 `extends`关键字来表示我们的约束：
-```ts twoslash
+```ts 
 interface Lengthwise {
   length: number;
 }
@@ -270,7 +270,7 @@ function loggingIdentity<Type extends Lengthwise>(arg: Type): Type {
 因为泛型函数现在受到约束，所以它不再适用于所有类型：
 
 
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Lengthwise {
   length: number;
@@ -285,7 +285,7 @@ loggingIdentity(3);
 ```
 
 相反，我们需要传入其类型具有所有必需属性的值：
-```ts twoslash
+```ts 
 interface Lengthwise {
   length: number;
 }
@@ -303,7 +303,7 @@ loggingIdentity({ length: 10, value: 3 });
 您可以声明一个受另一个类型参数约束的类型参数。
 例如，在这里我们想从给定名称的对象中获取属性。
 我们想确保我们不会意外获取 `obj` 上不存在的属性，因此我们将在两种类型之间放置一个约束：
-```ts twoslash
+```ts 
 // @errors: 2345
 function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
   return obj[key];
@@ -318,14 +318,14 @@ getProperty(x, "m");
 ## 类中使用泛型
 
 在 TypeScript 中使用泛型创建工厂时，需要通过构造函数来引用类类型。 例如，
-```ts twoslash
+```ts 
 function create<Type>(c: { new (): Type }): Type {
   return new c();
 }
 ```
 
 一个更高级的示例使用原型属性来推断和约束构造函数与类类型的实例端之间的关系。
-```ts twoslash
+```ts 
 // @strict: false
 class BeeKeeper {
   hasMask: boolean = true;

@@ -5,7 +5,7 @@ oneline: "Enable error reporting when local variables aren't read."
 
 Report errors on unused local variables.
 
-```ts twoslash
+```ts 
 // @noUnusedLocals
 // @errors: 6133
 const createKeyboard = (modelID: number) => {

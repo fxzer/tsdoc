@@ -12,7 +12,7 @@
 有时，你会遇到一个库，它期望一个参数是 `number` 或 `string` 。
 例如下面的函数：
 
-```ts twoslash
+```ts 
 /**
  * Takes a string and adds "padding" to the left.
  * If 'padding' is a string, then 'padding' is appended to the left side.
@@ -34,7 +34,7 @@ padLeft("Hello world", 4); // returns "    Hello world"
 在上面的例子中，`padLeft`的问题在于其`padding`参数的类型为`any`。
 这意味着我们可以用`number`和`string`之外的参数类型来调用它，而TypeScript也能接受。
 
-```ts twoslash
+```ts 
 declare function padLeft(value: string, padding: any): string;
 // ---cut---
 // 编译时通过但是运行时失败。
@@ -49,7 +49,7 @@ let indentedString = padLeft("Hello world", true);
 
 为了取代`any`，我们可以为`padding`参数使用 _联合类型_：
 
-```ts twoslash
+```ts 
 // @errors: 2345
 /**
  * Takes a string and adds "padding" to the left.
@@ -70,7 +70,7 @@ let indentedString = padLeft("Hello world", true);
 
 如果我们有一个联合类型的值，则只能访问联合中所有类型共有的成员。
 
-```ts twoslash
+```ts 
 // @errors: 2339
 
 interface Bird {
@@ -145,7 +145,7 @@ type NetworkState =
 
 在这个例子中，你可以使用`switch`语句来缩小在运行时代表哪种类型：
 
-```ts twoslash
+```ts 
 // @errors: 2339
 type NetworkLoadingState = {
   state: "loading";
@@ -194,7 +194,7 @@ function logger(state: NetworkState): string {
 我们希望编译器能在我们没能覆盖可区分联合的所有变体时告诉我们。
 比如，如果我们添加`NetworkFromCachedState`到`NetworkState`，我们也需要更新`logger`：
 
-```ts twoslash
+```ts 
 // @errors: 2366
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
@@ -234,7 +234,7 @@ function logger(s: NetworkState) {
 这里有两种方法实现。
 第一种方法是打开[`strictNullChecks`](/tsconfig#strictNullChecks)并指定返回类型：
 
-```ts twoslash
+```ts 
 // @errors: 2366
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
@@ -266,7 +266,7 @@ function logger(s: NetworkState): string {
 
 第二种方法是使用编译器用来检查穷尽性的`never`类型：
 
-```ts twoslash
+```ts 
 // @errors: 2345
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
@@ -311,7 +311,7 @@ function logger(s: NetworkState): string {
 
 例如，如果你有具有一致的错误处理的网络请求，那么你可以将错误处理分离到它自己的类型中，与对应于单个响应类型的类型合并。
 
-```ts twoslash
+```ts 
 interface ErrorHandling {
   success: boolean;
   error?: { message: string };

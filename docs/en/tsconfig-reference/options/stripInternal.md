@@ -7,7 +7,7 @@ Do not emit declarations for code that has an `@internal` annotation in its JSDo
 This is an internal compiler option; use at your own risk, because the compiler does not check that the result is valid.
 If you are searching for a tool to handle additional levels of visibility within your `d.ts` files, look at [api-extractor](https://api-extractor.com).
 
-```ts twoslash
+```ts 
 /**
  * Days available in a week
  * @internal
@@ -22,7 +22,7 @@ export function weeklySalary(dayRate: number) {
 
 With the flag set to `false` (default):
 
-```ts twoslash
+```ts 
 // @showEmittedFile: index.d.ts
 // @showEmit
 // @declaration
@@ -40,7 +40,7 @@ export function weeklySalary(dayRate: number) {
 
 With `stripInternal` set to `true` the `d.ts` emitted will be redacted.
 
-```ts twoslash
+```ts 
 // @stripinternal
 // @showEmittedFile: index.d.ts
 // @showEmit

@@ -32,11 +32,7 @@ export const sharedConfig = defineConfig({
 
   themeConfig: {
     logo: '/logo.svg',
-    outline: [2, 3],
-
-    socialLinks: [
-
-    ],
+    socialLinks: [],
     footer: {
       message: 'Released under the <a href="https://github.com/fxzer/tsdoc-vitepress/blob/main/LICENSE">MIT License</a>.',
       copyright: 'Copyright © 2023-present <a href="https://github.com/fxzer">fxzer</a>.',

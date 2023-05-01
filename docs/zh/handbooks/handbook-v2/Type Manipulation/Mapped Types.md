@@ -2,7 +2,7 @@
 当您不想重复自己时，有时一种类型需要基于另一种类型。
 
 映射类型建立在索引签名的语法之上，用于声明未提前声明的属性类型：
-```ts twoslash
+```ts 
 type Horse = {};
 // ---cut---
 type OnlyBoolsAndHorses = {
@@ -16,14 +16,14 @@ const conforms: OnlyBoolsAndHorses = {
 ```
 
 映射类型是一种通用类型，它使用 `PropertyKey` 的联合（经常[通过 `keyof`](/docs/handbook/2/indexed-access-types.html) 创建）来遍历键以创建 类型：
-```ts twoslash
+```ts 
 type OptionsFlags<Type> = {
   [Property in keyof Type]: boolean;
 };
 ```
 
 在此示例中，`OptionsFlags` 将从类型`Type`中获取所有属性，并将它们的值更改为布尔值。
-```ts twoslash
+```ts 
 type OptionsFlags<Type> = {
   [Property in keyof Type]: boolean;
 };
@@ -42,7 +42,7 @@ type FeatureOptions = OptionsFlags<FeatureFlags>;
 在映射期间可以应用两个额外的修饰符：`readonly` 和 `?`，它们分别影响可变性和可选性。
 
 您可以通过在 `-` 或 `+` 前加上前缀来删除或添加这些修饰符。 如果您不添加前缀，则假定为`+`。
-```ts twoslash
+```ts 
 // Removes 'readonly' attributes from a type's properties
 type CreateMutable<Type> = {
   -readonly [Property in keyof Type]: Type[Property];
@@ -57,7 +57,7 @@ type UnlockedAccount = CreateMutable<LockedAccount>;
 //   ^?
 ```
 
-```ts twoslash
+```ts 
 // Removes 'optional' attributes from a type's properties
 type Concrete<Type> = {
   [Property in keyof Type]-?: Type[Property];
@@ -83,7 +83,7 @@ type MappedTypeWithNewProperties<Type> = {
 ```
 
 您可以利用 [模版字面量](/docs/handbook/2/template-literal-types.html) 等功能从先前的属性名称创建新的属性名称：
-```ts twoslash
+```ts 
 type Getters<Type> = {
     [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property]
 };
@@ -99,7 +99,7 @@ type LazyPerson = Getters<Person>;
 ```
 
 您可以通过条件类型生成`never` 来过滤掉键：
-```ts twoslash
+```ts 
 // Remove the 'kind' property
 type RemoveKindField<Type> = {
     [Property in keyof Type as Exclude<Property, "kind">]: Type[Property]
@@ -115,7 +115,7 @@ type KindlessCircle = RemoveKindField<Circle>;
 ```
 
 您可以映射任意联合，而不仅仅是  `string | number | symbol`，但任何类型的联合：
-```ts twoslash
+```ts 
 type EventConfig<Events extends { kind: string }> = {
     [E in Events as E["kind"]]: (event: E) => void;
 }
@@ -131,7 +131,7 @@ type Config = EventConfig<SquareEvent | CircleEvent>
 
 
 映射类型与此类型操作部分中的其他功能配合得很好，例如这里是[使用条件类型的映射类型](/docs/handbook/2/conditional-types.html)，它返回 `true` or `false`  取决于对象是否将属性 `pii` 设置为字面量 `true`：
-```ts twoslash
+```ts 
 type ExtractPII<Type> = {
   [Property in keyof Type]: Type[Property] extends { pii: true } ? true : false;
 };

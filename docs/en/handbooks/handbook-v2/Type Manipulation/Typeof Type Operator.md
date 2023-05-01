@@ -3,14 +3,14 @@
 
 JavaScript already has a `typeof` operator you can use in an _expression_ context:
 
-```ts twoslash
+```ts 
 // Prints "string"
 console.log(typeof "Hello world");
 ```
 
 TypeScript adds a `typeof` operator you can use in a _type_ context to refer to the _type_ of a variable or property:
 
-```ts twoslash
+```ts 
 let s = "hello";
 let n: typeof s;
 //  ^?
@@ -20,7 +20,7 @@ This isn't very useful for basic types, but combined with other type operators, 
 For an example, let's start by looking at the predefined type `ReturnType<T>`.
 It takes a _function type_ and produces its return type:
 
-```ts twoslash
+```ts 
 type Predicate = (x: unknown) => boolean;
 type K = ReturnType<Predicate>;
 //   ^?
@@ -28,7 +28,7 @@ type K = ReturnType<Predicate>;
 
 If we try to use `ReturnType` on a function name, we see an instructive error:
 
-```ts twoslash
+```ts 
 // @errors: 2749
 function f() {
   return { x: 10, y: 3 };
@@ -39,7 +39,7 @@ type P = ReturnType<f>;
 Remember that _values_ and _types_ aren't the same thing.
 To refer to the _type_ that the _value `f`_ has, we use `typeof`:
 
-```ts twoslash
+```ts 
 function f() {
   return { x: 10, y: 3 };
 }
@@ -54,7 +54,7 @@ TypeScript intentionally limits the sorts of expressions you can use `typeof` on
 Specifically, it's only legal to use `typeof` on identifiers (i.e. variable names) or their properties.
 This helps avoid the confusing trap of writing code you think is executing, but isn't:
 
-```ts twoslash
+```ts 
 // @errors: 1005
 declare const msgbox: () => boolean;
 // type msgbox = any;

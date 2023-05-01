@@ -118,7 +118,7 @@ TypeScript 在无法分辨类型的时候使用 any 类型
 无论它出现在哪里。 例如，您可以将任何值压入
 `any[]` 不以任何方式标记值：
 
-```ts twoslash
+```ts 
 // with "noImplicitAny": false in tsconfig.json, anys: any[]
 const anys = [];
 anys.push(1);
@@ -166,7 +166,7 @@ let o2: { x: string } = o; // ok
 在下面输入“两个”。 它们都有一个属性 `p: string`。 （类型别名
 在递归方面与接口的行为不同
 但是，定义和类型参数。）
-```ts twoslash
+```ts 
 // @errors: 2322
 type One = { p: string };
 interface Two {
@@ -186,7 +186,7 @@ two = new Three();
 在 TypeScript 中，联合类型是未标记的。 换句话说，他们不是
 区分联合，例如 Haskell 中的“数据”。 但是，您可以经常
 使用内置标签或其他属性区分联合中的类型。
-```ts twoslash
+```ts 
 function start(
   arg: string | string[] | (() => string) | { s: string }
 ): string {
@@ -233,7 +233,7 @@ function start(
 
 除了并集，TypeScript 还有交集：
 
-```ts twoslash
+```ts 
 type Combined = { a: number } & { b: string };
 type Conflicting = { a: number } & { a: string };
 ```
@@ -250,7 +250,7 @@ type Conflicting = { a: number } & { a: string };
 众所周知的字符串。 字符串文字类型的联合允许
 用于键入此模式的 TypeScript：
 
-```ts twoslash
+```ts 
 declare function pad(s: string, n: number, direction: "left" | "right"): string;
 pad("hi", 10, "left");
 ```
@@ -259,7 +259,7 @@ pad("hi", 10, "left");
 到 `string`。 使用可变性时会发生这种情况，这可能会妨碍一些
 可变变量的使用：
 
-```ts twoslash
+```ts 
 // @errors: 2345
 declare function pad(s: string, n: number, direction: "left" | "right"): string;
 // ---cut---
@@ -276,7 +276,7 @@ Here's how the error happens:
 您可以使用 `s` 的类型注释来解决这个问题，但是
 反过来防止对非类型变量的 `s` 赋值`"left" | "right"`.
 
-```ts twoslash
+```ts 
 declare function pad(s: string, n: number, direction: "left" | "right"): string;
 // ---cut---
 let s: "left" | "right" = "right";
@@ -290,14 +290,14 @@ pad("hi", 10, s);
 TypeScript 有一些明显的地方可以推断类型，比如
 变量声明：:
 
-```ts twoslash
+```ts 
 let s = "I'm a string!";
 ```
 
 但它也在其他一些您可能没有想到的地方推断出类型
 如果您使用过其他 C 语法语言：
 
-```ts twoslash
+```ts 
 declare function map<T, U>(f: (t: T) => U, ts: T[]): U[];
 let sns = map((n) => n.toString(), [1, 2, 3]);
 ```
@@ -311,7 +311,7 @@ let sns = map((n) => n.toString(), [1, 2, 3]);
 请注意，推理可以按任何顺序进行，但智能感知只会
 从左到右工作，所以 TypeScript 更喜欢用
 数组优先：
-```ts twoslash
+```ts 
 declare function map<T, U>(ts: T[], f: (t: T) => U): U[];
 ```
 
@@ -319,7 +319,7 @@ declare function map<T, U>(ts: T[], f: (t: T) => U): U[];
 在否则会被推断为“字符串”或
 `数字`。 它可以从上下文推断返回类型：
 
-```ts twoslash
+```ts 
 declare function run<T>(thunk: (t: T) => void): T;
 let i: { inference: string } = run((o) => {
   o.inference = "INSERT STATE HERE";
@@ -347,7 +347,7 @@ let i: { inference: string } = run((o) => {
 编译器将尝试在其中使用的任何地方使用别名
 源代码，但并不总是成功。
 
-```ts twoslash
+```ts 
 type Size = [number, number];
 let x: Size = [101.1, 999.9];
 ```
@@ -380,7 +380,7 @@ type Shape =
 联合类型语法的可选部分。 你可以区分
 使用普通 JavaScript 代码的联盟成员：
 
-```ts twoslash
+```ts 
 type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "square"; x: number }
@@ -404,7 +404,7 @@ TypeScript 知道这个函数是完整的。 如果某些变体不是
 此外，与 Haskell 不同的是，公共属性出现在任何联合中，所以你
 可以有效地区分工会的多个成员：
 
-```ts twoslash
+```ts 
 type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "square"; x: number }

@@ -58,7 +58,7 @@ Released:
 
 ##### 例子
 
-```ts twoslash
+```ts 
 type A = Awaited<Promise<string>>;
 //   ^?
 
@@ -72,7 +72,7 @@ type C = Awaited<boolean | Promise<number>>;
 
 ##### 例子
 
-```ts twoslash
+```ts 
 interface Todo {
   title: string;
   description: string;

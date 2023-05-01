@@ -104,7 +104,7 @@ Using these extensions is entirely optional, but will often be useful even if yo
 
 Node.js allows ES modules to import CommonJS modules as if they were ES modules with a default export.
 
-```ts twoslash
+```ts 
 // @module: nodenext
 // @filename: helper.cts
 export function helper() {
@@ -121,7 +121,7 @@ foo.helper();
 In some cases, Node.js also synthesizes named exports from CommonJS modules, which can be more convenient.
 In these cases, ES modules can use a "namespace-style" import (i.e. `import * as foo from "..."`), or named imports (i.e. `import { helper } from "..."`).
 
-```ts twoslash
+```ts 
 // @module: nodenext
 // @filename: helper.cts
 export function helper() {
@@ -147,7 +147,7 @@ In a CommonJS module, this just boils down to a `require()` call, and in an ES m
 This will make code less portable on runtimes like the browser (which don't support `require()`), but will often be useful for interoperability.
 In turn, you can write the above example using this syntax as follows:
 
-```ts twoslash
+```ts 
 // @module: nodenext
 // @filename: helper.cts
 export function helper() {

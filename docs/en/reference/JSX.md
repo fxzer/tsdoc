@@ -135,7 +135,7 @@ const Button = (prop: { value: string }, context: { color: string }) => (
 
 Because a Function Component is simply a JavaScript function, function overloads may be used here as well:
 
-```ts twoslash
+```ts 
 // @noErrors
 declare module JSX {
   interface Element {}

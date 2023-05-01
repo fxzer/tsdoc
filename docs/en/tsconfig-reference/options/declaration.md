@@ -9,20 +9,20 @@ With `.d.ts` files, tools like TypeScript can provide intellisense and accurate 
 
 When `declaration` is set to `true`, running the compiler with this TypeScript code:
 
-```ts twoslash
+```ts 
 export let helloWorld = "hi";
 ```
 
 Will generate an `index.js` file like this:
 
-```ts twoslash
+```ts 
 // @showEmit
 export let helloWorld = "hi";
 ```
 
 With a corresponding `helloWorld.d.ts`:
 
-```ts twoslash
+```ts 
 // @showEmittedFile: index.d.ts
 // @showEmit
 // @declaration

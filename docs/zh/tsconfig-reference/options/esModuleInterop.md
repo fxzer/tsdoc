@@ -28,7 +28,7 @@ _.chunk(["a", "b", "c", "d"], 2);
 
 With `esModuleInterop` disabled:
 
-```ts twoslash
+```ts 
 // @noErrors
 // @showEmit
 // @esModuleInterop: false
@@ -42,7 +42,7 @@ _.chunk(["a", "b", "c", "d"], 2);
 
 With `esModuleInterop` set to `true`:
 
-```ts twoslash
+```ts 
 // @noErrors
 // @showEmit
 // @esModuleInterop
@@ -58,7 +58,7 @@ _Note_: The namespace import `import * as fs from "fs"` only accounts for proper
 
 _Note_: You can make JS emit terser by enabling [`importHelpers`](#importHelpers):
 
-```ts twoslash
+```ts 
 // @noErrors
 // @showEmit
 // @esModuleInterop

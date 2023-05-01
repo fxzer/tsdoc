@@ -78,7 +78,7 @@ That's what a static type-checker like TypeScript does.
 _Static types systems_ describe the shapes and behaviors of what our values will be when we run our programs.
 A type-checker like TypeScript uses that information and tells us when things might be going off the rails.
 
-```ts twoslash
+```ts 
 // @errors: 2349
 const message = "hello!";
 
@@ -108,7 +108,7 @@ user.location; // returns undefined
 Ultimately, a static type system has to make the call over what code should be flagged as an error in its system, even if it's "valid" JavaScript that won't immediately throw an error.
 In TypeScript, the following code produces an error about `location` not being defined:
 
-```ts twoslash
+```ts 
 // @errors: 2339
 const user = {
   name: "Daniel",
@@ -123,7 +123,7 @@ And TypeScript catches _a lot_ of legitimate bugs.
 
 For example: typos,
 
-```ts twoslash
+```ts 
 // @noErrors
 const announcement = "Hello World!";
 
@@ -137,7 +137,7 @@ announcement.toLocaleLowerCase();
 
 uncalled functions,
 
-```ts twoslash
+```ts 
 // @noUnusedLocals
 // @errors: 2365
 function flipCoin() {
@@ -148,7 +148,7 @@ function flipCoin() {
 
 or basic logic errors.
 
-```ts twoslash
+```ts 
 // @errors: 2367
 const value = Math.random() < 0.5 ? "a" : "b";
 if (value !== "a") {
@@ -170,7 +170,7 @@ That means TypeScript can be leveraged for editing code too, and the core type-c
 That's part of what people often refer to when they talk about tooling in TypeScript.
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 // @noErrors
 // @esModuleInterop
 import express from "express";
@@ -203,7 +203,7 @@ npm install -g typescript
 
 Now let's move to an empty folder and try writing our first TypeScript program: `hello.ts`:
 
-```ts twoslash
+```ts 
 // Greets the world.
 console.log("Hello world!");
 ```
@@ -238,7 +238,7 @@ While that's not always so easy, TypeScript indents consistently, is mindful of 
 What about if we _did_ introduce a type-checking error?
 Let's rewrite `hello.ts`:
 
-```ts twoslash
+```ts 
 // @noErrors
 // This is an industrial-grade general-purpose greeter function:
 function greet(person, date) {
@@ -287,7 +287,7 @@ Up until now, we haven't told TypeScript what `person` or `date` are.
 Let's edit the code to tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
 We'll also use the `toDateString()` method on `date`.
 
-```ts twoslash
+```ts 
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -299,7 +299,7 @@ You can read that signature as "`greet` takes a `person` of type `string`, and a
 With this, TypeScript can tell us about other cases where `greet` might have been called incorrectly.
 For example...
 
-```ts twoslash
+```ts 
 // @errors: 2345
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
@@ -316,7 +316,7 @@ On the other hand, constructing a `Date` with `new Date()` actually gives us wha
 
 Anyway, we can quickly fix up the error:
 
-```ts twoslash {4}
+```ts  {4}
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -327,7 +327,7 @@ greet("Maddison", new Date());
 Keep in mind, we don't always have to write explicit type annotations.
 In many cases, TypeScript can even just _infer_ (or "figure out") the types for us even if we omit them.
 
-```ts twoslash
+```ts 
 let msg = "hello there!";
 //  ^?
 ```
@@ -341,7 +341,7 @@ That's a feature, and it's best not to add annotations when the type system woul
 
 Let's take a look at what happens when we compile the above function `greet` with `tsc` to output JavaScript:
 
-```ts twoslash
+```ts 
 // @showEmit
 // @target: es5
 function greet(person: string, date: Date) {

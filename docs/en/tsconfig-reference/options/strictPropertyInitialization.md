@@ -5,7 +5,7 @@ oneline: "Check for class properties that are declared but not set in the constr
 
 When set to true, TypeScript will raise an error when a class property was declared but not set in the constructor.
 
-```ts twoslash
+```ts 
 // @errors: 2564
 class UserAccount {
   name: string;

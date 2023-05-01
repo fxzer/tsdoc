@@ -31,7 +31,7 @@ Using this TSConfig:
 
 The emitted JavaScript from TypeScript is:
 
-```tsx twoslash
+```tsx 
 // @showEmit
 // @noErrors
 // @jsx: react-jsx
@@ -66,7 +66,7 @@ For example if you wanted to use `"jsxImportSource": "preact"`, you need a tscon
 
 Which generates code like:
 
-```tsx twoslash
+```tsx 
 // @showEmit
 // @jsxImportSource: preact
 // @types: preact

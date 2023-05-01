@@ -8,7 +8,7 @@ TypeScript 能够理解这些检查，并将它们称作为*类型守卫*。
 
 例如，可以这样写
 
-```ts twoslash
+```ts 
 function foo(arg: unknown) {
     if (typeof arg === 'string') {
         console.log(arg.toUpperCase());
@@ -48,7 +48,7 @@ function foo(arg: unknown) {
 不同种类的类型守卫都支持，不只是 `typeof` 类型守卫。
 例如，对于可辨识联合类型同样适用。
 
-```ts twoslash
+```ts 
 type Shape =
     | { kind: 'circle'; radius: number }
     | { kind: 'square'; sideLength: number };
@@ -67,7 +67,7 @@ function area(shape: Shape): number {
 
 在 TypeScript 4.4 版本中对判别式的分析又进了一层 - 现在可以提取出判别式然后细化原来的对象类型。
 
-```ts twoslash
+```ts 
 type Shape =
     | { kind: 'circle'; radius: number }
     | { kind: 'square'; sideLength: number };
@@ -88,7 +88,7 @@ function area(shape: Shape): number {
 
 另一个例子，该函数会检查它的两个参数是否有内容。
 
-```ts twoslash
+```ts 
 function doSomeChecks(
     inputA: string | undefined,
     inputB: string | undefined,
@@ -110,7 +110,7 @@ TypeScript 知道如果 `mustDoWork` 为 `true` 那么 `inputA` 和 `inputB` 都
 一个好的性质是该分析同时具有可传递性。
 TypeScript 可以通过这些常量来理解在它们背后执行的检查。
 
-```ts twoslash
+```ts 
 function f(x: string | number | boolean) {
     const isString = typeof x === 'string';
     const isNumber = typeof x === 'number';
@@ -138,7 +138,7 @@ TypeScript 支持使用*索引签名*来为对象的每个属性定义类型。
 例如，可以编写由 `string` 类型的键映射到 `boolean` 值的类型。
 如果我们给它赋予 `boolean` 类型以外的值会报错。
 
-```ts twoslash
+```ts 
 interface BooleanDictionary {
     [key: string]: boolean;
 }
@@ -183,7 +183,7 @@ TypeScript 4.4 解决了这个问题，允许 `symbol` 索引签名以及模版�
 
 例如，TypeScript 允许声明一个接受任意 `symbol` 值作为键的对象类型。
 
-```ts twoslash
+```ts 
 interface Colors {
     [sym: symbol]: number;
 }
@@ -314,7 +314,7 @@ Property 'stack' does not exist on type 'unknown'.
 
 如果我们不想处理 `catch` 语句中 `unknown` 类型的捕获变量，那么可以明确使用 `: any` 类型注解，这样就会关闭严格类型检查。
 
-```ts twoslash
+```ts 
 declare function executeSomeThirdPartyCode(): void;
 
 try {
@@ -365,7 +365,7 @@ const p: Person = {
 
 在 TypeScript 4.4 中，新的 `--exactOptionalPropertyTypes` 标记指明了可选属性的确切表示方式，即不自动添加 `| undefined` 类型：
 
-```ts twoslash
+```ts 
 interface Person {
     name: string;
     age?: number;

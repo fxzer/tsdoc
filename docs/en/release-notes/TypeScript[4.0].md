@@ -73,7 +73,7 @@ When generic spreads are instantiated (or, replaced with a real type) in these t
 
 For example, that means we can type function like `tail`, without our "death by a thousand overloads" issue.
 
-```ts twoslash
+```ts 
 function tail<T extends any[]>(arr: readonly [any, ...T]) {
   const [_ignored, ...rest] = arr;
   return rest;
@@ -117,7 +117,7 @@ type Unbounded = [...Strings, ...Numbers, boolean];
 
 By combining both of these behaviors together, we can write a single well-typed signature for `concat`:
 
-```ts twoslash
+```ts 
 type Arr = readonly any[];
 
 function concat<T extends Arr, U extends Arr>(arr1: T, arr2: U): [...T, ...U] {
@@ -140,7 +140,7 @@ function partialCall(f, ...headArgs) {
 
 TypeScript 4.0 improves the inference process for rest parameters and rest tuple elements so that we can type this and have it "just work".
 
-```ts twoslash
+```ts 
 type Arr = readonly unknown[];
 
 function partialCall<T extends Arr, U extends Arr, R>(
@@ -153,7 +153,7 @@ function partialCall<T extends Arr, U extends Arr, R>(
 
 In this case, `partialCall` understands which parameters it can and can't initially take, and returns functions that appropriately accept and reject anything left over.
 
-```ts twoslash
+```ts 
 // @errors: 2345 2554 2554 2345
 type Arr = readonly unknown[];
 
@@ -211,7 +211,7 @@ function foo(arg0: string, arg1: number): void {
 
 ...for any caller of `foo`.
 
-```ts twoslash
+```ts 
 // @errors: 2554
 function foo(arg0: string, arg1: number): void {
   // ...
@@ -242,7 +242,7 @@ type Foo = [first: number, second?: string, ...rest: any[]];
 There are a few rules when using labeled tuples.
 For one, when labeling a tuple element, all other elements in the tuple must also be labeled.
 
-```ts twoslash
+```ts 
 // @errors: 5084
 type Bar = [first: string, number];
 ```
@@ -250,7 +250,7 @@ type Bar = [first: string, number];
 It's worth noting - labels don't require us to name our variables differently when destructuring.
 They're purely there for documentation and tooling.
 
-```ts twoslash
+```ts 
 function foo(x: [first: string, second: number]) {
     // ...
 
@@ -275,7 +275,7 @@ To learn more, check out [the pull request](https://github.com/microsoft/TypeScr
 TypeScript 4.0 can now use control flow analysis to determine the types of properties in classes when [`noImplicitAny`](/tsconfig#noImplicitAny) is enabled.
 
 <!--prettier-ignore -->
-```ts twoslash
+```ts 
 class Square {
   // Previously both of these were any
   area;
@@ -292,7 +292,7 @@ class Square {
 In cases where not all paths of a constructor assign to an instance member, the property is considered to potentially be `undefined`.
 
 <!--prettier-ignore -->
-```ts twoslash
+```ts 
 // @errors: 2532 18048
 class Square {
   sideLength;
@@ -312,7 +312,7 @@ class Square {
 
 In cases where you know better (e.g. you have an `initialize` method of some sort), you'll still need an explicit type annotation along with a definite assignment assertion (`!`) if you're in [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization).
 
-```ts twoslash
+```ts 
 class Square {
   // definite assignment assertion
   //        v
@@ -419,7 +419,7 @@ if (!obj.prop) {
 
 [Try running the following example](https://www.typescriptlang.org/play?ts=Nightly#code/MYewdgzgLgBCBGArGBeGBvAsAKBnmA5gKawAOATiKQBQCUGO+TMokIANkQHTsgHUAiYlChFyMABYBDCDHIBXMANoBuHI2Z4A9FpgAlIqXZTgRGAFsiAQg2byJeeTAwAslKgSu5KWAAmIczoYAB4YAAYuAFY1XHwAXwAaWxgIEhgKKmoAfQA3KXYALhh4EA4iH3osWM1WCDKePkFUkTFJGTlFZRimOJw4mJwAM0VgKABLcBhB0qCqplr63n4BcjGCCVgIMd8zIjz2eXciXy7k+yhHZygFIhje7BwFzgblgBUJMdlwM3yAdykAJ6yBSQGAeMzNUTkU7YBCILgZUioOBIBGUJEAHwxUxmqnU2Ce3CWgnenzgYDMACo6pZxpYIJSOqDwSkSFCYXC0VQYFi0NMQHQVEA) to see how that differs from _always_ performing the assignment.
 
-```ts twoslash
+```ts 
 const obj = {
     get prop() {
         console.log("getter has run");
@@ -454,7 +454,7 @@ You can also [check out TC39's proposal repository for this feature](https://git
 Since the beginning days of TypeScript, `catch` clause variables have always been typed as `any`.
 This meant that TypeScript allowed you to do anything you wanted with them.
 
-```ts twoslash
+```ts 
 // @useUnknownInCatchVariables: false
 try {
   // Do some work
@@ -474,7 +474,7 @@ That's why TypeScript 4.0 now lets you specify the type of `catch` clause variab
 `unknown` is safer than `any` because it reminds us that we need to perform some sorts of type-checks before operating on our values.
 
 <!--prettier-ignore -->
-```ts twoslash
+```ts 
 // @errors: 2571 18046
 try {
   // ...
@@ -519,7 +519,7 @@ As an example, the following `tsconfig.json` file tells TypeScript to transform 
 In cases where you need to have a different JSX factory on a per-file basis<!-- (maybe you like to ship React, Preact, and Inferno to give a blazing fast experience) -->, you can take advantage of the new `/** @jsxFrag */` pragma comment.
 For example, the following...
 
-```tsx twoslash
+```tsx 
 // @noErrors
 // Note: these pragma comments need to be written
 // with a JSDoc-style multiline syntax to take effect.
@@ -538,7 +538,7 @@ export const Header = (
 
 ...will get transformed to this output JavaScript...
 
-```tsx twoslash
+```tsx 
 // @noErrors
 // @showEmit
 // Note: these pragma comments need to be written
@@ -681,7 +681,7 @@ MDN recommends moving to [`self.origin`](https://developer.mozilla.org/en-US/doc
 
 Previously, it was only an error for properties to override accessors, or accessors to override properties, when using [`useDefineForClassFields`](/tsconfig#useDefineForClassFields); however, TypeScript now always issues an error when declaring a property in a derived class that would override a getter or setter in the base class.
 
-```ts twoslash
+```ts 
 // @errors: 1049 2610
 class Base {
   get foo() {
@@ -697,7 +697,7 @@ class Derived extends Base {
 }
 ```
 
-```ts twoslash
+```ts 
 // @errors: 2611
 class Base {
   prop = 10;
@@ -717,7 +717,7 @@ See more details on [the implementing pull request](https://github.com/microsoft
 When using the `delete` operator in [`strictNullChecks`](/tsconfig#strictNullChecks), the operand must now be `any`, `unknown`, `never`, or be optional (in that it contains `undefined` in the type).
 Otherwise, use of the `delete` operator is an error.
 
-```ts twoslash
+```ts 
 // @errors: 2790
 interface Thing {
   prop: string;

@@ -19,7 +19,7 @@ This tutorial provides a brief overview of TypeScript, focusing on its type syst
 TypeScript knows the JavaScript language and will generate types for you in many cases.
 For example in creating a variable and assigning it to a particular value, TypeScript will use the value as its type.
 
-```ts twoslash
+```ts 
 let helloWorld = "Hello World";
 //  ^?
 ```
@@ -34,7 +34,7 @@ You can use a wide variety of design patterns in JavaScript. However, some desig
 
 For example, to create an object with an inferred type which includes `name: string` and `id: number`, you can write:
 
-```ts twoslash
+```ts 
 const user = {
   name: "Hayes",
   id: 0,
@@ -43,7 +43,7 @@ const user = {
 
 You can explicitly describe this object's shape using an `interface` declaration:
 
-```ts twoslash
+```ts 
 interface User {
   name: string;
   id: number;
@@ -52,7 +52,7 @@ interface User {
 
 You can then declare that a JavaScript object conforms to the shape of your new `interface` by using syntax like `: TypeName` after a variable declaration:
 
-```ts twoslash
+```ts 
 interface User {
   name: string;
   id: number;
@@ -66,7 +66,7 @@ const user: User = {
 
 If you provide an object that doesn't match the interface you have provided, TypeScript will warn you:
 
-```ts twoslash
+```ts 
 // @errors: 2322
 interface User {
   name: string;
@@ -81,7 +81,7 @@ const user: User = {
 
 Since JavaScript supports classes and object-oriented programming, so does TypeScript. You can use an interface declaration with classes:
 
-```ts twoslash
+```ts 
 interface User {
   name: string;
   id: number;
@@ -102,7 +102,7 @@ const user: User = new UserAccount("Murphy", 1);
 
 You can use interfaces to annotate parameters and return values to functions:
 
-```ts twoslash
+```ts 
 // @noErrors
 interface User {
   name: string;
@@ -130,7 +130,7 @@ With TypeScript, you can create complex types by combining simple ones. There ar
 
 With a union, you can declare that a type could be one of many types. For example, you can describe a `boolean` type as being either `true` or `false`:
 
-```ts twoslash
+```ts 
 type MyBool = true | false;
 ```
 
@@ -138,7 +138,7 @@ _Note:_ If you hover over `MyBool` above, you'll see that it is classed as `bool
 
 A popular use-case for union types is to describe the set of `string` or `number`  <a href="/handbooks/handbook-v2/Everyday Types#literal-types">literals</a> that a value is allowed to be:
 
-```ts twoslash
+```ts 
 type WindowStates = "open" | "closed" | "minimized";
 type LockStates = "locked" | "unlocked";
 type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
@@ -146,7 +146,7 @@ type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 
 Unions provide a way to handle different types too. For example, you may have a function that takes an `array` or a `string`:
 
-```ts twoslash
+```ts 
 function getLength(obj: string | string[]) {
   return obj.length;
 }
@@ -166,7 +166,7 @@ To learn the type of a variable, use `typeof`:
 For example, you can make a function return different values depending on whether it is passed a string or an array:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 function wrapInArray(obj: string | string[]) {
   if (typeof obj === "string") {
     return [obj];
@@ -188,7 +188,7 @@ type ObjectWithNameArray = Array<{ name: string }>;
 
 You can declare your own types that use generics:
 
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Backpack<Type> {
   add: (obj: Type) => void;
@@ -212,7 +212,7 @@ One of TypeScript's core principles is that type checking focuses on the _shape_
 
 In a structural type system, if two objects have the same shape, they are considered to be of the same type.
 
-```ts twoslash
+```ts 
 interface Point {
   x: number;
   y: number;
@@ -231,7 +231,7 @@ The `point` variable is never declared to be a `Point` type. However, TypeScript
 
 The shape-matching only requires a subset of the object's fields to match.
 
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Point {
   x: number;
@@ -254,7 +254,7 @@ logPoint(color);
 
 There is no difference between how classes and objects conform to shapes:
 
-```ts twoslash
+```ts 
 // @errors: 2345
 interface Point {
   x: number;

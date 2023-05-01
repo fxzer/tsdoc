@@ -15,7 +15,7 @@ module.exports.pi = parseFloat(3.124);
 
 When imported into a TypeScript module:
 
-```ts twoslash
+```ts 
 // @allowJs
 // @filename: constants.js
 module.exports.pi = parseFloat(3.124);
@@ -27,7 +27,7 @@ console.log(pi);
 
 You will not get any errors. However, if you turn on `checkJs` then you will get error messages from the JavaScript file.
 
-```ts twoslash
+```ts 
 // @errors: 2345
 // @allowjs: true
 // @checkjs: true

@@ -5,7 +5,7 @@ oneline: "Raise an error when a function parameter isn't read."
 
 Report errors on unused parameters in functions.
 
-```ts twoslash
+```ts 
 // @noUnusedParameters
 // @errors: 6133
 const createDefaultKeyboard = (modelID: number) => {

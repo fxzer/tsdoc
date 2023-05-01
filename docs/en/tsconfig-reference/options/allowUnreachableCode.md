@@ -24,7 +24,7 @@ function fn(n: number) {
 
 With `"allowUnreachableCode": false`:
 
-```ts twoslash
+```ts 
 // @errors: 7027
 // @allowUnreachableCode: false
 function fn(n: number) {

@@ -35,6 +35,13 @@ type FeatureFlags = {
 
 type FeatureOptions = OptionsFlags<FeatureFlags>;
 //   ^?
+
+/* 
+type FeatureOptions = {
+    darkMode: boolean;
+    newUserProfile: boolean;
+}
+*/
 ```
 
 ### 映射修饰符

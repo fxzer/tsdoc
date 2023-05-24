@@ -26,8 +26,8 @@ export const sharedConfig = defineConfig({
   },
 
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/tsdoc-vitepress/logo.svg' }],
-    ['link', { rel: 'icon', href: '/tsdoc-vitepress/favicon.ico' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
   ],
 
   themeConfig: {

@@ -145,7 +145,7 @@ type DogMessageContents = MessageOf<Dog>;
 //   ^?
 ```
 
-在 true 分支中，TypeScript 知道 `T` _will_ 有一个 `message` 属性。
+在 true 分支中，TypeScript 知道 `T` 会有一个 `message` 属性。
 
 作为另一个示例，我们还可以编写一个名为`Flatten`的类型，将数组类型展平为它们的元素类型，但除此之外别管它们：
 ```ts 

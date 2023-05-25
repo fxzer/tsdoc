@@ -1,0 +1,75 @@
+import{_ as s,o as n,c as a,V as l}from"./chunks/framework.ced88878.js";const d=JSON.parse(`{"title":"","description":"","frontmatter":{"display":"jsxFragmentFactory","oneline":"Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'."},"headers":[],"relativePath":"zh/tsconfig-reference/options/jsxFragmentFactory.md","lastUpdated":1682921420000}`),p={name:"zh/tsconfig-reference/options/jsxFragmentFactory.md"},o=l(`<p>Specify the JSX fragment factory function to use when targeting react JSX emit with <a href="#jsxFactory"><code>jsxFactory</code></a> compiler option is specified, e.g. <code>Fragment</code>.</p><p>For example with this TSConfig:</p><div class="language-json"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki dracula-soft vp-code-dark"><code><span class="line"><span style="color:#F6F6F4;">{</span></span>
+<span class="line"><span style="color:#F6F6F4;">  </span><span style="color:#97E2F2;">&quot;</span><span style="color:#97E1F1;">compilerOptions</span><span style="color:#97E2F2;">&quot;</span><span style="color:#F286C4;">:</span><span style="color:#F6F6F4;"> {</span></span>
+<span class="line"><span style="color:#F6F6F4;">    </span><span style="color:#97E2F2;">&quot;</span><span style="color:#97E1F1;">target</span><span style="color:#97E2F2;">&quot;</span><span style="color:#F286C4;">:</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">esnext</span><span style="color:#DEE492;">&quot;</span><span style="color:#F6F6F4;">,</span></span>
+<span class="line"><span style="color:#F6F6F4;">    </span><span style="color:#97E2F2;">&quot;</span><span style="color:#97E1F1;">module</span><span style="color:#97E2F2;">&quot;</span><span style="color:#F286C4;">:</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">commonjs</span><span style="color:#DEE492;">&quot;</span><span style="color:#F6F6F4;">,</span></span>
+<span class="line"><span style="color:#F6F6F4;">    </span><span style="color:#97E2F2;">&quot;</span><span style="color:#97E1F1;">jsx</span><span style="color:#97E2F2;">&quot;</span><span style="color:#F286C4;">:</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">react</span><span style="color:#DEE492;">&quot;</span><span style="color:#F6F6F4;">,</span></span>
+<span class="line"><span style="color:#F6F6F4;">    </span><span style="color:#97E2F2;">&quot;</span><span style="color:#97E1F1;">jsxFactory</span><span style="color:#97E2F2;">&quot;</span><span style="color:#F286C4;">:</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">h</span><span style="color:#DEE492;">&quot;</span><span style="color:#F6F6F4;">,</span></span>
+<span class="line"><span style="color:#F6F6F4;">    </span><span style="color:#97E2F2;">&quot;</span><span style="color:#97E1F1;">jsxFragmentFactory</span><span style="color:#97E2F2;">&quot;</span><span style="color:#F286C4;">:</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">Fragment</span><span style="color:#DEE492;">&quot;</span></span>
+<span class="line"><span style="color:#F6F6F4;">  }</span></span>
+<span class="line"><span style="color:#F6F6F4;">}</span></span></code></pre><pre class="shiki github-light vp-code-light"><code><span class="line"><span style="color:#24292E;">{</span></span>
+<span class="line"><span style="color:#24292E;">  </span><span style="color:#005CC5;">&quot;compilerOptions&quot;</span><span style="color:#24292E;">: {</span></span>
+<span class="line"><span style="color:#24292E;">    </span><span style="color:#005CC5;">&quot;target&quot;</span><span style="color:#24292E;">: </span><span style="color:#032F62;">&quot;esnext&quot;</span><span style="color:#24292E;">,</span></span>
+<span class="line"><span style="color:#24292E;">    </span><span style="color:#005CC5;">&quot;module&quot;</span><span style="color:#24292E;">: </span><span style="color:#032F62;">&quot;commonjs&quot;</span><span style="color:#24292E;">,</span></span>
+<span class="line"><span style="color:#24292E;">    </span><span style="color:#005CC5;">&quot;jsx&quot;</span><span style="color:#24292E;">: </span><span style="color:#032F62;">&quot;react&quot;</span><span style="color:#24292E;">,</span></span>
+<span class="line"><span style="color:#24292E;">    </span><span style="color:#005CC5;">&quot;jsxFactory&quot;</span><span style="color:#24292E;">: </span><span style="color:#032F62;">&quot;h&quot;</span><span style="color:#24292E;">,</span></span>
+<span class="line"><span style="color:#24292E;">    </span><span style="color:#005CC5;">&quot;jsxFragmentFactory&quot;</span><span style="color:#24292E;">: </span><span style="color:#032F62;">&quot;Fragment&quot;</span></span>
+<span class="line"><span style="color:#24292E;">  }</span></span>
+<span class="line"><span style="color:#24292E;">}</span></span></code></pre></div><p>This TSX file:</p><div class="language-tsx"><button title="Copy Code" class="copy"></button><span class="lang">tsx</span><pre class="shiki dracula-soft vp-code-dark"><code><span class="line"><span style="color:#F286C4;">import</span><span style="color:#F6F6F4;"> { h, Fragment } </span><span style="color:#F286C4;">from</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">preact</span><span style="color:#DEE492;">&quot;</span><span style="color:#F6F6F4;">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F286C4;">const</span><span style="color:#F6F6F4;"> </span><span style="color:#62E884;">HelloWorld</span><span style="color:#F6F6F4;"> </span><span style="color:#F286C4;">=</span><span style="color:#F6F6F4;"> () </span><span style="color:#F286C4;">=&gt;</span><span style="color:#F6F6F4;"> (</span></span>
+<span class="line"><span style="color:#F6F6F4;">  &lt;&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">    &lt;</span><span style="color:#F286C4;">div</span><span style="color:#F6F6F4;">&gt;Hello&lt;/</span><span style="color:#F286C4;">div</span><span style="color:#F6F6F4;">&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">  &lt;/&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">);</span></span></code></pre><pre class="shiki github-light vp-code-light"><code><span class="line"><span style="color:#D73A49;">import</span><span style="color:#24292E;"> { h, Fragment } </span><span style="color:#D73A49;">from</span><span style="color:#24292E;"> </span><span style="color:#032F62;">&quot;preact&quot;</span><span style="color:#24292E;">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;">const</span><span style="color:#24292E;"> </span><span style="color:#6F42C1;">HelloWorld</span><span style="color:#24292E;"> </span><span style="color:#D73A49;">=</span><span style="color:#24292E;"> () </span><span style="color:#D73A49;">=&gt;</span><span style="color:#24292E;"> (</span></span>
+<span class="line"><span style="color:#24292E;">  &lt;&gt;</span></span>
+<span class="line"><span style="color:#24292E;">    &lt;</span><span style="color:#22863A;">div</span><span style="color:#24292E;">&gt;Hello&lt;/</span><span style="color:#22863A;">div</span><span style="color:#24292E;">&gt;</span></span>
+<span class="line"><span style="color:#24292E;">  &lt;/&gt;</span></span>
+<span class="line"><span style="color:#24292E;">);</span></span></code></pre></div><p>Would look like:</p><div class="language-tsx"><button title="Copy Code" class="copy"></button><span class="lang">tsx</span><pre class="shiki dracula-soft vp-code-dark"><code><span class="line"><span style="color:#7B7F8B;">// @showEmit</span></span>
+<span class="line"><span style="color:#7B7F8B;">// @showEmittedFile: index.js</span></span>
+<span class="line"><span style="color:#7B7F8B;">// @jsxFactory: h</span></span>
+<span class="line"><span style="color:#7B7F8B;">// @jsxFragmentFactory: Fragment</span></span>
+<span class="line"><span style="color:#7B7F8B;">// @noErrors</span></span>
+<span class="line"><span style="color:#7B7F8B;">// @target: esnext</span></span>
+<span class="line"><span style="color:#7B7F8B;">// @module: commonjs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F286C4;">import</span><span style="color:#F6F6F4;"> { h, Fragment } </span><span style="color:#F286C4;">from</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">preact</span><span style="color:#DEE492;">&quot;</span><span style="color:#F6F6F4;">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F286C4;">const</span><span style="color:#F6F6F4;"> </span><span style="color:#62E884;">HelloWorld</span><span style="color:#F6F6F4;"> </span><span style="color:#F286C4;">=</span><span style="color:#F6F6F4;"> () </span><span style="color:#F286C4;">=&gt;</span><span style="color:#F6F6F4;"> (</span></span>
+<span class="line"><span style="color:#F6F6F4;">  &lt;&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">    &lt;</span><span style="color:#F286C4;">div</span><span style="color:#F6F6F4;">&gt;Hello&lt;/</span><span style="color:#F286C4;">div</span><span style="color:#F6F6F4;">&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">  &lt;/&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">);</span></span></code></pre><pre class="shiki github-light vp-code-light"><code><span class="line"><span style="color:#6A737D;">// @showEmit</span></span>
+<span class="line"><span style="color:#6A737D;">// @showEmittedFile: index.js</span></span>
+<span class="line"><span style="color:#6A737D;">// @jsxFactory: h</span></span>
+<span class="line"><span style="color:#6A737D;">// @jsxFragmentFactory: Fragment</span></span>
+<span class="line"><span style="color:#6A737D;">// @noErrors</span></span>
+<span class="line"><span style="color:#6A737D;">// @target: esnext</span></span>
+<span class="line"><span style="color:#6A737D;">// @module: commonjs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;">import</span><span style="color:#24292E;"> { h, Fragment } </span><span style="color:#D73A49;">from</span><span style="color:#24292E;"> </span><span style="color:#032F62;">&quot;preact&quot;</span><span style="color:#24292E;">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;">const</span><span style="color:#24292E;"> </span><span style="color:#6F42C1;">HelloWorld</span><span style="color:#24292E;"> </span><span style="color:#D73A49;">=</span><span style="color:#24292E;"> () </span><span style="color:#D73A49;">=&gt;</span><span style="color:#24292E;"> (</span></span>
+<span class="line"><span style="color:#24292E;">  &lt;&gt;</span></span>
+<span class="line"><span style="color:#24292E;">    &lt;</span><span style="color:#22863A;">div</span><span style="color:#24292E;">&gt;Hello&lt;/</span><span style="color:#22863A;">div</span><span style="color:#24292E;">&gt;</span></span>
+<span class="line"><span style="color:#24292E;">  &lt;/&gt;</span></span>
+<span class="line"><span style="color:#24292E;">);</span></span></code></pre></div><p>This option can be used on a per-file basis too similar to <a href="https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments" target="_blank" rel="noreferrer">Babel&#39;s <code>/* @jsxFrag h */</code> directive</a>.</p><p>For example:</p><div class="language-tsx"><button title="Copy Code" class="copy"></button><span class="lang">tsx</span><pre class="shiki dracula-soft vp-code-dark"><code><span class="line"><span style="color:#7B7F8B;">/** </span><span style="color:#F286C4;">@jsx</span><span style="color:#7B7F8B;"> h */</span></span>
+<span class="line"><span style="color:#7B7F8B;">/** </span><span style="color:#F286C4;">@jsxFrag</span><span style="color:#7B7F8B;"> Fragment */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F286C4;">import</span><span style="color:#F6F6F4;"> { h, Fragment } </span><span style="color:#F286C4;">from</span><span style="color:#F6F6F4;"> </span><span style="color:#DEE492;">&quot;</span><span style="color:#E7EE98;">preact</span><span style="color:#DEE492;">&quot;</span><span style="color:#F6F6F4;">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F286C4;">const</span><span style="color:#F6F6F4;"> </span><span style="color:#62E884;">HelloWorld</span><span style="color:#F6F6F4;"> </span><span style="color:#F286C4;">=</span><span style="color:#F6F6F4;"> () </span><span style="color:#F286C4;">=&gt;</span><span style="color:#F6F6F4;"> (</span></span>
+<span class="line"><span style="color:#F6F6F4;">  &lt;&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">    &lt;</span><span style="color:#F286C4;">div</span><span style="color:#F6F6F4;">&gt;Hello&lt;/</span><span style="color:#F286C4;">div</span><span style="color:#F6F6F4;">&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">  &lt;/&gt;</span></span>
+<span class="line"><span style="color:#F6F6F4;">);</span></span></code></pre><pre class="shiki github-light vp-code-light"><code><span class="line"><span style="color:#6A737D;">/** </span><span style="color:#D73A49;">@jsx</span><span style="color:#6A737D;"> h */</span></span>
+<span class="line"><span style="color:#6A737D;">/** </span><span style="color:#D73A49;">@jsxFrag</span><span style="color:#6A737D;"> Fragment */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;">import</span><span style="color:#24292E;"> { h, Fragment } </span><span style="color:#D73A49;">from</span><span style="color:#24292E;"> </span><span style="color:#032F62;">&quot;preact&quot;</span><span style="color:#24292E;">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;">const</span><span style="color:#24292E;"> </span><span style="color:#6F42C1;">HelloWorld</span><span style="color:#24292E;"> </span><span style="color:#D73A49;">=</span><span style="color:#24292E;"> () </span><span style="color:#D73A49;">=&gt;</span><span style="color:#24292E;"> (</span></span>
+<span class="line"><span style="color:#24292E;">  &lt;&gt;</span></span>
+<span class="line"><span style="color:#24292E;">    &lt;</span><span style="color:#22863A;">div</span><span style="color:#24292E;">&gt;Hello&lt;/</span><span style="color:#22863A;">div</span><span style="color:#24292E;">&gt;</span></span>
+<span class="line"><span style="color:#24292E;">  &lt;/&gt;</span></span>
+<span class="line"><span style="color:#24292E;">);</span></span></code></pre></div>`,10),t=[o];function e(c,r,F,y,i,E){return n(),a("div",null,t)}const u=s(p,[["render",e]]);export{d as __pageData,u as default};
